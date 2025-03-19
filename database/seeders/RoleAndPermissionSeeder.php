@@ -114,6 +114,7 @@ class RoleAndPermissionSeeder extends Seeder
         Permission::create(['name' => 'orang-tua.destroy']);
         Permission::create(['name' => 'orang-tua.accepted']);
         Permission::create(['name' => 'orang-tua.rejected']);
+        Permission::create(['name' => 'orang-tua.add-children']);
 
         // create roles 
         $roleUser = Role::create(['name' => 'user']);
@@ -126,6 +127,14 @@ class RoleAndPermissionSeeder extends Seeder
         // create Super Admin
         $role = Role::create(['name' => 'super-admin']);
         $role->givePermissionTo(Permission::all());
+
+        $orangTua = Role::create(['name' => 'orang-tua']);
+        $orangTua->givePermissionTo([
+            'dashboard',
+            'user.management',
+            'orang-tua.index',
+            'orang-tua.add-children'
+        ]);
 
         //assign user id 1 ke super admin
         $user = User::find(1);

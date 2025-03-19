@@ -128,6 +128,8 @@
                         render: function(data) {
                             let showUrl = `/user-management/orang-tua/${data}`;
                             let editUrl = `/user-management/orang-tua/${data}/edit`;
+                            let addchildren =
+                                `/user-management/orang-tua/view-form-add-children/${data}`;
 
                             return `
                                 <a href="${showUrl}" class="btn icon btn-sm btn-info">
@@ -135,6 +137,9 @@
                                 </a>
                                 <a href="${editUrl}" class="btn icon btn-sm btn-warning">
                                     <i class="bi bi-pencil"></i>
+                                </a>
+                                <a href="${addchildren}" class="btn icon btn-sm btn-success">
+                                    <i class="bi bi-plus"></i>
                                 </a>
                                 <button class="btn icon btn-sm btn-danger" onclick="confirmDelete('${data}')">
                                     <i class="bi bi-trash"></i>

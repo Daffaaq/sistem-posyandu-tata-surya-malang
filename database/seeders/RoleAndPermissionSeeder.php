@@ -112,6 +112,8 @@ class RoleAndPermissionSeeder extends Seeder
         Permission::create(['name' => 'orang-tua.create']);
         Permission::create(['name' => 'orang-tua.edit']);
         Permission::create(['name' => 'orang-tua.destroy']);
+        Permission::create(['name' => 'orang-tua.accepted']);
+        Permission::create(['name' => 'orang-tua.rejected']);
 
         // create roles 
         $roleUser = Role::create(['name' => 'user']);

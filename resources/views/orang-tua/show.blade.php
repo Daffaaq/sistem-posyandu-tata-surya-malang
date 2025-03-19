@@ -198,16 +198,6 @@
             font-size: 1rem;
             color: #333;
         }
-
-        .badge {
-            font-size: 1rem;
-            padding: 0.5rem;
-        }
-
-        .btn {
-            padding: 0.5rem 1rem;
-            font-size: 1rem;
-        }
     </style>
 @endpush
 

@@ -65,7 +65,7 @@ class OrangTuaController extends Controller
     public function acceptedOrangTua($id)
     {
         $orangTua = OrangTua::findOrFail($id);
-        if($orangTua->user->is_active == 'active'){
+        if ($orangTua->user->is_active == 'active') {
             //return json
             return response()->json([
                 'success' => true,
@@ -73,6 +73,7 @@ class OrangTuaController extends Controller
             ]);
         }
         $orangTua->user->update(['is_active' => 'active']);
+        $orangTua->user->assignRole('orang-tua');
         // return json
         return response()->json([
             'success' => true,
@@ -83,7 +84,7 @@ class OrangTuaController extends Controller
     public function rejectedOrangTua($id)
     {
         $orangTua = OrangTua::findOrFail($id);
-        if($orangTua->user->is_active == 'non-active'){
+        if ($orangTua->user->is_active == 'non-active') {
             //return json
             return response()->json([
                 'success' => true,
@@ -91,6 +92,7 @@ class OrangTuaController extends Controller
             ]);
         }
         $orangTua->user->update(['is_active' => 'non-active']);
+        $orangTua->user->removeRole('orang-tua');
         // return json
         return response()->json([
             'success' => true,

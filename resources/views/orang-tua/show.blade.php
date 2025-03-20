@@ -137,6 +137,11 @@
                 <div class="row">
                     <div class="col-md-12 text-center">
                         <div class="btn-group" role="group" aria-label="User Action">
+                            <a href="{{ route('orang-tua.index') }}"
+                                class="btn btn-sm btn-secondary rounded-pill px-4 py-2" data-toggle="tooltip"
+                                data-placement="top" title="Kembali">
+                                <i class="fas fa-arrow-left"></i> Kembali
+                            </a>
                             @if ($orangTua->user->is_active == 'non-active')
                                 @can('orang-tua.accepted')
                                     <button class="btn btn-lg btn-success rounded-pill px-4 py-2" id="acceptBtn"

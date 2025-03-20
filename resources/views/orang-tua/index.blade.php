@@ -132,16 +132,16 @@
                                 `/user-management/orang-tua/view-form-add-children/${data}`;
 
                             return `
-                                <a href="${showUrl}" class="btn icon btn-sm btn-info">
+                                <a href="${showUrl}" class="btn icon btn-sm btn-info" title="View Details">
                                     <i class="bi bi-eye"></i>
                                 </a>
-                                <a href="${editUrl}" class="btn icon btn-sm btn-warning">
+                                <a href="${editUrl}" class="btn icon btn-sm btn-warning" title="Edit">
                                     <i class="bi bi-pencil"></i>
                                 </a>
-                                <a href="${addchildren}" class="btn icon btn-sm btn-success">
+                                <a href="${addchildren}" class="btn icon btn-sm btn-success" title="Add Children">
                                     <i class="bi bi-plus"></i>
                                 </a>
-                                <button class="btn icon btn-sm btn-danger" onclick="confirmDelete('${data}')">
+                                <button class="btn icon btn-sm btn-danger" onclick="confirmDelete('${data}')" title="Delete">
                                     <i class="bi bi-trash"></i>
                                 </button>
                             `;
@@ -151,6 +151,7 @@
                 autoWidth: false,
                 drawCallback: function(settings) {
                     $('a').tooltip();
+                    $('button').tooltip();
                 }
             });
 

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreChildrenRequest;
 use App\Http\Requests\UpdateChildrenRequest;
+use App\Http\Requests\UpdateOrangTuaRequest;
 use App\Models\Anak;
 use App\Models\OrangTua;
 use Yajra\DataTables\Facades\DataTables;
@@ -11,6 +12,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Spatie\Permission\Models\Role;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 
 class OrangTuaController extends Controller
@@ -215,15 +217,52 @@ class OrangTuaController extends Controller
      */
     public function edit($id)
     {
-        //
+        $orangTua = OrangTua::findOrFail($id);
+        $user = $orangTua->user;
+        return view('orang-tua.edit', compact('orangTua', 'user'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, $id)
+    public function update(UpdateOrangTuaRequest $request, $id)
     {
-        //
+        $orangTua = OrangTua::findOrFail($id);
+
+        $user = $orangTua->user;
+
+        // Update data user terkait jika ada perubahan
+        if ($user) {
+            $user->update([
+                'name' => $request->name,  // Mengupdate nama user
+                'email' => $request->email, // Mengupdate email user
+                // Hanya update password jika ada perubahan
+                'password' => $request->password ? Hash::make($request->password) : $user->password,
+            ]);
+        }
+
+        // Update data orang tua berdasarkan request yang valid
+        $orangTua->update([
+            'nama_ayah' => $request->nama_ayah,
+            'nama_ibu' => $request->nama_ibu,
+            'tanggal_lahir_ayah' => $request->tanggal_lahir_ayah,
+            'tanggal_lahir_ibu' => $request->tanggal_lahir_ibu,
+            'no_telepon_ayah' => $request->no_telepon_ayah,
+            'no_telepon_ibu' => $request->no_telepon_ibu,
+            'email_ayah' => $request->email_ayah,
+            'email_ibu' => $request->email_ibu,
+            'pekerjaan_ayah' => $request->pekerjaan_ayah,
+            'pekerjaan_ibu' => $request->pekerjaan_ibu,
+            'jenis_kelamin_ayah' => 'Laki-laki',
+            'jenis_kelamin_ibu' => 'Perempuan',
+            'agama_ayah' => $request->agama_ayah,
+            'agama_ibu' => $request->agama_ibu,
+            'alamat_ayah' => $request->alamat_ayah,
+            'alamat_ibu' => $request->alamat_ibu,
+        ]);
+
+        return redirect()->route('orang-tua.index')
+            ->with('success', 'Data orang tua berhasil diperbarui!');
     }
 
     /**

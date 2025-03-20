@@ -43,6 +43,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('ibus');
+        Schema::dropIfExists('orang_tuas');
     }
 };

@@ -123,6 +123,16 @@
                     <div class="text-center mb-4">
                         <h3>{{ __('Register Orang Tua') }}</h3>
                     </div>
+                    @if ($errors->any())
+                        <div class="alert alert-danger">
+                            <ul>
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    @endif
+
 
                     <form method="POST" action="{{ route('register') }}">
                         @csrf
@@ -250,8 +260,8 @@
                                 <div class="form-group">
                                     <label for="agama_ayah">{{ __('Agama Ayah') }}</label>
                                     <select id="agama_ayah"
-                                        class="form-control @error('agama_ayah') is-invalid @enderror" name="agama_ayah"
-                                        required>
+                                        class="form-control @error('agama_ayah') is-invalid @enderror"
+                                        name="agama_ayah" required>
                                         <option value="Islam" {{ old('agama_ayah') == 'Islam' ? 'selected' : '' }}>
                                             Islam</option>
                                         <option value="Kristen"

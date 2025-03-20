@@ -83,6 +83,9 @@ Route::group(['middleware' => ['auth', 'checkactive']], function () {
         Route::get('/orang-tua/view-form-add-children/{id}', [OrangTuaController::class, 'viewAddChildren'])->name('orang-tua.view-form-add-children');
         Route::put('/orang-tua/add-children/{id}', [OrangTuaController::class, 'addchildren'])->name('orang-tua.add-children');
         Route::post('/orang-tua/list-children/{id}', [OrangTuaController::class, 'listChildren'])->name('orang-tua.list-children');
+        Route::get('/orang-tua/view-form-edit/children/{id}', [OrangTuaController::class, 'formEditAnak'])->name('orang-tua.view-form-edit-anak');
+        Route::put('/orang-tua/children/edit/{id}', [OrangTuaController::class, 'updateAnak'])->name('orang-tua.edit-anak');
+        Route::delete('/orang-tua/children/delete/{id}', [OrangTuaController::class, 'destroyAnak'])->name('orang-tua.delete-anak');
     });
     Route::prefix('category-management')->group(function () {
         Route::resource('category', CategoryController::class);

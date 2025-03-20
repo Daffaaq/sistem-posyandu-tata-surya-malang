@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreChildrenRequest;
+use App\Http\Requests\UpdateChildrenRequest;
 use App\Models\Anak;
 use App\Models\OrangTua;
 use Yajra\DataTables\Facades\DataTables;
@@ -140,6 +141,46 @@ class OrangTuaController extends Controller
             ->with('success', 'Children added successfully!');
     }
 
+    public function formEditAnak($id)
+    {
+        $anak = Anak::findOrFail($id);
+        $orangTua = OrangTua::findOrFail($anak->orang_tua_id);
+        return view('orang-tua.form-edit-anak', compact('anak', 'orangTua'));
+    }
+
+    public function updateAnak(UpdateChildrenRequest $request, $id)
+    {
+        $anak = Anak::findOrFail($id);
+        $orangTua = OrangTua::findOrFail($anak->orang_tua_id);
+
+        $validated = $request->validated();
+
+        // Jika validasi berhasil, lanjutkan untuk update data
+        $anak->update([
+            'nama_anak' => $validated['nama_anak'],
+            'jenis_kelamin_anak' => $validated['jenis_kelamin_anak'],
+            'tanggal_lahir_anak' => $validated['tanggal_lahir_anak'],
+        ]);
+
+        // Redirect dengan pesan sukses
+        return redirect()->route('orang-tua.view-form-add-children', $orangTua->id)
+            ->with('success', 'Children updated successfully!');
+    }
+
+    public function destroyAnak($id)
+    {
+        // mulai transaksi 
+        DB::beginTransaction();
+        try {
+            $anak = Anak::findOrFail($id);
+            $anak->delete();
+            DB::commit();
+            return response()->json(['success' => true, 'message' => 'Data berhasil dihapus'], 200);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json(['success' => false, 'message' => 'Data gagal dihapus'], 500);
+        }
+    }
 
     public function listChildren(Request $request, $id)
     {

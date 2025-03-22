@@ -16,7 +16,7 @@
     <!-- Custom CSS -->
     <style>
         body {
-            background: #f8f9fc;
+            background-color: #f1f5f8;
             font-family: 'Nunito', sans-serif;
         }
 
@@ -24,21 +24,21 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
+            min-height: 100vh;
         }
 
         .login-card {
-            background: #ffffff;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            border-radius: 8px;
-            padding: 30px;
+            background: #fff;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            border-radius: 12px;
+            padding: 40px 30px;
             width: 100%;
             max-width: 400px;
         }
 
         .login-card .logo {
             text-align: center;
-            margin-bottom: 20px;
+            margin-bottom: 30px;
         }
 
         .login-card .logo img {
@@ -48,21 +48,25 @@
         .login-card h4 {
             color: #333;
             text-align: center;
-            margin-bottom: 30px;
+            margin-bottom: 25px;
+            font-size: 22px;
         }
 
         .login-card .form-control {
-            border-radius: 5px;
-            padding: 15px;
+            border-radius: 30px;
+            padding: 20px;
+            margin-bottom: 20px;
+            font-size: 16px;
         }
 
         .login-card button {
             background: #007bff;
             color: white;
             border: none;
-            padding: 10px;
+            padding: 12px;
             width: 100%;
-            border-radius: 5px;
+            border-radius: 30px;
+            font-size: 16px;
         }
 
         .login-card button:hover {
@@ -84,6 +88,17 @@
         .login-card .small a:hover {
             text-decoration: underline;
         }
+
+        /* Responsive for small devices */
+        @media (max-width: 576px) {
+            .login-card {
+                padding: 25px;
+            }
+
+            .login-card h4 {
+                font-size: 18px;
+            }
+        }
     </style>
 </head>
 
@@ -91,7 +106,7 @@
     <div class="login-container">
         <div class="login-card">
             <div class="logo">
-                <!-- Logo can go here, make sure you replace with your actual logo -->
+                <!-- Logo can go here -->
                 <img src="https://via.placeholder.com/150x50.png?text=Logo" alt="Sistem Posyandu Tata Surya">
             </div>
             <h4>Sistem Posyandu Tata Surya - Login</h4>
@@ -101,7 +116,7 @@
                 <!-- Email Input -->
                 <div class="form-group">
                     <input type="email" name="email" class="form-control @error('email') is-invalid @enderror"
-                        id="email" placeholder="Masukkan Email Anda">
+                        id="email" placeholder="Masukkan Email Anda" required>
                     @error('email')
                         <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
@@ -109,8 +124,8 @@
                 <!-- Password Input -->
                 <div class="form-group">
                     <input type="password" name="password" class="form-control @error('password') is-invalid @enderror"
-                        id="password" placeholder="Kata Sandi">
-                    @error('email')
+                        id="password" placeholder="Kata Sandi" required>
+                    @error('password')
                         <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
                 </div>
@@ -127,6 +142,9 @@
     </div>
 
     <!-- Bootstrap 4 JS, Popper.js, and jQuery -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 
 </html>

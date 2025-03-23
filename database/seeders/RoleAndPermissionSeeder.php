@@ -21,9 +21,12 @@ class RoleAndPermissionSeeder extends Seeder
         // create permissions
         Permission::create(['name' => 'dashboard']);
         Permission::create(['name' => 'master.management']);
+        Permission::create(['name' => 'posyandu.management']);
+        Permission::create(['name' => 'berita.management']);
         Permission::create(['name' => 'user.management']);
         Permission::create(['name' => 'role.permission.management']);
         Permission::create(['name' => 'menu.management']);
+        Permission::create(['name' => 'log.management']);
         //user
         Permission::create(['name' => 'user.index']);
         Permission::create(['name' => 'user.create']);
@@ -115,6 +118,36 @@ class RoleAndPermissionSeeder extends Seeder
         Permission::create(['name' => 'orang-tua.accepted']);
         Permission::create(['name' => 'orang-tua.rejected']);
         Permission::create(['name' => 'orang-tua.add-children']);
+
+        //kunjungan
+        Permission::create(['name' => 'kunjungan.index']);
+        Permission::create(['name' => 'kunjungan.create']);
+        Permission::create(['name' => 'kunjungan.edit']);
+        Permission::create(['name' => 'kunjungan.destroy']);
+
+        //imunisasi
+        Permission::create(['name' => 'imunisasi.index']);
+        Permission::create(['name' => 'imunisasi.create']);
+        Permission::create(['name' => 'imunisasi.edit']);
+        Permission::create(['name' => 'imunisasi.destroy']);
+
+        //keluarga-berencana
+        Permission::create(['name' => 'keluarga-berencana.index']);
+        Permission::create(['name' => 'keluarga-berencana.create']);
+        Permission::create(['name' => 'keluarga-berencana.edit']);
+        Permission::create(['name' => 'keluarga-berencana.destroy']);
+
+        //berita
+        Permission::create(['name' => 'berita.index']);
+        Permission::create(['name' => 'berita.create']);
+        Permission::create(['name' => 'berita.edit']);
+        Permission::create(['name' => 'berita.destroy']);
+
+        //log-sistem
+        Permission::create(['name' => 'log-sistem.index']);
+        Permission::create(['name' => 'log-sistem.create']);
+        Permission::create(['name' => 'log-sistem.edit']);
+        Permission::create(['name' => 'log-sistem.destroy']);
 
         // create roles 
         $roleUser = Role::create(['name' => 'user']);

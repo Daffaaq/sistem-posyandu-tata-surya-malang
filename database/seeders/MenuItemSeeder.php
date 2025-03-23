@@ -58,52 +58,82 @@ class MenuItemSeeder extends Seeder
                     'menu_group_id' => 2,
                 ],
                 [
+                    'name' => ' Kunjungan',
+                    'route' => 'posyandu/kunjungan',
+                    'permission_name' => 'kunjungan.index',
+                    'menu_group_id' => 3, // Posyandu Management
+                ],
+                [
+                    'name' => ' Imunisasi',
+                    'route' => 'posyandu-management/imunisasi',
+                    'permission_name' => 'imunisasi.index',
+                    'menu_group_id' => 3, // Posyandu Management
+                ],
+                [
+                    'name' => 'Keluarga Berencana',
+                    'route' => 'posyandu-management/keluarga-berencana',
+                    'permission_name' => 'keluarga-berencana.index',
+                    'menu_group_id' => 3, // Posyandu Management
+                ],
+                [
+                    'name' => 'Berita List',
+                    'route' => 'berita-management/index',
+                    'permission_name' => 'berita.index',
+                    'menu_group_id' => 4, // Berita
+                ],
+                [
                     'name' => 'OrangTua List',
                     'route' => 'user-management/orang-tua',
                     'permission_name' => 'orang-tua.index',
-                    'menu_group_id' => 3,
+                    'menu_group_id' => 5,
                 ],
                 [
                     'name' => 'User List',
                     'route' => 'user-management/user',
                     'permission_name' => 'user.index',
-                    'menu_group_id' => 3,
+                    'menu_group_id' => 5,
                 ],
                 [
                     'name' => 'Role List',
                     'route' => 'role-and-permission/role',
                     'permission_name' => 'role.index',
-                    'menu_group_id' => 4,
+                    'menu_group_id' => 6,
                 ],
                 [
                     'name' => 'Permission List',
                     'route' => 'role-and-permission/permission',
                     'permission_name' => 'permission.index',
-                    'menu_group_id' => 4,
+                    'menu_group_id' => 6,
                 ],
                 [
                     'name' => 'Permission To Role',
                     'route' => 'role-and-permission/assign',
                     'permission_name' => 'assign.index',
-                    'menu_group_id' => 4,
+                    'menu_group_id' => 6,
                 ],
                 [
                     'name' => 'User To Role',
                     'route' => 'role-and-permission/assign-user',
                     'permission_name' => 'assign.user.index',
-                    'menu_group_id' => 4,
+                    'menu_group_id' => 6,
                 ],
                 [
                     'name' => 'Menu Group',
                     'route' => 'menu-management/menu-group',
                     'permission_name' => 'menu-group.index',
-                    'menu_group_id' => 5,
+                    'menu_group_id' => 7,
                 ],
                 [
                     'name' => 'Menu Item',
                     'route' => 'menu-management/menu-item',
                     'permission_name' => 'menu-item.index',
-                    'menu_group_id' => 5,
+                    'menu_group_id' => 7,
+                ],
+                [
+                    'name' => 'Log Sistem',
+                    'route' => 'log-management/log-sistem',
+                    'permission_name' => 'log-sistem.index',
+                    'menu_group_id' => 8, // Log Sistem
                 ],
             ]
         );

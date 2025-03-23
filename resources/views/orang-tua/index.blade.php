@@ -125,28 +125,34 @@
                         name: 'id',
                         orderable: false,
                         searchable: false,
-                        render: function(data) {
+                        render: function(data, type, row) {
                             let showUrl = `/user-management/orang-tua/${data}`;
                             let editUrl = `/user-management/orang-tua/${data}/edit`;
                             let addchildren =
                                 `/user-management/orang-tua/view-form-add-children/${data}`;
+                            let updateStatusUrl =
+                                `/user-management/orang-tua/update-status/${data}`; // URL untuk update status
 
                             return `
-                                <a href="${showUrl}" class="btn icon btn-sm btn-info" title="View Details">
-                                    <i class="bi bi-eye"></i>
-                                </a>
-                                <a href="${editUrl}" class="btn icon btn-sm btn-warning" title="Edit">
-                                    <i class="bi bi-pencil"></i>
-                                </a>
-                                <a href="${addchildren}" class="btn icon btn-sm btn-success" title="Add Children">
-                                    <i class="bi bi-plus"></i>
-                                </a>
-                                <button class="btn icon btn-sm btn-danger" onclick="confirmDelete('${data}')" title="Delete">
-                                    <i class="bi bi-trash"></i>
-                                </button>
-                            `;
+            <a href="${showUrl}" class="btn icon btn-sm btn-info" title="View Details">
+                <i class="bi bi-eye"></i>
+            </a>
+            <a href="${editUrl}" class="btn icon btn-sm btn-warning" title="Edit">
+                <i class="bi bi-pencil"></i>
+            </a>
+            <a href="${addchildren}" class="btn icon btn-sm btn-success" title="Add Children">
+                <i class="bi bi-plus"></i>
+            </a>
+            <button class="btn icon btn-sm btn-danger" onclick="confirmDelete('${data}')" title="Delete">
+                <i class="bi bi-trash"></i>
+            </button>
+            <button class="btn icon btn-sm btn-secondary" onclick="updateStatus('${data}', '${row.is_active}')" title="Update Status">
+                ${row.is_active === 'active' ? 'Deactivate' : 'Activate'}
+            </button>
+        `;
                         }
                     }
+
                 ],
                 autoWidth: false,
                 drawCallback: function(settings) {
@@ -200,6 +206,67 @@
                                 Swal.fire({
                                     icon: 'success',
                                     title: 'Dihapus!',
+                                    text: response.message,
+                                    toast: true,
+                                    position: 'top-end',
+                                    showConfirmButton: false,
+                                    timer: 3000,
+                                    timerProgressBar: true,
+                                });
+                                $('#OrangTuaTable').DataTable().ajax.reload();
+                            } else {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Gagal!',
+                                    text: response.message || 'Terjadi kesalahan.',
+                                    toast: true,
+                                    position: 'top-end',
+                                    showConfirmButton: false,
+                                    timer: 3000,
+                                    timerProgressBar: true,
+                                });
+                            }
+                        },
+                        error: function() {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Gagal!',
+                                text: 'Tidak dapat menghubungi server.',
+                                toast: true,
+                                position: 'top-end',
+                                showConfirmButton: false,
+                                timer: 3000,
+                                timerProgressBar: true,
+                            });
+                        }
+                    });
+                }
+            });
+        }
+
+        function updateStatus(id, currentStatus) {
+            Swal.fire({
+                title: 'Apakah Anda yakin?',
+                text: `Status akan diubah menjadi ${currentStatus === 'active' ? 'Inactive' : 'Active'}`,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Ya, Update!',
+                cancelButtonText: 'Batal'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: `/user-management/orang-tua/update-status/${id}`,
+                        type: 'POST',
+                        data: {
+                            _token: '{{ csrf_token() }}',
+                        },
+                        success: function(response) {
+                            if (response.success) {
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Berhasil!',
                                     text: response.message,
                                     toast: true,
                                     position: 'top-end',

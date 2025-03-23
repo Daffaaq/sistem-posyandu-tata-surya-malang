@@ -59,7 +59,7 @@ class MenuItemSeeder extends Seeder
                 ],
                 [
                     'name' => ' Kunjungan',
-                    'route' => 'posyandu/kunjungan',
+                    'route' => 'posyandu-management/kunjungan',
                     'permission_name' => 'kunjungan.index',
                     'menu_group_id' => 3, // Posyandu Management
                 ],

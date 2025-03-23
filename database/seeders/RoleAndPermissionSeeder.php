@@ -150,11 +150,31 @@ class RoleAndPermissionSeeder extends Seeder
         Permission::create(['name' => 'log-sistem.destroy']);
 
         // create roles 
-        $roleUser = Role::create(['name' => 'user']);
+        $roleUser = Role::create(['name' => 'admin']);
         $roleUser->givePermissionTo([
             'dashboard',
             'user.management',
             'user.index',
+            'posyandu.management',
+            'kunjungan.index',
+            'kunjungan.create',
+            'kunjungan.edit',
+            'kunjungan.destroy',
+            'imunisasi.index',
+            'imunisasi.create',
+            'imunisasi.edit',
+            'imunisasi.destroy',
+            'keluarga-berencana.index',
+            'keluarga-berencana.create',
+            'keluarga-berencana.edit',
+            'keluarga-berencana.destroy',
+            'berita.management',
+            'berita.index',
+            'berita.create',
+            'berita.edit',
+            'berita.destroy',
+            'log.management',
+            'log-sistem.index',
         ]);
 
         // create Super Admin
@@ -166,13 +186,46 @@ class RoleAndPermissionSeeder extends Seeder
             'dashboard',
             'user.management',
             'orang-tua.index',
-            'orang-tua.add-children'
+            'orang-tua.add-children',
+            'posyandu.management',
+            'kunjungan.index',
+            'imunisasi.index',
+            'keluarga-berencana.index',
+        ]);
+
+        $petugas = Role::create(['name' => 'petugas']);
+        $petugas->givePermissionTo([
+            'dashboard',
+            'posyandu.management',
+            'kunjungan.index',
+            'kunjungan.create',
+            'kunjungan.edit',
+            'kunjungan.destroy',
+            'imunisasi.index',
+            'imunisasi.create',
+            'imunisasi.edit',
+            'imunisasi.destroy',
+            'keluarga-berencana.index',
+            'keluarga-berencana.create',
+            'keluarga-berencana.edit',
+            'keluarga-berencana.destroy',
+            'berita.management',
+            'berita.index',
+            'berita.create',
+            'berita.edit',
+            'berita.destroy',
         ]);
 
         //assign user id 1 ke super admin
         $user = User::find(1);
         $user->assignRole('super-admin');
         $user = User::find(2);
-        $user->assignRole('user');
+        $user->assignRole('admin');
+        $user = User::find(3);
+        $user->assignRole('petugas');
+        $user = User::find(4);
+        $user->assignRole('petugas');
+        $user = User::find(5);
+        $user->assignRole('petugas');
     }
 }

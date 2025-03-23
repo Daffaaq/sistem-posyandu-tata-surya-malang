@@ -5,6 +5,7 @@ use App\Http\Controllers\JadwalPosyanduController;
 use App\Http\Controllers\JenisKunjunganKeluargaBerencanaController;
 use App\Http\Controllers\KategoriImunasasiController;
 use App\Http\Controllers\KategoriKeluargaBerencanaController;
+use App\Http\Controllers\KunjunganController;
 use App\Http\Controllers\Menu\MenuGroupController;
 use App\Http\Controllers\Menu\MenuItemController;
 use App\Http\Controllers\ObatController;
@@ -71,6 +72,12 @@ Route::group(['middleware' => ['auth', 'checkactive']], function () {
         Route::post('/kategori-imunisasi/list', [KategoriImunasasiController::class, 'list'])->name('kategori-imunisasi.list');
     });
 
+    Route::prefix('posyandu-management')->group(function () {
+        //kunjungan
+        Route::resource('kunjungan', KunjunganController::class);
+        Route::post('/kunjungan/list', [KunjunganController::class, 'list'])->name('kunjungan.list');
+    });
+
     Route::prefix('user-management')->group(function () {
         Route::resource('user', UserController::class);
         Route::post('/user/list', [UserController::class, 'list'])->name('user.list');
@@ -86,6 +93,7 @@ Route::group(['middleware' => ['auth', 'checkactive']], function () {
         Route::get('/orang-tua/view-form-edit/children/{id}', [OrangTuaController::class, 'formEditAnak'])->name('orang-tua.view-form-edit-anak');
         Route::put('/orang-tua/children/edit/{id}', [OrangTuaController::class, 'updateAnak'])->name('orang-tua.edit-anak');
         Route::delete('/orang-tua/children/delete/{id}', [OrangTuaController::class, 'destroyAnak'])->name('orang-tua.delete-anak');
+        Route::post('/orang-tua/update-status/{id}', [OrangTuaController::class, 'updateStatus'])->name('orang-tua.update-status');
     });
     Route::prefix('category-management')->group(function () {
         Route::resource('category', CategoryController::class);

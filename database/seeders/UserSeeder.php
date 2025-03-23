@@ -22,11 +22,32 @@ class UserSeeder extends Seeder
             'is_active' => 'active',
         ]);
         User::create([
-            'name' => "user",
-            'email' => "user@gmail.com",
+            'name' => "admin",
+            'email' => "admin@gmail.com",
             'password' => Hash::make('password'),
             'email_verified_at' => now(),
-            'is_active' => 'non-active',
+            'is_active' => 'active',
+        ]);
+        User::create([
+            'name' => "Zahra",
+            'email' => "zahra@gmail.com",
+            'password' => Hash::make('password'),
+            'email_verified_at' => now(),
+            'is_active' => 'active',
+        ]);
+        User::create([
+            'name' => "Zulkifli",
+            'email' => "zulkifli@gmail.com",
+            'password' => Hash::make('password'),
+            'email_verified_at' => now(),
+            'is_active' => 'active',
+        ]);
+        User::create([
+            'name' => "Nadia",
+            'email' => "nadia@gmail.com",
+            'password' => Hash::make('password'),
+            'email_verified_at' => now(),
+            'is_active' => 'active',
         ]);
     }
 }

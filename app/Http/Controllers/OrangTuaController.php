@@ -52,6 +52,38 @@ class OrangTuaController extends Controller
         return view('orang-tua.index');
     }
 
+    public function updateStatus($id)
+    {
+        // Temukan data orang tua berdasarkan ID
+        $orangTua = OrangTua::find($id);
+
+        // Jika data orang tua tidak ditemukan
+        if (!$orangTua) {
+            return response()->json(['success' => false, 'message' => 'Data tidak ditemukan.']);
+        }
+
+        // Akses objek user yang terkait dengan orang tua
+        $user = $orangTua->user;
+
+        // Toggle status 'is_active' dan perbarui
+        if ($user->is_active == 'active') {
+            // Jika status saat ini adalah active, ubah menjadi non-active dan hapus peran 'orang-tua'
+            $user->is_active = 'non-active';
+            $user->removeRole('orang-tua');
+        } else {
+            // Jika status saat ini adalah non-active, ubah menjadi active dan berikan peran 'orang-tua'
+            $user->is_active = 'active';
+            $user->assignRole('orang-tua');
+        }
+
+        // Simpan perubahan status dan peran
+        $user->save();
+
+        // Kembalikan response sukses
+        return response()->json(['success' => true, 'message' => 'Status berhasil diperbarui.']);
+    }
+
+
     /**
      * Show the form for creating a new resource.
      */

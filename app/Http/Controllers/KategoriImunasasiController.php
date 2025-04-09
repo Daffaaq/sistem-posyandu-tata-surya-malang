@@ -27,6 +27,8 @@ class KategoriImunasasiController extends Controller
                 ->addIndexColumn()
                 ->make(true);
         }
+        // jika bukan response ajax maka return 405
+        return response()->json(['message' => 'Method not allowed'], 405);
     }
     /**
      * Display a listing of the resource.

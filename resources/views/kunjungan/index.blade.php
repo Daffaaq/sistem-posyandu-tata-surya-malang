@@ -115,11 +115,15 @@
                         searchable: false,
                         render: function(data) {
                             let showUrl = `/posyandu-management/kunjungan/${data}`;
+                            let plusPantauan = `/posyandu-management/kunjungan/${data}/pantauan-tumbuh-kembang-anak`;
                             let editUrl = `/posyandu-management/kunjungan/${data}/edit`;
 
                             return `
                                 <a href="${showUrl}" class="btn icon btn-sm btn-info" title="View Details">
                                     <i class="bi bi-eye"></i>
+                                </a>
+                                <a href="${plusPantauan}" class="btn icon btn-sm btn-success" title="Pantauan Tumbuh Kembang Anak">
+                                    <i class="bi bi-clipboard-data-fill"></i>
                                 </a>
                                 <a href="${editUrl}" class="btn icon btn-sm btn-warning" title="Edit">
                                     <i class="bi bi-pencil"></i>

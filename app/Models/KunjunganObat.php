@@ -16,7 +16,6 @@ class KunjunganObat extends Model
         'obat_id',
         'kunjungan_anak_id',
         'jumlah_obat',
-        'is_for_ibu',
     ];
 
     public function kunjungan()

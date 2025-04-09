@@ -118,6 +118,7 @@ class RoleAndPermissionSeeder extends Seeder
         Permission::create(['name' => 'orang-tua.accepted']);
         Permission::create(['name' => 'orang-tua.rejected']);
         Permission::create(['name' => 'orang-tua.add-children']);
+        Permission::create(['name' => 'orang-tua.update-status']);
 
         //kunjungan
         Permission::create(['name' => 'kunjungan.index']);
@@ -155,6 +156,8 @@ class RoleAndPermissionSeeder extends Seeder
             'dashboard',
             'user.management',
             'user.index',
+            'orang-tua.index',
+            'orang-tua.update-status',
             'posyandu.management',
             'kunjungan.index',
             'kunjungan.create',

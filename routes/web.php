@@ -76,6 +76,11 @@ Route::group(['middleware' => ['auth', 'checkactive']], function () {
         //kunjungan
         Route::resource('kunjungan', KunjunganController::class);
         Route::post('/kunjungan/list', [KunjunganController::class, 'list'])->name('kunjungan.list');
+        Route::get('/kunjungan/{id}/pantauan-tumbuh-kembang-anak', [KunjunganController::class, 'showAnaliticsGrowthChildren'])->name('kunjungan.pantauan-tumbuh-kembang-anak');
+        Route::put('/kunjungan/{id}/pantauan-tumbuh-kembang-anak', [KunjunganController::class, 'addGrowthChildren'])->name('kunjungan.pantauan-tumbuh-kembang-anak-store');
+
+        Route::post('/kunjungan/{id}/list-pemantauan-tumbuh-kembang-anak', [KunjunganController::class, 'listPemantauanTumbuhKembangAnak'])->name('kunjungan.list-pemantauan-tumbuh-kembang-anak');
+        Route::post('/kunjungan/{id}/list-data-obat-kunjungan', [KunjunganController::class, 'ListDataObatKunjungan'])->name('kunjungan.list-data-obat-kunjungan');
     });
 
     Route::prefix('user-management')->group(function () {

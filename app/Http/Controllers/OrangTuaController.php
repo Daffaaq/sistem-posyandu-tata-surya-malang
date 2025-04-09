@@ -29,7 +29,7 @@ class OrangTuaController extends Controller
     public function list(Request $request)
     {
         if ($request->ajax()) {
-            if (Auth::user()->hasRole('super-admin') || Auth::user()->hasRole('user')) {
+            if (Auth::user()->hasRole('super-admin') || Auth::user()->hasRole('admin')) {
                 $orangTua = DB::table('orang_tuas')
                     ->leftJoin('users', 'orang_tuas.user_id', '=', 'users.id')
                     ->select('orang_tuas.id', 'orang_tuas.nama_ayah', 'orang_tuas.nama_ibu', 'users.is_active'); // Add is_active here
@@ -218,30 +218,38 @@ class OrangTuaController extends Controller
 
     public function listChildren(Request $request, $id)
     {
-        $orangTua = OrangTua::findOrFail($id); // Cari orang tua berdasarkan ID
+        if ($request->ajax()) {
+            // Cari orang tua berdasarkan ID
+            $orangTua = OrangTua::findOrFail($id);
 
-        // Pengecekan jika role adalah 'super-admin' atau 'user'
-        if (Auth::user()->hasRole('super-admin') || Auth::user()->hasRole('user')) {
-            // Jika role adalah super-admin, tampilkan semua anak
-            $anak = Anak::where('orang_tua_id', $orangTua->id)->select('id', 'nama_anak', 'jenis_kelamin_anak', 'tanggal_lahir_anak');
-        } elseif (Auth::user()->hasRole('orang-tua')) {
-            // Jika role adalah user (orang tua), hanya tampilkan anak mereka sendiri
-            if (Auth::user()->id !== $orangTua->user_id) {
-                // Jika user yang login bukan orang tua yang bersangkutan, return Unauthorized
+            // Menyusun query untuk anak berdasarkan role pengguna
+            $query = Anak::where('orang_tua_id', $orangTua->id)
+                ->select('id', 'nama_anak', 'jenis_kelamin_anak', 'tanggal_lahir_anak');
+
+            // Mengecek peran pengguna
+            $user = Auth::user();
+
+            // Jika role adalah super-admin atau admin, tampilkan semua anak
+            if ($user->hasRole('orang-tua')) {
+                // Jika role orang tua, pastikan hanya anak mereka yang bisa diakses
+                if ($user->id !== $orangTua->user_id) {
+                    return response()->json(['message' => 'Unauthorized'], 403);
+                }
+            } elseif (!$user->hasRole('super-admin') && !$user->hasRole('admin')) {
+                // Role selain super-admin, admin, atau orang-tua tidak diperbolehkan
                 return response()->json(['message' => 'Unauthorized'], 403);
             }
-            $anak = Anak::where('orang_tua_id', $orangTua->id)->select('id', 'nama_anak', 'jenis_kelamin_anak', 'tanggal_lahir_anak');
-        } else {
-            // Role selain super-admin dan user tidak boleh mengakses
-            return response()->json(['message' => 'Unauthorized'], 403);
+
+            // Jika request AJAX, kembalikan data anak dalam format DataTables
+            if ($request->ajax()) {
+                return DataTables::of($query)
+                    ->addIndexColumn()
+                    ->make(true);
+            }
         }
 
-        // Jika request AJAX, kembalikan data anak dalam format DataTables
-        if ($request->ajax()) {
-            return DataTables::of($anak)
-                ->addIndexColumn()
-                ->make(true);
-        }
+        // jika bukan response ajax maka return 405
+        return response()->json(['message' => 'Method not allowed'], 405);
     }
 
     /**

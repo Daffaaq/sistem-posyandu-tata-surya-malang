@@ -20,7 +20,6 @@ return new class extends Migration
             $table->unsignedBigInteger('kunjungan_anak_id')->nullable();
             $table->foreign('kunjungan_anak_id')->references('id')->on('kunjungan_anaks')->onDelete('cascade');
             $table->integer('jumlah_obat');
-            $table->boolean('is_for_ibu');
             $table->timestamps();
         });
     }

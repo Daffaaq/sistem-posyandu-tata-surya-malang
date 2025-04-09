@@ -2,15 +2,49 @@
 
 @section('content')
     <div class="container-fluid">
+        <!-- Card Tanggal Kunjungan -->
+        <div class="card shadow mb-4">
+            <div class="card-header py-3"
+                style="background: linear-gradient(135deg, #28a745, #1a73e8); border-bottom: 2px solid #f1f3f4;">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div class="d-flex flex-column" id="tanggal-kunjungan">
+                        <strong class="mb-1" style="font-size: 1.2rem; color: #ffffff;">Tanggal Kunjungan:</strong>
+                        <span style="font-size: 1.5rem; color: #ffffff;">
+                            {{ \Carbon\Carbon::parse($kunjungan->tanggal_kunjungan)->locale('id')->isoFormat('D MMMM YYYY') }}
+                        </span>
+                    </div>
+                    <i class="fas fa-calendar-day text-white" style="font-size: 1.75rem;"></i>
+                </div>
+            </div>
+        </div>
+
+
         <!-- Card Pemantauan Tumbuh Kembang Anak -->
         <div class="card shadow mb-4">
             <div class="card-header py-3 d-flex justify-content-between align-items-center">
                 <h6 class="m-0 font-weight-bold text-primary">Pemantauan Tumbuh Kembang Anak</h6>
+                <ol class="breadcrumb mb-0">
+                    <li class="breadcrumb-item">
+                        <a href="{{ route('kunjungan.index') }}"
+                            class="{{ request()->routeIs('kunjungan.index') ? 'active' : '' }}">
+                            Kunjungan
+                        </a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a href="{{ route('kunjungan.pantauan-tumbuh-kembang-anak', $kunjungan->id) }}"
+                            class="{{ request()->routeIs('kunjungan.pantauan-tumbuh-kembang-anak') ? 'active' : '' }}">
+                            Show Analitics Growth Children
+                        </a>
+                    </li>
+                </ol>
             </div>
+
             <div class="card-body">
+
                 <!-- Tabel Pemantauan Tumbuh Kembang Anak -->
                 <div class="table-responsive">
-                    <table class="table table-bordered" id="PemantauanTumbuhKembangAnakTable" width="100%" cellspacing="0">
+                    <table class="table table-bordered" id="PemantauanTumbuhKembangAnakTable" width="100%"
+                        cellspacing="0">
                         <thead>
                             <tr>
                                 <th>No</th>
@@ -33,6 +67,20 @@
         <div class="card shadow mb-4 mt-4">
             <div class="card-header py-3 d-flex justify-content-between align-items-center">
                 <h6 class="m-0 font-weight-bold text-primary">Kunjungan Obat</h6>
+                <ol class="breadcrumb mb-0">
+                    <li class="breadcrumb-item">
+                        <a href="{{ route('kunjungan.index') }}"
+                            class="{{ request()->routeIs('kunjungan.index') ? 'active' : '' }}">
+                            Kunjungan
+                        </a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a href="{{ route('kunjungan.pantauan-tumbuh-kembang-anak', $kunjungan->id) }}"
+                            class="{{ request()->routeIs('kunjungan.pantauan-tumbuh-kembang-anak') ? 'active' : '' }}">
+                            Show Analitics Growth Children
+                        </a>
+                    </li>
+                </ol>
             </div>
             <div class="card-body">
                 <!-- Tabel Kunjungan Obat -->
@@ -56,6 +104,20 @@
         <div class="card shadow mb-4 mt-4">
             <div class="card-header py-3 d-flex justify-content-between align-items-center">
                 <h6 class="m-0 font-weight-bold text-primary">Anak</h6>
+                <ol class="breadcrumb mb-0">
+                    <li class="breadcrumb-item">
+                        <a href="{{ route('kunjungan.index') }}"
+                            class="{{ request()->routeIs('kunjungan.index') ? 'active' : '' }}">
+                            Kunjungan
+                        </a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a href="{{ route('kunjungan.pantauan-tumbuh-kembang-anak', $kunjungan->id) }}"
+                            class="{{ request()->routeIs('kunjungan.pantauan-tumbuh-kembang-anak') ? 'active' : '' }}">
+                            Show Analitics Growth Children
+                        </a>
+                    </li>
+                </ol>
             </div>
             <div class="card-body">
                 <!-- Tabel List Anak (di atas form) -->
@@ -81,6 +143,20 @@
         <div class="card shadow mb-4">
             <div class="card-header py-3 d-flex justify-content-between align-items-center">
                 <h6 class="m-0 font-weight-bold text-primary">Form Pemantauan Tumbuh Kembang Anak</h6>
+                <ol class="breadcrumb mb-0">
+                    <li class="breadcrumb-item">
+                        <a href="{{ route('kunjungan.index') }}"
+                            class="{{ request()->routeIs('kunjungan.index') ? 'active' : '' }}">
+                            Kunjungan
+                        </a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a href="{{ route('kunjungan.pantauan-tumbuh-kembang-anak', $kunjungan->id) }}"
+                            class="{{ request()->routeIs('kunjungan.pantauan-tumbuh-kembang-anak') ? 'active' : '' }}">
+                            Show Analitics Growth Children
+                        </a>
+                    </li>
+                </ol>
             </div>
             <div class="card-body">
                 <!-- Form untuk menambahkan Pemantauan Tumbuh Kembang Anak -->
@@ -154,6 +230,22 @@
         .form-check {
             margin-right: 15px;
             margin-bottom: 10px;
+        }
+
+        #tanggal-kunjungan {
+            display: flex;
+            flex-direction: column;
+        }
+
+        #tanggal-kunjungan strong {
+            font-size: 1rem;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        #tanggal-kunjungan span {
+            font-size: 1.125rem;
+            color: #6c757d;
         }
     </style>
 @endpush
@@ -304,6 +396,7 @@
 
         $(document).ready(function() {
             var obatData = @json($obat); // Menyertakan data obat dari server
+
             // Fungsi untuk memperbarui form anak dan obat
             function updateFields() {
                 const selectedChildren = $('input[name="anak_id[]"]:checked');
@@ -358,19 +451,19 @@
                         <label for="obat_id_${anakId}">Pilih Obat</label>
                         <div id="obat_id_${anakId}" class="checkbox-group">
                             ${obatData.map(item => `
-                                                                            <div class="form-check">
-                                                                                <input class="form-check-input" type="checkbox" value="${item.id}" name="obat_id[${anakId}][]" id="obat_${item.id}">
-                                                                                <label class="form-check-label" for="obat_${item.id}">
-                                                                                    ${item.nama_obat_vitamin}
-                                                                                </label>
+                                                                                                                <div class="form-check">
+                                                                                                                    <input class="form-check-input" type="checkbox" value="${item.id}" name="obat_id[${anakId}][]" id="obat_${item.id}">
+                                                                                                                    <label class="form-check-label" for="obat_${item.id}">
+                                                                                                                        ${item.nama_obat_vitamin}
+                                                                                                                    </label>
 
-                                                                                <!-- Input untuk jumlah obat (saat obat dipilih) -->
-                                                                                <div id="jumlah_obat_${anakId}_${item.id}" class="jumlah-obat" style="display:none;">
-                                                                                    <label for="jumlah_obat_${anakId}_${item.id}">Jumlah Obat</label>
-                                                                                    <input type="number" class="form-control" name="jumlah_obat[${anakId}][${item.id}]" id="jumlah_obat_${anakId}_${item.id}" min="1">
-                                                                                </div>
-                                                                            </div>
-                                                                        `).join('')}
+                                                                                                                    <!-- Input untuk jumlah obat (saat obat dipilih) -->
+                                                                                                                    <div id="jumlah_obat_${anakId}_${item.id}" class="jumlah-obat" style="display:none;">
+                                                                                                                        <label for="jumlah_obat_${anakId}_${item.id}">Jumlah Obat</label>
+                                                                                                                        <input type="number" class="form-control" name="jumlah_obat[${anakId}][${item.id}]" id="jumlah_obat_${anakId}_${item.id}" min="1">
+                                                                                                                    </div>
+                                                                                                                </div>
+                                                                                                            `).join('')}
                         </div>
                     </div>
                 </div>
@@ -401,6 +494,19 @@
                     jumlahObatField.hide();
                     $(`#jumlah_obat_${anakId}_${obatId}`).val(''); // Clear the value if unchecked
                 }
+            });
+
+            // Sebelum form disubmit, pastikan nilai input number diubah ke tipe numerik
+            $('form').submit(function(e) {
+                $('input[type="number"]').each(function() {
+                    let value = $(this).val();
+                    if (value) {
+                        $(this).val(parseInt(value)); // Mengubah nilai input ke integer
+                    } else {
+                        $(this).val(
+                            0); // Jika kosong, set ke 0 (atau bisa sesuaikan dengan kebutuhan)
+                    }
+                });
             });
         });
     </script>

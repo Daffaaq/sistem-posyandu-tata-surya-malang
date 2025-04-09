@@ -16,8 +16,16 @@
     <!-- Custom CSS -->
     <style>
         body {
-            background-color: #f1f5f8;
+            background: url('{{ asset('sb-admin/img/6690418.jpg') }}') no-repeat center center fixed;
+            background-size: cover;
             font-family: 'Nunito', sans-serif;
+            height: 100vh;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            position: relative;
         }
 
         .login-container {
@@ -25,15 +33,19 @@
             justify-content: center;
             align-items: center;
             min-height: 100vh;
+            flex-direction: column;
+            position: relative;
+            z-index: 1;
         }
 
         .login-card {
-            background: #fff;
+            background: linear-gradient(rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0.7));
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
             border-radius: 12px;
             padding: 40px 30px;
             width: 100%;
             max-width: 400px;
+            z-index: 2;
         }
 
         .login-card .logo {
@@ -41,8 +53,18 @@
             margin-bottom: 30px;
         }
 
+        .login-card .logo h4 {
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
         .login-card .logo img {
             max-width: 150px;
+            border-radius: 50%;
+            border: 5px solid #007bff;
+            padding: 5px;
         }
 
         .login-card h4 {
@@ -104,12 +126,21 @@
 
 <body>
     <div class="login-container">
+        <!-- Form login -->
         <div class="login-card">
             <div class="logo">
-                <!-- Logo can go here -->
-                <img src="https://via.placeholder.com/150x50.png?text=Logo" alt="Sistem Posyandu Tata Surya">
+                <!-- Judul di atas gambar -->
+                <h4 class="tittle">Hari Pahlawan</h4>
+                <!-- Lingkaran kosong yang nanti akan diisi dengan gambar -->
+                <div
+                    style="width: 150px; height: 150px; border-radius: 50%; background-color: #f1f1f1; margin: 0 auto; overflow: hidden;">
+                    <!-- Gambar di dalam lingkaran -->
+                    <img src="{{ asset('sb-admin/img/4453702.jpg') }}" alt="Logo"
+                        style="width: 100%; height: 100%; object-fit: cover;">
+                </div>
             </div>
-            <h4>Sistem Posyandu Tata Surya - Login</h4>
+
+            <h4>Sistem Posyandu Tata Surya</h4>
 
             <form action="{{ route('login') }}" method="POST">
                 @csrf

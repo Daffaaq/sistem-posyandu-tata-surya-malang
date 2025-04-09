@@ -176,24 +176,24 @@ class KunjunganController extends Controller
     public function addGrowthChildren(Request $request, $id)
     {
         // Validate the request data
-        // $validated = $request->validate([
-        //     'anak_id' => 'required|array',
-        //     'anak_id.*' => 'exists:anaks,id',
-        //     'tinggi_badan' => 'required|array',
-        //     'tinggi_badan.*' => 'numeric',
-        //     'berat_badan' => 'required|array',
-        //     'berat_badan.*' => 'numeric',
-        //     'perkembangan_motorik' => 'required|array',
-        //     'perkembangan_motorik.*' => 'string',
-        //     'perkembangan_psikis' => 'required|array',
-        //     'perkembangan_psikis.*' => 'string',
-        //     'obat_id' => 'required|array',
-        //     'obat_id.*' => 'array',
-        //     'obat_id.*.*' => 'exists:obats,id',
-        //     'jumlah_obat' => 'required|array',
-        //     'jumlah_obat.*' => 'array',
-        //     'jumlah_obat.*.*' => 'numeric',
-        // ]);
+        $validated = $request->validate([
+            'anak_id' => 'required|array',
+            'anak_id.*' => 'exists:anaks,id',
+            'tinggi_badan' => 'required|array',
+            'tinggi_badan.*' => 'numeric',
+            'berat_badan' => 'required|array',
+            'berat_badan.*' => 'numeric',
+            'perkembangan_motorik' => 'required|array',
+            'perkembangan_motorik.*' => 'string',
+            'perkembangan_psikis' => 'required|array',
+            'perkembangan_psikis.*' => 'string',
+            'obat_id' => 'required|array',
+            'obat_id.*' => 'array',
+            'obat_id.*.*' => 'exists:obats,id',
+            'jumlah_obat' => 'required|array',
+            'jumlah_obat.*' => 'array',
+            'jumlah_obat.*.*' => 'numeric',
+        ]);
 
         // Mengkonversi tinggi_badan dan berat_badan jadi angka jika perlu
         $request->merge([
@@ -220,7 +220,7 @@ class KunjunganController extends Controller
                 'kunjungan_anak_id' => $kunjunganAnak->id,
                 'tinggi_badan' => $request->tinggi_badan[$index],
                 'berat_badan' => $request->berat_badan[$index],
-                'tanggal_pemantauan' => Carbon::now(),
+                'tanggal_pemantauan' => $kunjungan->tanggal_kunjungan,
                 'perkembangan_motorik' => $request->perkembangan_motorik[$index],
                 'perkembangan_psikis' => $request->perkembangan_psikis[$index]
             ]);
@@ -228,21 +228,33 @@ class KunjunganController extends Controller
             // Proses obat untuk setiap anak
             $obatIds = $request->obat_id[$anak_id] ?? []; // Dapatkan daftar obat untuk anak
             foreach ($obatIds as $obatIndex => $obatId) {
-                $kunjunganObat = KunjunganObat::create([
-                    'kunjungan_id' => $kunjungan->id,
-                    'kunjungan_anak_id' => $kunjunganAnak->id,
-                    'obat_id' => $obatId,
-                    'jumlah_obat' => $request->jumlah_obat[$anak_id][$obatId] // Ambil jumlah obat berdasarkan anak dan obat
-                ]);
+                // Lock baris obat yang relevan untuk mencegah race condition
+                $obat = DB::table('obats')
+                    ->where('id', $obatId)
+                    ->lockForUpdate() // Menggunakan locking untuk memastikan tidak ada perubahan pada stok
+                    ->first();
 
-                // Cek stok obat
-                $obat = DB::table('obats')->where('id', $obatId)->first();
+                if (!$obat) {
+                    // Jika obat tidak ditemukan
+                    throw new \Exception("Obat tidak ditemukan.");
+                }
 
-                if ($obat && $obat->stok >= $request->jumlah_obat[$anak_id][$obatId]) {
+                // Jika stok cukup, lanjutkan dengan pengurangan stok
+                if ($obat->stok >= $request->jumlah_obat[$anak_id][$obatId]) {
                     // Kurangi stok jika cukup
                     DB::table('obats')->where('id', $obatId)
                         ->decrement('stok', $request->jumlah_obat[$anak_id][$obatId]);
+
+                    // Create the KunjunganObat entry
+                    KunjunganObat::create([
+                        'kunjungan_id' => $kunjungan->id,
+                        'kunjungan_anak_id' => $kunjunganAnak->id,
+                        'obat_id' => $obatId,
+                        'jumlah_obat' => $request->jumlah_obat[$anak_id][$obatId] // Ambil jumlah obat berdasarkan anak dan obat
+                    ]);
                 } else {
+                    // Jika stok tidak cukup, rollback transaksi
+                    DB::rollBack();
                     return redirect()->route('kunjungan.index')->with('error', 'Stok obat tidak mencukupi.');
                 }
             }
@@ -251,11 +263,6 @@ class KunjunganController extends Controller
         // Redirect with success message
         return redirect()->route('kunjungan.index')->with('success', 'Data anak berhasil disimpan');
     }
-
-
-
-
-
 
     /**
      * Display the specified resource.

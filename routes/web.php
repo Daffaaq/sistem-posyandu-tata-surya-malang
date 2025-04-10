@@ -78,9 +78,14 @@ Route::group(['middleware' => ['auth', 'checkactive']], function () {
         Route::post('/kunjungan/list', [KunjunganController::class, 'list'])->name('kunjungan.list');
         Route::get('/kunjungan/{id}/pantauan-tumbuh-kembang-anak', [KunjunganController::class, 'showAnaliticsGrowthChildren'])->name('kunjungan.pantauan-tumbuh-kembang-anak');
         Route::put('/kunjungan/{id}/pantauan-tumbuh-kembang-anak', [KunjunganController::class, 'addGrowthChildren'])->name('kunjungan.pantauan-tumbuh-kembang-anak-store');
-
         Route::post('/kunjungan/{id}/list-pemantauan-tumbuh-kembang-anak', [KunjunganController::class, 'listPemantauanTumbuhKembangAnak'])->name('kunjungan.list-pemantauan-tumbuh-kembang-anak');
         Route::post('/kunjungan/{id}/list-data-obat-kunjungan', [KunjunganController::class, 'ListDataObatKunjungan'])->name('kunjungan.list-data-obat-kunjungan');
+        Route::get('/kunjungan/{id}/edit-pantauan-tumbuh-kembang-anak', [KunjunganController::class, 'showFormEditPemantauanTumbuhKembang'])->name('kunjungan.form-edit-pantauan-tumbuh-kembang-anak');
+        Route::put('/kunjungan/{id}/update-pantauan-tumbuh-kembang-anak', [KunjunganController::class, 'updatePemantauanTumbuhKembang'])->name('kunjungan.update-pantauan-tumbuh-kembang-anak');
+        Route::delete('/kunjungan/{id}/delete-pantauan-tumbuh-kembang-anak', [KunjunganController::class, 'destroyPemantauanTumbuhKembang'])->name('kunjungan.delete-pantauan-tumbuh-kembang-anak');
+        Route::get('/kunjungan/{id}/edit-obat-kunjungan', [KunjunganController::class, 'showFormEditObatKunjungan'])->name('kunjungan.form-edit-obat-kunjungan');
+        Route::put('/kunjungan/{id}/update-obat-kunjungan', [KunjunganController::class, 'updateObatKunjungan'])->name('kunjungan.update-obat-kunjungan');
+        Route::delete('/kunjungan/{id}/delete-obat-kunjungan', [KunjunganController::class, 'destroyObatKunjungan'])->name('kunjungan.delete-obat-kunjungan');
     });
 
     Route::prefix('user-management')->group(function () {

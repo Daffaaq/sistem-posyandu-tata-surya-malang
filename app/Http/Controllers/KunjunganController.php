@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreKunjunganRequest;
+use App\Http\Requests\UpdateObatKunjunganRequest;
+use App\Http\Requests\UpdatePemantauanTumbuhKembangRequest;
 use App\Models\Anak;
 use App\Models\Kunjungan;
 use App\Models\KunjunganAnak;
@@ -148,6 +150,7 @@ class KunjunganController extends Controller
                 ->join('kunjungan_anaks', 'kunjungan_anaks.id', '=', 'kunjungan_obats.kunjungan_anak_id') // Join ke kunjungan_anaks
                 ->join('anaks', 'anaks.id', '=', 'kunjungan_anaks.anak_id') // Join ke anaks untuk nama anak
                 ->select(
+                    'kunjungan_obats.id',
                     'obats.nama_obat_vitamin',  // Ambil nama obat
                     'kunjungan_obats.jumlah_obat',  // Ambil jumlah obat
                     'anaks.nama_anak'  // Ambil nama anak
@@ -263,6 +266,153 @@ class KunjunganController extends Controller
         // Redirect with success message
         return redirect()->route('kunjungan.index')->with('success', 'Data anak berhasil disimpan');
     }
+
+    public function showFormEditPemantauanTumbuhKembang($id)
+    {
+        $pemantauanTumbuhKembangAnak = PemantauanTumbuhKembangAnak::findOrFail($id);
+        return view('kunjungan.edit-pemantauan-tumbuh-kembang', compact('pemantauanTumbuhKembangAnak'));
+    }
+
+    public function updatePemantauanTumbuhKembang(UpdatePemantauanTumbuhKembangRequest $request, $id)
+    {
+        $pemantauanTumbuhKembangAnak = PemantauanTumbuhKembangAnak::findOrFail($id);
+
+        // Update data langsung pakai validated data
+        $pemantauanTumbuhKembangAnak->update($request->validated());
+
+        return redirect()->route('kunjungan.index')->with('success', 'Data anak berhasil diupdate');
+    }
+
+    public function destroyPemantauanTumbuhKembang($id)
+    {
+        //mulai transaksi
+        DB::beginTransaction();
+        try {
+            $pemantauanTumbuhKembangAnak = PemantauanTumbuhKembangAnak::findOrFail($id);
+            $pemantauanTumbuhKembangAnak->delete();
+            DB::commit();
+            return response()->json(['success' => true, 'message' => 'Data berhasil dihapus'], 200);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json(['success' => false, 'message' => 'Data gagal dihapus'], 500);
+        }
+    }
+
+    public function showFormEditObatKunjungan($id)
+    {
+        $kunjunganObat = KunjunganObat::findOrFail($id);
+        $obat = DB::table('obats')->select('id', 'nama_obat_vitamin')->get();
+        return view('kunjungan.edit-obat-kunjungan', compact('kunjunganObat', 'obat'));
+    }
+
+    public function updateObatKunjungan(UpdateObatKunjunganRequest $request, $id)
+    {
+        DB::beginTransaction();
+
+        try {
+            // dd($request->all());
+            // Ambil data kunjungan_obat
+            $kunjunganObat = KunjunganObat::findOrFail($id);
+            // dd($kunjunganObat);
+
+            // Ambil data dari request yang sudah tervalidasi
+            $obatLamaId = $kunjunganObat->obat_id;
+            $obatBaruId = $request->input('obat_id');
+            $jumlahLama = $kunjunganObat->jumlah_obat;
+            $jumlahBaru = $request->input('jumlah_obat');
+
+            // dd($obatLamaId, $obatBaruId, $jumlahLama, $jumlahBaru);
+
+            // Jika ganti obat, kembalikan stok obat lama dulu
+            if ($obatLamaId != $obatBaruId) {
+                // Lock kedua obat, baik obat lama maupun obat baru
+                $obatLama = DB::table('obats')->where('id', $obatLamaId)->lockForUpdate()->first();
+                $obatBaru = DB::table('obats')->where('id', $obatBaruId)->lockForUpdate()->first();
+
+                if (!$obatBaru) {
+                    throw new \Exception("Obat baru tidak ditemukan.");
+                }
+
+                // Kembalikan stok obat lama
+                DB::table('obats')->where('id', $obatLamaId)
+                    ->increment('stok', $jumlahLama);
+
+                // Cek stok cukup di obat baru
+                if ($obatBaru->stok < $jumlahBaru) {
+                    throw new \Exception("Stok obat baru tidak mencukupi.");
+                }
+
+                // Kurangi stok obat baru
+                DB::table('obats')->where('id', $obatBaruId)
+                    ->decrement('stok', $jumlahBaru);
+            } else {
+                // Jika obat sama, tinggal hitung selisih
+                $obat = DB::table('obats')->where('id', $obatLamaId)->lockForUpdate()->first();
+                $selisih = $jumlahBaru - $jumlahLama;
+                // dd($obat, $selisih);
+                if ($selisih > 0) {
+                    if ($obat->stok < $selisih) {
+                        throw new \Exception("Stok obat tidak mencukupi.");
+                    }
+
+                    DB::table('obats')->where('id', $obatLamaId)
+                        ->decrement('stok', $selisih);
+                } elseif ($selisih < 0) {
+                    DB::table('obats')->where('id', $obatLamaId)
+                        ->increment('stok', abs($selisih));
+                }
+            }
+
+            // Update data kunjungan_obat
+            $kunjunganObat->update([
+                'obat_id' => $obatBaruId,
+                'jumlah_obat' => $jumlahBaru
+            ]);
+            // dd($kunjunganObat);
+
+            DB::commit();
+            return redirect()->route('kunjungan.pantauan-tumbuh-kembang-anak', ['id' => $kunjunganObat->kunjungan_id])
+                ->with('success', 'Data obat berhasil diupdate');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return redirect()->back()->with('error', 'Update gagal: ' . $e->getMessage());
+        }
+    }
+
+    public function destroyObatKunjungan($id)
+    {
+        DB::beginTransaction();
+
+        try {
+            $kunjunganObat = KunjunganObat::findOrFail($id);
+
+            // Lock baris obat untuk mencegah race condition
+            $obat = DB::table('obats')
+                ->where('id', $kunjunganObat->obat_id)
+                ->lockForUpdate()
+                ->first();
+
+            if (!$obat) {
+                throw new \Exception('Obat tidak ditemukan');
+            }
+
+            // Tambahkan kembali stok
+            DB::table('obats')->where('id', $kunjunganObat->obat_id)
+                ->increment('stok', $kunjunganObat->jumlah_obat);
+
+            // Hapus kunjungan_obat
+            $kunjunganObat->delete();
+
+            DB::commit();
+            return response()->json(['success' => true, 'message' => 'Data berhasil dihapus'], 200);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json(['success' => false, 'message' => 'Data gagal dihapus'], 500);
+        }
+    }
+
+
+
 
     /**
      * Display the specified resource.

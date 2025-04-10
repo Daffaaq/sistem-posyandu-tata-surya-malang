@@ -53,6 +53,7 @@
                                 <th>Berat Badan (kg)</th>
                                 <th>Perkembangan Motorik</th>
                                 <th>Perkembangan Psikis</th>
+                                <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -92,6 +93,7 @@
                                 <th>Nama Obat</th>
                                 <th>Jumlah Obat</th>
                                 <th>nama_anak</th>
+                                <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -343,6 +345,25 @@
                         data: 'perkembangan_psikis',
                         name: 'perkembangan_psikis'
                     },
+                    {
+                        data: 'id',
+                        name: 'id',
+                        orderable: false,
+                        searchable: false,
+                        render: function(data, type, row) {
+                            let editUrl =
+                                `/posyandu-management/kunjungan/${data}/edit-pantauan-tumbuh-kembang-anak`;
+
+                            return `
+                                <a href="${editUrl}" class="btn icon btn-sm btn-warning" title="Edit">
+                                    <i class="bi bi-pencil"></i>
+                                </a>
+                                <button class="btn icon btn-sm btn-danger" onclick="confirmDelete('${data}')" title="Delete">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+                            `;
+                        }
+                    },
                 ]
             });
 
@@ -376,6 +397,22 @@
                         data: 'nama_anak',
                         name: 'nama_anak'
                     },
+                    {
+                        data: 'id',
+                        name: 'id',
+                        orderable: false,
+                        searchable: false,
+                        render: function(data, type, row) {
+                            return `
+                                <a href="/posyandu-management/kunjungan/${data}/edit-obat-kunjungan" class="btn icon btn-sm btn-warning" title="Edit">
+                                    <i class="bi bi-pencil"></i>
+                                </a>
+                                <button class="btn icon btn-sm btn-danger" onclick="confirmDeleteObat('${data}')" title="Delete">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+                            `;
+                        }
+                    },
                 ]
             });
 
@@ -393,6 +430,129 @@
                 });
             @endif
         });
+
+        function confirmDelete(id) {
+            Swal.fire({
+                title: 'Apakah Anda yakin?',
+                text: "Data ini akan dihapus secara permanen!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Ya, Hapus!',
+                cancelButtonText: 'Batal'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    const url = `/posyandu-management/kunjungan/${id}/delete-pantauan-tumbuh-kembang-anak`;
+                    $.ajax({
+                        url: url,
+                        type: 'DELETE',
+                        data: {
+                            _token: '{{ csrf_token() }}'
+                        },
+                        success: function(response) {
+                            if (response.success) {
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Dihapus!',
+                                    text: response.message,
+                                    toast: true,
+                                    position: 'top-end',
+                                    showConfirmButton: false,
+                                    timer: 3000,
+                                    timerProgressBar: true,
+                                });
+                                $('#PemantauanTumbuhKembangAnakTable').DataTable().ajax.reload();
+                            } else {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Gagal!',
+                                    text: response.message || 'Terjadi kesalahan.',
+                                    toast: true,
+                                    position: 'top-end',
+                                    showConfirmButton: false,
+                                    timer: 3000,
+                                    timerProgressBar: true,
+                                });
+                            }
+                        },
+                        error: function() {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Gagal!',
+                                text: 'Tidak dapat menghubungi server.',
+                                toast: true,
+                                position: 'top-end',
+                                showConfirmButton: false,
+                                timer: 3000,
+                                timerProgressBar: true,
+                            });
+                        }
+                    });
+                }
+            });
+        }
+        function confirmDeleteObat(id) {
+            Swal.fire({
+                title: 'Apakah Anda yakin?',
+                text: "Data ini akan dihapus secara permanen!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Ya, Hapus!',
+                cancelButtonText: 'Batal'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    const url = `/posyandu-management/kunjungan/${id}/delete-obat-kunjungan`;
+                    $.ajax({
+                        url: url,
+                        type: 'DELETE',
+                        data: {
+                            _token: '{{ csrf_token() }}'
+                        },
+                        success: function(response) {
+                            if (response.success) {
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Dihapus!',
+                                    text: response.message,
+                                    toast: true,
+                                    position: 'top-end',
+                                    showConfirmButton: false,
+                                    timer: 3000,
+                                    timerProgressBar: true,
+                                });
+                                $('#KunjunganObatTable').DataTable().ajax.reload();
+                            } else {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Gagal!',
+                                    text: response.message || 'Terjadi kesalahan.',
+                                    toast: true,
+                                    position: 'top-end',
+                                    showConfirmButton: false,
+                                    timer: 3000,
+                                    timerProgressBar: true,
+                                });
+                            }
+                        },
+                        error: function() {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Gagal!',
+                                text: 'Tidak dapat menghubungi server.',
+                                toast: true,
+                                position: 'top-end',
+                                showConfirmButton: false,
+                                timer: 3000,
+                                timerProgressBar: true,
+                            });
+                        }
+                    });
+                }
+            });
+        }
 
         $(document).ready(function() {
             var obatData = @json($obat); // Menyertakan data obat dari server
@@ -451,19 +611,19 @@
                         <label for="obat_id_${anakId}">Pilih Obat</label>
                         <div id="obat_id_${anakId}" class="checkbox-group">
                             ${obatData.map(item => `
-                                                                                                                <div class="form-check">
-                                                                                                                    <input class="form-check-input" type="checkbox" value="${item.id}" name="obat_id[${anakId}][]" id="obat_${item.id}">
-                                                                                                                    <label class="form-check-label" for="obat_${item.id}">
-                                                                                                                        ${item.nama_obat_vitamin}
-                                                                                                                    </label>
+                                                                                                                        <div class="form-check">
+                                                                                                                            <input class="form-check-input" type="checkbox" value="${item.id}" name="obat_id[${anakId}][]" id="obat_${item.id}">
+                                                                                                                            <label class="form-check-label" for="obat_${item.id}">
+                                                                                                                                ${item.nama_obat_vitamin}
+                                                                                                                            </label>
 
-                                                                                                                    <!-- Input untuk jumlah obat (saat obat dipilih) -->
-                                                                                                                    <div id="jumlah_obat_${anakId}_${item.id}" class="jumlah-obat" style="display:none;">
-                                                                                                                        <label for="jumlah_obat_${anakId}_${item.id}">Jumlah Obat</label>
-                                                                                                                        <input type="number" class="form-control" name="jumlah_obat[${anakId}][${item.id}]" id="jumlah_obat_${anakId}_${item.id}" min="1">
-                                                                                                                    </div>
-                                                                                                                </div>
-                                                                                                            `).join('')}
+                                                                                                                            <!-- Input untuk jumlah obat (saat obat dipilih) -->
+                                                                                                                            <div id="jumlah_obat_${anakId}_${item.id}" class="jumlah-obat" style="display:none;">
+                                                                                                                                <label for="jumlah_obat_${anakId}_${item.id}">Jumlah Obat</label>
+                                                                                                                                <input type="number" class="form-control" name="jumlah_obat[${anakId}][${item.id}]" id="jumlah_obat_${anakId}_${item.id}" min="1">
+                                                                                                                            </div>
+                                                                                                                        </div>
+                                                                                                                    `).join('')}
                         </div>
                     </div>
                 </div>

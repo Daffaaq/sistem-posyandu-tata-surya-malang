@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreKunjunganRequest;
+use App\Http\Requests\UpdateKunjunganRequest;
 use App\Http\Requests\UpdateObatKunjunganRequest;
 use App\Http\Requests\UpdatePemantauanTumbuhKembangRequest;
 use App\Models\Anak;
@@ -425,24 +426,43 @@ class KunjunganController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Kunjungan $kunjungan)
+    public function edit($id)
     {
-        //
+        $kunjungan = Kunjungan::findOrFail($id);
+        $dataOrangTua = DB::table('orang_tuas')->select('id', 'nama_ayah', 'nama_ibu')->get();
+        $dataTipeKunjungan = DB::table('type_kunjungans')->select('id', 'nama_tipe_kunjungan')->get();
+
+        return view('kunjungan.edit', compact('kunjungan', 'dataOrangTua', 'dataTipeKunjungan'));
     }
+
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Kunjungan $kunjungan)
+    public function update(UpdateKunjunganRequest $request, $id)
     {
-        //
+        $kunjungan = Kunjungan::findOrFail($id);
+        $kunjungan->update($request->validated());
+
+        return redirect()->route('kunjungan.index')->with('success', 'Data berhasil diperbarui');
     }
+
 
     /**
      * Remove the specified resource from storage.
      */
     public function destroy(Kunjungan $kunjungan)
     {
-        //
+        // mulai transaksi
+        DB::beginTransaction();
+        try {
+            $kunjungan->delete();
+            DB::commit();
+            // return json
+            return response()->json(['success' => true, 'message' => 'Data berhasil dihapus'], 200);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json(['success' => false, 'message' => 'Data gagal dihapus'], 500);
+        }
     }
 }

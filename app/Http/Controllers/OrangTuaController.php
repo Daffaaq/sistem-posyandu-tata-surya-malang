@@ -3,10 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreChildrenRequest;
+use App\Http\Requests\StoreOrangTuaRequest;
 use App\Http\Requests\UpdateChildrenRequest;
 use App\Http\Requests\UpdateOrangTuaRequest;
 use App\Models\Anak;
 use App\Models\OrangTua;
+use App\Models\User;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
@@ -89,15 +91,43 @@ class OrangTuaController extends Controller
      */
     public function create()
     {
-        //
+        return view('orang-tua.create');
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreOrangTuaRequest $request)
     {
-        //
+        $user = User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+            'is_active' => $request->is_active,
+        ]);
+
+        if ($user->is_active == 'active') {
+            $user->assignRole('orang-tua');
+        }
+
+        $orangTua = OrangTua::create([
+            'user_id' => $user->id,
+            'nama_ayah' => $request->nama_ayah,
+            'nama_ibu' => $request->nama_ibu,
+            'tanggal_lahir_ayah' => $request->tanggal_lahir_ayah,
+            'tanggal_lahir_ibu' => $request->tanggal_lahir_ibu,
+            'no_telepon_ayah' => $request->no_telepon_ayah,
+            'no_telepon_ibu' => $request->no_telepon_ibu,
+            'email_ayah' => $request->email_ayah,
+            'email_ibu' => $request->email_ibu,
+            'pekerjaan_ayah' => $request->pekerjaan_ayah,
+            'pekerjaan_ibu' => $request->pekerjaan_ibu,
+            'alamat_ayah' => $request->alamat_ayah,
+            'alamat_ibu' => $request->alamat_ibu,
+        ]);
+
+        return redirect()->route('orang-tua.index')
+            ->with('success', 'Data orang tua berhasil dibuat!');
     }
 
     /**
@@ -310,6 +340,19 @@ class OrangTuaController extends Controller
      */
     public function destroy($id)
     {
-        //
+        //mulai transaksi
+        DB::beginTransaction();
+        try {
+            $orangTua = OrangTua::findOrFail($id);
+            $user = $orangTua->user;
+            $user->delete();
+            $orangTua->delete();
+            DB::commit();
+            //return json
+            return response()->json(['success' => true, 'message' => 'Data berhasil dihapus'], 200);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json(['success' => false, 'message' => 'Data gagal dihapus'], 500);
+        }
     }
 }

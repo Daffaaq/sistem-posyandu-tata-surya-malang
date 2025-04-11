@@ -28,7 +28,8 @@
                                 <th>Nama Ibu</th>
                                 <th>Tipe Kunjungan</th>
                                 <th>Tanggal Kunjungan</th>
-                                <th>Action</th>
+                                <th>Action1</th>
+                                <th>Action2</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -114,16 +115,33 @@
                         orderable: false,
                         searchable: false,
                         render: function(data) {
+                            let plusPantauan =
+                                `/posyandu-management/kunjungan/${data}/pantauan-tumbuh-kembang-anak`;
+                            let plusPantauanOrangTua =
+                                `/posyandu-management/kunjungan/${data}/pantauan-orang-tua`;
+
+                            return `
+                                <a href="${plusPantauan}" class="btn icon btn-sm btn-success mb-1" title="Pantauan Tumbuh Kembang Anak">
+                                    <i class="bi bi-clipboard-data-fill"></i>
+                                </a>
+                                <a href="${plusPantauanOrangTua}" class="btn icon btn-sm btn-primary" title="Pantauan Orang Tua">
+                                    <i class="bi bi-clipboard-data-fill"></i>
+                                </a>
+                            `;
+                        }
+                    },
+                    {
+                        data: 'id',
+                        name: 'id',
+                        orderable: false,
+                        searchable: false,
+                        render: function(data) {
                             let showUrl = `/posyandu-management/kunjungan/${data}`;
-                            let plusPantauan = `/posyandu-management/kunjungan/${data}/pantauan-tumbuh-kembang-anak`;
                             let editUrl = `/posyandu-management/kunjungan/${data}/edit`;
 
                             return `
                                 <a href="${showUrl}" class="btn icon btn-sm btn-info" title="View Details">
                                     <i class="bi bi-eye"></i>
-                                </a>
-                                <a href="${plusPantauan}" class="btn icon btn-sm btn-success" title="Pantauan Tumbuh Kembang Anak">
-                                    <i class="bi bi-clipboard-data-fill"></i>
                                 </a>
                                 <a href="${editUrl}" class="btn icon btn-sm btn-warning" title="Edit">
                                     <i class="bi bi-pencil"></i>

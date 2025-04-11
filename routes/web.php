@@ -11,6 +11,7 @@ use App\Http\Controllers\Menu\MenuGroupController;
 use App\Http\Controllers\Menu\MenuItemController;
 use App\Http\Controllers\ObatController;
 use App\Http\Controllers\OrangTuaController;
+use App\Http\Controllers\PemeriksaanOrangTuaController;
 use App\Http\Controllers\RoleAndPermission\AssignPermissionController;
 use App\Http\Controllers\RoleAndPermission\AssignUserToRoleController;
 use App\Http\Controllers\RoleAndPermission\PermissionController;
@@ -93,6 +94,12 @@ Route::group(['middleware' => ['auth', 'checkactive']], function () {
         Route::get('/kunjungan/{id}/edit-obat-kunjungan', [KunjunganController::class, 'showFormEditObatKunjungan'])->name('kunjungan.form-edit-obat-kunjungan');
         Route::put('/kunjungan/{id}/update-obat-kunjungan', [KunjunganController::class, 'updateObatKunjungan'])->name('kunjungan.update-obat-kunjungan');
         Route::delete('/kunjungan/{id}/delete-obat-kunjungan', [KunjunganController::class, 'destroyObatKunjungan'])->name('kunjungan.delete-obat-kunjungan');
+        Route::get('/kunjungan/{id}/pantauan-orang-tua', [PemeriksaanOrangTuaController::class, 'showAnaliticsParent'])->name('kunjungan.pantauan-orang-tua');
+        Route::post('/kunjungan/{id}/list-pemantauan-ayah', [PemeriksaanOrangTuaController::class, 'listAnaliticsFather'])->name('kunjungan.list-pemantauan-ayah');
+        Route::post('/kunjungan/{id}/list-pemantauan-ibu', [PemeriksaanOrangTuaController::class, 'listAnaliticsMother'])->name('kunjungan.list-pemantauan-ibu');
+        Route::put('/kunjungan/{id}/store-pemantauan-orang-tua', [PemeriksaanOrangTuaController::class, 'storePemeriksaanOrangTua'])->name('kunjungan.store-pemantauan-orang-tua');
+        Route::get('/kunjungan/{id}/show-data-pemeriksaan-ayah', [PemeriksaanOrangTuaController::class, 'showDataPemantauanAyah'])->name('kunjungan.show-data-pemeriksaan-ayah');
+        Route::get('/kunjungan/{id}/show-data-pemeriksaan-ibu', [PemeriksaanOrangTuaController::class, 'showDataPemantauanIbu'])->name('kunjungan.show-data-pemeriksaan-ayah');
     });
 
     Route::prefix('user-management')->group(function () {

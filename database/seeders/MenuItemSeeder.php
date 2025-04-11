@@ -58,6 +58,12 @@ class MenuItemSeeder extends Seeder
                     'menu_group_id' => 2,
                 ],
                 [
+                    'name' => 'Logo Login List',
+                    'route' => 'master-management/logo-login',
+                    'permission_name' => 'logo-login.index',
+                    'menu_group_id' => 2,
+                ],
+                [
                     'name' => ' Kunjungan',
                     'route' => 'posyandu-management/kunjungan',
                     'permission_name' => 'kunjungan.index',

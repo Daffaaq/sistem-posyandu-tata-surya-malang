@@ -150,6 +150,12 @@ class RoleAndPermissionSeeder extends Seeder
         Permission::create(['name' => 'log-sistem.edit']);
         Permission::create(['name' => 'log-sistem.destroy']);
 
+        //logo-login
+        Permission::create(['name' => 'logo-login.index']);
+        Permission::create(['name' => 'logo-login.create']);
+        Permission::create(['name' => 'logo-login.edit']);
+        Permission::create(['name' => 'logo-login.destroy']);
+
         // create roles 
         $roleUser = Role::create(['name' => 'admin']);
         $roleUser->givePermissionTo([
@@ -178,6 +184,10 @@ class RoleAndPermissionSeeder extends Seeder
             'berita.destroy',
             'log.management',
             'log-sistem.index',
+            'logo-login.index',
+            'logo-login.create',
+            'logo-login.edit',
+            'logo-login.destroy',
         ]);
 
         // create Super Admin

@@ -6,6 +6,7 @@ use App\Http\Controllers\JenisKunjunganKeluargaBerencanaController;
 use App\Http\Controllers\KategoriImunasasiController;
 use App\Http\Controllers\KategoriKeluargaBerencanaController;
 use App\Http\Controllers\KunjunganController;
+use App\Http\Controllers\LogoLoginController;
 use App\Http\Controllers\Menu\MenuGroupController;
 use App\Http\Controllers\Menu\MenuItemController;
 use App\Http\Controllers\ObatController;
@@ -70,6 +71,12 @@ Route::group(['middleware' => ['auth', 'checkactive']], function () {
         // kategori-imunisasi
         Route::resource('kategori-imunisasi', KategoriImunasasiController::class);
         Route::post('/kategori-imunisasi/list', [KategoriImunasasiController::class, 'list'])->name('kategori-imunisasi.list');
+
+        //logo-login
+        Route::get('/logo-login/check-active', [LogoLoginController::class, 'checkActive'])->name('logo-login.check-active');
+        Route::get('/logo-login/check-active-edit', [LogoLoginController::class, 'checkActiveEdit'])->name('logo-login.check-active.edit');
+        Route::resource('logo-login', LogoLoginController::class);
+        Route::post('/logo-login/list', [LogoLoginController::class, 'list'])->name('logo-login.list');
     });
 
     Route::prefix('posyandu-management')->group(function () {

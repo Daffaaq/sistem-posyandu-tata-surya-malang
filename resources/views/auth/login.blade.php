@@ -1,3 +1,6 @@
+<?php
+$LogoLogin = \App\Models\LogoLogin::active()->select('judul_logo_login', 'logo_login', 'status_logo_login')->first();
+?>
 <!DOCTYPE html>
 <html lang="id">
 
@@ -130,13 +133,14 @@
         <div class="login-card">
             <div class="logo">
                 <!-- Judul di atas gambar -->
-                <h4 class="tittle">Hari Pahlawan</h4>
+                <h4 class="tittle">
+                    {{ $LogoLogin ? $LogoLogin->judul_logo_login : 'Hari Pahlawan' }}
+                </h4>
                 <!-- Lingkaran kosong yang nanti akan diisi dengan gambar -->
                 <div
                     style="width: 150px; height: 150px; border-radius: 50%; background-color: #f1f1f1; margin: 0 auto; overflow: hidden;">
-                    <!-- Gambar di dalam lingkaran -->
-                    <img src="{{ asset('sb-admin/img/4453702.jpg') }}" alt="Logo"
-                        style="width: 100%; height: 100%; object-fit: cover;">
+                    <img src="{{ $LogoLogin ? asset('storage/logo_login/' . $LogoLogin->logo_login) : asset('sb-admin/img/4453702.jpg') }}"
+                        alt="Logo" style="width: 100%; height: 100%; object-fit: cover;">
                 </div>
             </div>
 

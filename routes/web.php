@@ -95,8 +95,12 @@ Route::group(['middleware' => ['auth', 'checkactive']], function () {
         Route::put('/kunjungan/{id}/update-obat-kunjungan', [KunjunganController::class, 'updateObatKunjungan'])->name('kunjungan.update-obat-kunjungan');
         Route::delete('/kunjungan/{id}/delete-obat-kunjungan', [KunjunganController::class, 'destroyObatKunjungan'])->name('kunjungan.delete-obat-kunjungan');
         Route::get('/kunjungan/{id}/pantauan-orang-tua', [PemeriksaanOrangTuaController::class, 'showAnaliticsParent'])->name('kunjungan.pantauan-orang-tua');
-        Route::post('/kunjungan/{id}/list-pemantauan-ayah', [PemeriksaanOrangTuaController::class, 'listAnaliticsFather'])->name('kunjungan.list-pemantauan-ayah');
-        Route::post('/kunjungan/{id}/list-pemantauan-ibu', [PemeriksaanOrangTuaController::class, 'listAnaliticsMother'])->name('kunjungan.list-pemantauan-ibu');
+        Route::post('/kunjungan/{id}/list-pemantauan-ayah', function (Illuminate\Http\Request $request, $id) {
+            return app(PemeriksaanOrangTuaController::class)->listAnalyticsParent($request, $id, 'ayah');
+        })->name('kunjungan.list-pemantauan-ayah');
+        Route::post('/kunjungan/{id}/list-pemantauan-ibu', function (Illuminate\Http\Request $request, $id) {
+            return app(PemeriksaanOrangTuaController::class)->listAnalyticsParent($request, $id, 'ibu');
+        })->name('kunjungan.list-pemantauan-ibu');
         Route::put('/kunjungan/{id}/store-pemantauan-orang-tua', [PemeriksaanOrangTuaController::class, 'storePemeriksaanOrangTua'])->name('kunjungan.store-pemantauan-orang-tua');
         Route::get('/kunjungan/{id}/show-data-pemeriksaan-ayah', [PemeriksaanOrangTuaController::class, 'showDataPemantauanAyah'])->name('kunjungan.show-data-pemeriksaan-ayah');
         Route::get('/kunjungan/{id}/show-data-pemeriksaan-ibu', [PemeriksaanOrangTuaController::class, 'showDataPemantauanIbu'])->name('kunjungan.show-data-pemeriksaan-ayah');

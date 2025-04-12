@@ -18,60 +18,99 @@ class PemeriksaanOrangTuaController extends Controller
         return view('kunjungan.analisis-pemeriksaan-orang-tua', compact('kunjungan'));
     }
 
-    public function listAnaliticsFather(Request $request, $id)
+    // public function listAnaliticsFather(Request $request, $id)
+    // {
+    //     if ($request->ajax()) {
+    //         $user = Auth::user();
+
+    //         $query = DB::table('pemeriksaan_orang_tuas')
+    //             ->join('kunjungans', 'kunjungans.id', '=', 'pemeriksaan_orang_tuas.kunjungan_id')
+    //             ->join('orang_tuas', 'orang_tuas.id', '=', 'kunjungans.orang_tua_id')
+    //             ->select('pemeriksaan_orang_tuas.id as pemeriksaan_id', 'orang_tuas.nama_ayah', 'tanggal_pemeriksaan_ayah');
+
+    //         // Batasi akses berdasarkan peran jika user adalah orang tua
+    //         if ($user->hasRole('orang-tua')) {
+    //             $query->where('kunjungans.orang_tua_id', $user->id);  // Filter berdasarkan orang tua
+    //         }
+
+    //         // Menambahkan filter berdasarkan kunjungan ID
+    //         $pemeriksaanOrangTua = $query->where('pemeriksaan_orang_tuas.kunjungan_id', $id)->get();
+
+    //         return DataTables::of($pemeriksaanOrangTua)
+    //             ->addIndexColumn()
+    //             ->make(true);
+    //     }
+
+    //     // jika bukan response ajax maka return 405
+    //     return response()->json(['message' => 'Method not allowed'], 405);
+    // }
+
+    // public function listAnaliticsMother(Request $request, $id)
+    // {
+    //     if ($request->ajax()) {
+    //         $user = Auth::user();
+
+    //         $query = DB::table('pemeriksaan_orang_tuas')
+    //             ->join('kunjungans', 'kunjungans.id', '=', 'pemeriksaan_orang_tuas.kunjungan_id')
+    //             ->join('orang_tuas', 'orang_tuas.id', '=', 'kunjungans.orang_tua_id')
+    //             ->select('pemeriksaan_orang_tuas.id as pemeriksaan_id', 'orang_tuas.nama_ibu', 'tanggal_pemeriksaan_ibu');
+
+    //         // Batasi akses berdasarkan peran jika user adalah orang tua
+    //         if ($user->hasRole('orang-tua')) {
+    //             $query->where('kunjungans.orang_tua_id', $user->id);  // Filter berdasarkan orang tua
+    //         }
+
+    //         // Menambahkan filter berdasarkan kunjungan ID
+    //         $pemeriksaanOrangTua = $query->where('pemeriksaan_orang_tuas.kunjungan_id', $id)->get();
+    //         // dd($pemeriksaanOrangTua);
+
+    //         return DataTables::of($pemeriksaanOrangTua)
+    //             ->addIndexColumn()
+    //             ->make(true);
+    //     }
+
+    //     // jika bukan response ajax maka return 405
+    //     return response()->json(['message' => 'Method not allowed'], 405);
+    // }
+
+    public function listAnalyticsParent(Request $request, $id, $type)
     {
-        if ($request->ajax()) {
-            $user = Auth::user();
-
-            $query = DB::table('pemeriksaan_orang_tuas')
-                ->join('kunjungans', 'kunjungans.id', '=', 'pemeriksaan_orang_tuas.kunjungan_id')
-                ->join('orang_tuas', 'orang_tuas.id', '=', 'kunjungans.orang_tua_id')
-                ->select('pemeriksaan_orang_tuas.id as pemeriksaan_id', 'orang_tuas.nama_ayah', 'tanggal_pemeriksaan_ayah');
-
-            // Batasi akses berdasarkan peran jika user adalah orang tua
-            if ($user->hasRole('orang-tua')) {
-                $query->where('kunjungans.orang_tua_id', $user->id);  // Filter berdasarkan orang tua
-            }
-
-            // Menambahkan filter berdasarkan kunjungan ID
-            $pemeriksaanOrangTua = $query->where('pemeriksaan_orang_tuas.kunjungan_id', $id)->get();
-
-            return DataTables::of($pemeriksaanOrangTua)
-                ->addIndexColumn()
-                ->make(true);
+        if (!$request->ajax()) {
+            return response()->json(['message' => 'Method not allowed'], 405);
         }
 
-        // jika bukan response ajax maka return 405
-        return response()->json(['message' => 'Method not allowed'], 405);
-    }
+        $user = Auth::user();
 
-    public function listAnaliticsMother(Request $request, $id)
-    {
-        if ($request->ajax()) {
-            $user = Auth::user();
-
-            $query = DB::table('pemeriksaan_orang_tuas')
-                ->join('kunjungans', 'kunjungans.id', '=', 'pemeriksaan_orang_tuas.kunjungan_id')
-                ->join('orang_tuas', 'orang_tuas.id', '=', 'kunjungans.orang_tua_id')
-                ->select('pemeriksaan_orang_tuas.id as pemeriksaan_id', 'orang_tuas.nama_ibu', 'tanggal_pemeriksaan_ibu');
-
-            // Batasi akses berdasarkan peran jika user adalah orang tua
-            if ($user->hasRole('orang-tua')) {
-                $query->where('kunjungans.orang_tua_id', $user->id);  // Filter berdasarkan orang tua
-            }
-
-            // Menambahkan filter berdasarkan kunjungan ID
-            $pemeriksaanOrangTua = $query->where('pemeriksaan_orang_tuas.kunjungan_id', $id)->get();
-            // dd($pemeriksaanOrangTua);
-
-            return DataTables::of($pemeriksaanOrangTua)
-                ->addIndexColumn()
-                ->make(true);
+        // Validasi $type agar hanya bisa 'ayah' atau 'ibu'
+        if (!in_array($type, ['ayah', 'ibu'])) {
+            return response()->json(['message' => 'Invalid type parameter'], 400);
         }
 
-        // jika bukan response ajax maka return 405
-        return response()->json(['message' => 'Method not allowed'], 405);
+        // Siapkan nama kolom dinamis
+        $namaKolom = $type === 'ayah' ? 'orang_tuas.nama_ayah' : 'orang_tuas.nama_ibu';
+        $tanggalKolom = $type === 'ayah' ? 'tanggal_pemeriksaan_ayah' : 'tanggal_pemeriksaan_ibu';
+
+        $query = DB::table('pemeriksaan_orang_tuas')
+            ->join('kunjungans', 'kunjungans.id', '=', 'pemeriksaan_orang_tuas.kunjungan_id')
+            ->join('orang_tuas', 'orang_tuas.id', '=', 'kunjungans.orang_tua_id')
+            ->select(
+                'pemeriksaan_orang_tuas.id as pemeriksaan_id',
+                DB::raw("$namaKolom as nama"),
+                DB::raw("$tanggalKolom as tanggal_pemeriksaan")
+            );
+
+        // Batasi akses untuk orang tua
+        if ($user->hasRole('orang-tua')) {
+            $query->where('kunjungans.orang_tua_id', $user->id);
+        }
+
+        $data = $query->where('pemeriksaan_orang_tuas.kunjungan_id', $id)->get();
+
+        return DataTables::of($data)
+            ->addIndexColumn()
+            ->make(true);
     }
+
 
     public function storePemeriksaanOrangTua(StorePemeriksaanOrangTuaRequest $request, $id)
     {

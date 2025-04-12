@@ -279,12 +279,12 @@
                         searchable: false
                     },
                     {
-                        data: 'nama_ayah',
-                        name: 'nama_ayah'
+                        data: 'nama',
+                        name: 'nama'
                     },
                     {
-                        data: 'tanggal_pemeriksaan_ayah',
-                        name: 'tanggal_pemeriksaan_ayah'
+                        data: 'tanggal_pemeriksaan',
+                        name: 'tanggal_pemeriksaan'
                     },
                     {
                         data: 'pemeriksaan_id',
@@ -323,12 +323,12 @@
                         searchable: false
                     },
                     {
-                        data: 'nama_ibu',
-                        name: 'nama_ibu'
+                        data: 'nama',
+                        name: 'nama'
                     },
                     {
-                        data: 'tanggal_pemeriksaan_ibu',
-                        name: 'tanggal_pemeriksaan_ibu'
+                        data: 'tanggal_pemeriksaan',
+                        name: 'tanggal_pemeriksaan'
                     },
                     {
                         data: 'pemeriksaan_id',

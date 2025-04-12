@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StorePemeriksaanOrangTuaRequest;
+use App\Http\Requests\UpdatePemeriksaanAyahRequest;
+use App\Http\Requests\UpdatePemeriksaanIbuRequest;
 use App\Models\Kunjungan;
 use App\Models\PemeriksaanOrangTua;
 use Illuminate\Http\Request;
@@ -174,5 +176,39 @@ class PemeriksaanOrangTuaController extends Controller
 
 
         return view('kunjungan.data-pemantauan-ibu', compact('pemeriksaanOrangTua'));
+    }
+
+    public function editDataPemeriksaanAyah($id)
+    {
+        $pemeriksaanAyah = PemeriksaanOrangTua::select('id', 'tekanan_darah_ayah', 'gula_darah_ayah', 'kolesterol_ayah', 'catatan_kesehatan_ayah', 'tanggal_pemeriksaan_ayah', 'tanggal_pemeriksaan_lanjutan_ayah', 'kunjungan_id')->findOrFail($id);
+
+        return view('kunjungan.edit-pemeriksaan-ayah', compact('pemeriksaanAyah'));
+    }
+
+    public function editDataPemeriksaanIbu($id)
+    {
+        $pemeriksaanIbu = PemeriksaanOrangTua::select('id', 'tekanan_darah_ibu', 'gula_darah_ibu', 'kolesterol_ibu', 'catatan_kesehatan_ibu', 'tanggal_pemeriksaan_ibu', 'tanggal_pemeriksaan_lanjutan_ibu', 'kunjungan_id')->findOrFail($id);
+
+        return view('kunjungan.edit-pemeriksaan-ibu', compact('pemeriksaanIbu'));
+    }
+
+    public function updateDataPemeriksaanAyah(UpdatePemeriksaanAyahRequest $request, $id)
+    {
+        $pemeriksaanAyah = PemeriksaanOrangTua::findOrFail($id);
+
+        $pemeriksaanAyah->update($request->all());
+
+        return redirect()->route('kunjungan.pantauan-orang-tua', ['id' => $pemeriksaanAyah->kunjungan_id])
+            ->with('success', 'Pemeriksaan Orang Tua Berhasil Diubah');
+    }
+
+    public function updateDataPemeriksaanIbu(UpdatePemeriksaanIbuRequest $request, $id)
+    {
+        $pemeriksaanIbu = PemeriksaanOrangTua::findOrFail($id);
+
+        $pemeriksaanIbu->update($request->all());
+
+        return redirect()->route('kunjungan.pantauan-orang-tua', ['id' => $pemeriksaanIbu->kunjungan_id])
+            ->with('success', 'Pemeriksaan Orang Tua Berhasil Diubah');
     }
 }

@@ -260,6 +260,18 @@
     <script>
         $(document).ready(function() {
             var kunjunganId = {{ $kunjungan->id }};
+            @if (session('success'))
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Success',
+                    text: '{{ session('success') }}',
+                    toast: true,
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                });
+            @endif
             // DataTable untuk Pemantauan Ayah
             $('#PemantauanAyahTable').DataTable({
                 processing: true,
@@ -294,10 +306,15 @@
                         render: function(data, type, row) {
                             let showUrl =
                                 `/posyandu-management/kunjungan/${data}/show-data-pemeriksaan-ayah`;
+                            let editUrl =
+                                `/posyandu-management/kunjungan/${data}/edit-pemeriksaan-ayah`;
 
                             return `
         <a href="${showUrl}" class="btn icon btn-sm btn-info mb-1" title="Pantauan Tumbuh Kembang Anak">
             <i class="bi bi-eye-fill"></i>
+        </a>
+        <a href="${editUrl}" class="btn icon btn-sm btn-warning mb-1" title="Edit">
+            <i class="bi bi-pencil-fill"></i>
         </a>
     `;
                         }
@@ -338,10 +355,15 @@
                         render: function(data, type, row) {
                             let showUrl =
                                 `/posyandu-management/kunjungan/${data}/show-data-pemeriksaan-ibu`;
+                            let editUrl =
+                                `/posyandu-management/kunjungan/${data}/edit-pemeriksaan-ibu`;
 
                             return `
         <a href="${showUrl}" class="btn icon btn-sm btn-info mb-1" title="Pantauan Tumbuh Kembang Anak">
             <i class="bi bi-eye-fill"></i>
+        </a>
+        <a href="${editUrl}" class="btn icon btn-sm btn-warning mb-1" title="Edit">
+            <i class="bi bi-pencil-fill"></i>
         </a>
     `;
                         }

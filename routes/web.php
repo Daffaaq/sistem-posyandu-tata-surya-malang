@@ -103,7 +103,11 @@ Route::group(['middleware' => ['auth', 'checkactive']], function () {
         })->name('kunjungan.list-pemantauan-ibu');
         Route::put('/kunjungan/{id}/store-pemantauan-orang-tua', [PemeriksaanOrangTuaController::class, 'storePemeriksaanOrangTua'])->name('kunjungan.store-pemantauan-orang-tua');
         Route::get('/kunjungan/{id}/show-data-pemeriksaan-ayah', [PemeriksaanOrangTuaController::class, 'showDataPemantauanAyah'])->name('kunjungan.show-data-pemeriksaan-ayah');
-        Route::get('/kunjungan/{id}/show-data-pemeriksaan-ibu', [PemeriksaanOrangTuaController::class, 'showDataPemantauanIbu'])->name('kunjungan.show-data-pemeriksaan-ayah');
+        Route::get('/kunjungan/{id}/show-data-pemeriksaan-ibu', [PemeriksaanOrangTuaController::class, 'showDataPemantauanIbu'])->name('kunjungan.show-data-pemeriksaan-ibu');
+        Route::get('/kunjungan/{id}/edit-pemeriksaan-ayah', [PemeriksaanOrangTuaController::class, 'editDataPemeriksaanAyah'])->name('kunjungan.form-edit-pemeriksaan-ayah');
+        Route::get('/kunjungan/{id}/edit-pemeriksaan-ibu', [PemeriksaanOrangTuaController::class, 'editDataPemeriksaanIbu'])->name('kunjungan.form-edit-pemeriksaan-ibu');
+        Route::put('/kunjungan/{id}/update-pemeriksaan-ayah', [PemeriksaanOrangTuaController::class, 'updateDataPemeriksaanAyah'])->name('kunjungan.update-pemeriksaan-ayah');
+        Route::put('/kunjungan/{id}/update-pemeriksaan-ibu', [PemeriksaanOrangTuaController::class, 'updateDataPemeriksaanIbu'])->name('kunjungan.update-pemeriksaan-ibu');
     });
 
     Route::prefix('user-management')->group(function () {

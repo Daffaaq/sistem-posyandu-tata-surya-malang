@@ -32,4 +32,9 @@ class Kunjungan extends Model
     {
         return $this->hasMany(KunjunganAnak::class, 'kunjungan_id');
     }
+
+    public function pemeriksaan_orang_tua()
+    {
+        return $this->hasMany(PemeriksaanOrangTua::class, 'kunjungan_id');
+    }
 }

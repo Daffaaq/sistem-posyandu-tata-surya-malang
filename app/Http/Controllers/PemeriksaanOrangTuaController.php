@@ -16,7 +16,8 @@ class PemeriksaanOrangTuaController extends Controller
 {
     public function showAnaliticsParent($id)
     {
-        $kunjungan = Kunjungan::with(['orang_tua'])->findOrFail($id);
+        $kunjungan = Kunjungan::with(['orang_tua', 'pemeriksaan_orang_tua'])->findOrFail($id);
+        // dd($kunjungan);
         return view('kunjungan.analisis-pemeriksaan-orang-tua', compact('kunjungan'));
     }
 
@@ -210,5 +211,77 @@ class PemeriksaanOrangTuaController extends Controller
 
         return redirect()->route('kunjungan.pantauan-orang-tua', ['id' => $pemeriksaanIbu->kunjungan_id])
             ->with('success', 'Pemeriksaan Orang Tua Berhasil Diubah');
+    }
+
+    public function deletePemeriksaanAyah($id)
+    {
+        $pemeriksaan = PemeriksaanOrangTua::findOrFail($id);
+
+        // Hapus kolom-kolom ayah
+        $pemeriksaan->update([
+            'tekanan_darah_ayah' => null,
+            'gula_darah_ayah' => null,
+            'kolesterol_ayah' => null,
+            'catatan_kesehatan_ayah' => null,
+            'tanggal_pemeriksaan_ayah' => null,
+            'tanggal_pemeriksaan_lanjutan_ayah' => null,
+        ]);
+
+        // Cek apakah kolom ibu juga null semua
+        $semuaIbuKosong = is_null($pemeriksaan->tekanan_darah_ibu) &&
+            is_null($pemeriksaan->gula_darah_ibu) &&
+            is_null($pemeriksaan->kolesterol_ibu) &&
+            is_null($pemeriksaan->catatan_kesehatan_ibu) &&
+            is_null($pemeriksaan->tanggal_pemeriksaan_ibu) &&
+            is_null($pemeriksaan->tanggal_pemeriksaan_lanjutan_ibu);
+
+        if ($semuaIbuKosong) {
+            $pemeriksaan->delete();
+            return response()->json([
+                'message' => 'Data pemeriksaan Ayah & Ibu dihapus karena sudah kosong semua.',
+                'status' => 'deleted_all'
+            ]);
+        }
+
+        return response()->json([
+            'message' => 'Data pemeriksaan Ayah berhasil dihapus.',
+            'status' => 'deleted_ayah_only'
+        ]);
+    }
+
+    public function deletePemeriksaanIbu($id)
+    {
+        $pemeriksaan = PemeriksaanOrangTua::findOrFail($id);
+
+        // Hapus kolom-kolom ibu
+        $pemeriksaan->update([
+            'tekanan_darah_ibu' => null,
+            'gula_darah_ibu' => null,
+            'kolesterol_ibu' => null,
+            'catatan_kesehatan_ibu' => null,
+            'tanggal_pemeriksaan_ibu' => null,
+            'tanggal_pemeriksaan_lanjutan_ibu' => null,
+        ]);
+
+        // Cek apakah kolom ayah juga null semua
+        $semuaAyahKosong = is_null($pemeriksaan->tekanan_darah_ayah) &&
+            is_null($pemeriksaan->gula_darah_ayah) &&
+            is_null($pemeriksaan->kolesterol_ayah) &&
+            is_null($pemeriksaan->catatan_kesehatan_ayah) &&
+            is_null($pemeriksaan->tanggal_pemeriksaan_ayah) &&
+            is_null($pemeriksaan->tanggal_pemeriksaan_lanjutan_ayah);
+
+        if ($semuaAyahKosong) {
+            $pemeriksaan->delete();
+            return response()->json([
+                'message' => 'Data pemeriksaan Ayah & Ibu dihapus karena sudah kosong semua.',
+                'status' => 'deleted_all'
+            ]);
+        }
+
+        return response()->json([
+            'message' => 'Data pemeriksaan Ibu berhasil dihapus.',
+            'status' => 'deleted_ibu_only'
+        ]);
     }
 }

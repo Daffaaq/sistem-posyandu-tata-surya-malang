@@ -108,6 +108,11 @@ Route::group(['middleware' => ['auth', 'checkactive']], function () {
         Route::get('/kunjungan/{id}/edit-pemeriksaan-ibu', [PemeriksaanOrangTuaController::class, 'editDataPemeriksaanIbu'])->name('kunjungan.form-edit-pemeriksaan-ibu');
         Route::put('/kunjungan/{id}/update-pemeriksaan-ayah', [PemeriksaanOrangTuaController::class, 'updateDataPemeriksaanAyah'])->name('kunjungan.update-pemeriksaan-ayah');
         Route::put('/kunjungan/{id}/update-pemeriksaan-ibu', [PemeriksaanOrangTuaController::class, 'updateDataPemeriksaanIbu'])->name('kunjungan.update-pemeriksaan-ibu');
+
+        Route::delete('/kunjungan/{id}/delete-pemeriksaan-ayah', [PemeriksaanOrangTuaController::class, 'deletePemeriksaanAyah'])
+            ->name('kunjungan.delete-pemeriksaan-ayah');
+        Route::delete('/kunjungan/{id}/delete-pemeriksaan-ibu', [PemeriksaanOrangTuaController::class, 'deletePemeriksaanIbu'])
+            ->name('kunjungan.delete-pemeriksaan-ibu');
     });
 
     Route::prefix('user-management')->group(function () {

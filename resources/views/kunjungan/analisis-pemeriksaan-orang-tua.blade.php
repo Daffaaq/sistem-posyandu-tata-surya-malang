@@ -48,7 +48,7 @@
                             <tr>
                                 <th>No</th>
                                 <th>Nama Ayah</th>
-                                <th>Tanggal Pemeriksaan Ibu</th>
+                                <th>Tanggal Pemeriksaan Ayah</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -89,7 +89,7 @@
                             <tr>
                                 <th>No</th>
                                 <th>Nama Ibu</th>
-                                <th>Tanggal Pemeriksaan</th>
+                                <th>Tanggal Pemeriksaan Ibu</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -296,7 +296,11 @@
                     },
                     {
                         data: 'tanggal_pemeriksaan',
-                        name: 'tanggal_pemeriksaan'
+                        name: 'tanggal_pemeriksaan',
+                        render: function(data, type, row) {
+                            return data ? data :
+                                '<span class="text-muted">Belum ada data pemeriksaan</span>';
+                        }
                     },
                     {
                         data: 'pemeriksaan_id',
@@ -308,14 +312,19 @@
                                 `/posyandu-management/kunjungan/${data}/show-data-pemeriksaan-ayah`;
                             let editUrl =
                                 `/posyandu-management/kunjungan/${data}/edit-pemeriksaan-ayah`;
+                            let deleteUrl =
+                                `/posyandu-management/kunjungan/${data}/delete-pemeriksaan-ayah`;
 
                             return `
-        <a href="${showUrl}" class="btn icon btn-sm btn-info mb-1" title="Pantauan Tumbuh Kembang Anak">
+        <a href="${showUrl}" class="btn icon btn-sm btn-info mb-1" title="Lihat">
             <i class="bi bi-eye-fill"></i>
         </a>
         <a href="${editUrl}" class="btn icon btn-sm btn-warning mb-1" title="Edit">
             <i class="bi bi-pencil-fill"></i>
         </a>
+        <button class="btn btn-sm btn-danger mb-1 delete-ayah" data-id="${data}" title="Hapus">
+            <i class="bi bi-trash-fill"></i>
+        </button>
     `;
                         }
                     }
@@ -345,7 +354,11 @@
                     },
                     {
                         data: 'tanggal_pemeriksaan',
-                        name: 'tanggal_pemeriksaan'
+                        name: 'tanggal_pemeriksaan',
+                        render: function(data, type, row) {
+                            return data ? data :
+                                '<span class="text-muted">Belum ada data pemeriksaan</span>';
+                        }
                     },
                     {
                         data: 'pemeriksaan_id',
@@ -357,18 +370,86 @@
                                 `/posyandu-management/kunjungan/${data}/show-data-pemeriksaan-ibu`;
                             let editUrl =
                                 `/posyandu-management/kunjungan/${data}/edit-pemeriksaan-ibu`;
+                            let deleteUrl =
+                                `/posyandu-management/kunjungan/${data}/delete-pemeriksaan-ibu`;
 
                             return `
-        <a href="${showUrl}" class="btn icon btn-sm btn-info mb-1" title="Pantauan Tumbuh Kembang Anak">
+        <a href="${showUrl}" class="btn icon btn-sm btn-info mb-1" title="Lihat">
             <i class="bi bi-eye-fill"></i>
         </a>
         <a href="${editUrl}" class="btn icon btn-sm btn-warning mb-1" title="Edit">
             <i class="bi bi-pencil-fill"></i>
         </a>
+        <button class="btn btn-sm btn-danger mb-1 delete-ibu" data-id="${data}" title="Hapus">
+            <i class="bi bi-trash-fill"></i>
+        </button>
     `;
                         }
                     }
                 ]
+            });
+        });
+
+        // Hapus pemeriksaan ayah
+        $(document).on('click', '.delete-ayah', function() {
+            let id = $(this).data('id');
+            Swal.fire({
+                title: 'Yakin mau hapus data pemeriksaan Ayah?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Ya, Hapus!',
+                cancelButtonText: 'Batal'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    fetch(`/posyandu-management/kunjungan/${id}/delete-pemeriksaan-ayah`, {
+                            method: 'DELETE',
+                            headers: {
+                                'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                                'Accept': 'application/json'
+                            }
+                        })
+                        .then(res => res.json())
+                        .then(data => {
+                            Swal.fire('Berhasil!', data.message, 'success');
+                            $('#PemantauanAyahTable').DataTable().ajax.reload(null, false);
+                            $('#PemantauanIbuTable').DataTable().ajax.reload(null,
+                                false); // reload juga kalau datanya dihapus total
+                        })
+                        .catch(error => {
+                            Swal.fire('Gagal!', 'Terjadi kesalahan.', 'error');
+                        });
+                }
+            });
+        });
+
+        // Hapus pemeriksaan ibu
+        $(document).on('click', '.delete-ibu', function() {
+            let id = $(this).data('id');
+            Swal.fire({
+                title: 'Yakin mau hapus data pemeriksaan Ibu?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Ya, Hapus!',
+                cancelButtonText: 'Batal'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    fetch(`/posyandu-management/kunjungan/${id}/delete-pemeriksaan-ibu`, {
+                            method: 'DELETE',
+                            headers: {
+                                'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                                'Accept': 'application/json'
+                            }
+                        })
+                        .then(res => res.json())
+                        .then(data => {
+                            Swal.fire('Berhasil!', data.message, 'success');
+                            $('#PemantauanAyahTable').DataTable().ajax.reload(null, false);
+                            $('#PemantauanIbuTable').DataTable().ajax.reload(null, false);
+                        })
+                        .catch(error => {
+                            Swal.fire('Gagal!', 'Terjadi kesalahan.', 'error');
+                        });
+                }
             });
         });
 

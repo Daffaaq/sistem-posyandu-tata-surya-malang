@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\JadwalKunjunganKBController;
 use App\Http\Controllers\JadwalPosyanduController;
 use App\Http\Controllers\JenisKunjunganKeluargaBerencanaController;
 use App\Http\Controllers\KategoriImunasasiController;
@@ -118,6 +119,8 @@ Route::group(['middleware' => ['auth', 'checkactive']], function () {
         //keluarga-berencana
         Route::resource('keluarga-berencana', KeluargaBerencanaController::class);
         Route::post('/keluarga-berencana/list', [KeluargaBerencanaController::class, 'list'])->name('keluarga-berencana.list');
+        Route::get('/keluarga-berencana/{id}/jadwal-kunjungan', [JadwalKunjunganKBController::class, 'index'])->name('keluarga-berencana.jadwal-kunjungan-kb.index');
+        Route::post('/keluarga-berencana/{id}/jadwal-kunjungan/list', [JadwalKunjunganKBController::class, 'list'])->name('keluarga-berencana.jadwal-kunjungan-kb.list');
     });
 
     Route::prefix('user-management')->group(function () {

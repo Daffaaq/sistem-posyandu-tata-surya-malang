@@ -28,6 +28,7 @@
                                 <th>No</th>
                                 <th>Orang Tua</th>
                                 <th>Kategori KB</th>
+                                <th>Action1</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -67,6 +68,11 @@
             color: #007bff;
             pointer-events: none;
         }
+
+        .bg-danger {
+            background-color: #f8d7da !important;
+            color: #b02a37 !important;
+        }
     </style>
 @endpush
 
@@ -90,12 +96,27 @@
                         searchable: false
                     },
                     {
-        data: 'orang_tua',
-        name: 'orang_tua'
-    },
+                        data: 'orang_tua',
+                        name: 'orang_tua'
+                    },
                     {
                         data: 'nama_kategori_keluarga_berencana',
                         name: 'nama_kategori_keluarga_berencana'
+                    },
+                    {
+                        data: 'id',
+                        name: 'id',
+                        orderable: false,
+                        searchable: false,
+                        render: function(data) {
+                            let jadwalKunjunganKB =
+                                `/posyandu-management/keluarga-berencana/${data}/jadwal-kunjungan`;
+                            return `
+                                <a href="${jadwalKunjunganKB}" class="btn icon btn-sm btn-info">
+                                    <i class="bi bi-calendar"></i>
+                                </a>
+                            `;
+                        }
                     },
                     {
                         data: 'id',
@@ -118,7 +139,14 @@
                             `;
                         }
                     }
-                ]
+                ],
+                createdRow: function(row, data, dataIndex) {
+                    if (data.is_permanent == 1) {
+                        // Menandai baris sebagai metode KB permanen
+                        $(row).addClass('bg-danger text-white');
+                    }
+                },
+
             });
 
             @if (session('success'))
@@ -126,6 +154,32 @@
                     icon: 'success',
                     title: 'Berhasil',
                     text: '{{ session('success') }}',
+                    toast: true,
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                });
+            @endif
+
+            @if (session('error'))
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Gagal',
+                    text: '{{ session('error') }}',
+                    toast: true,
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                });
+            @endif
+
+            @if (session('status'))
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Peringatan',
+                    text: '{{ session('status') }}',
                     toast: true,
                     position: 'top-end',
                     showConfirmButton: false,

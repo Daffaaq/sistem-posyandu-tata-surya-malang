@@ -27,7 +27,7 @@ class KeluargaBerencanaController extends Controller
             $keluargaBerencana = DB::table('keluarga_berencanas')
                 ->leftJoin('orang_tuas', 'keluarga_berencanas.orang_tua_id', '=', 'orang_tuas.id')
                 ->leftJoin('kategori_keluarga_berencanas', 'keluarga_berencanas.kategori_keluarga_berencana_id', '=', 'kategori_keluarga_berencanas.id')
-                ->select('keluarga_berencanas.id', DB::raw("CONCAT(orang_tuas.nama_ayah, ' & ', orang_tuas.nama_ibu) as orang_tua"), 'kategori_keluarga_berencanas.nama_kategori_keluarga_berencana')
+                ->select('keluarga_berencanas.id',  'keluarga_berencanas.is_permanent', DB::raw("CONCAT(orang_tuas.nama_ayah, ' & ', orang_tuas.nama_ibu) as orang_tua"), 'kategori_keluarga_berencanas.nama_kategori_keluarga_berencana')
                 ->get();
 
             return DataTables::of($keluargaBerencana)

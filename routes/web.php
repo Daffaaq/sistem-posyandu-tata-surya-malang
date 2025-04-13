@@ -5,6 +5,7 @@ use App\Http\Controllers\JadwalPosyanduController;
 use App\Http\Controllers\JenisKunjunganKeluargaBerencanaController;
 use App\Http\Controllers\KategoriImunasasiController;
 use App\Http\Controllers\KategoriKeluargaBerencanaController;
+use App\Http\Controllers\KeluargaBerencanaController;
 use App\Http\Controllers\KunjunganController;
 use App\Http\Controllers\LogoLoginController;
 use App\Http\Controllers\Menu\MenuGroupController;
@@ -113,6 +114,10 @@ Route::group(['middleware' => ['auth', 'checkactive']], function () {
             ->name('kunjungan.delete-pemeriksaan-ayah');
         Route::delete('/kunjungan/{id}/delete-pemeriksaan-ibu', [PemeriksaanOrangTuaController::class, 'deletePemeriksaanIbu'])
             ->name('kunjungan.delete-pemeriksaan-ibu');
+
+        //keluarga-berencana
+        Route::resource('keluarga-berencana', KeluargaBerencanaController::class);
+        Route::post('/keluarga-berencana/list', [KeluargaBerencanaController::class, 'list'])->name('keluarga-berencana.list');
     });
 
     Route::prefix('user-management')->group(function () {

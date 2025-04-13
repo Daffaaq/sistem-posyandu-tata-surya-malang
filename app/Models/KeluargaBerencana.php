@@ -17,6 +17,7 @@ class KeluargaBerencana extends Model
         'tanggal_mulai_keluarga_berencana',
         'tanggal_selesai_keluarga_berencana',
         'catatan_keluarga_berencana',
+        'is_permanent',
         'is_active',
     ];
 

@@ -50,6 +50,55 @@ class ObatSeeder extends Seeder
                 'stok' => 60,
                 'tanggal_kadaluarsa' => Carbon::parse('2026-02-28')->format('Y-m-d'),
             ],
+            [
+                'nama_obat_vitamin' => 'Obat Diare Anak',
+                'tipe' => 'obat',
+                'deskripsi' => 'Obat untuk mengatasi diare ringan pada anak-anak.',
+                'stok' => 40,
+                'tanggal_kadaluarsa' => Carbon::parse('2025-11-11')->format('Y-m-d'),
+            ],
+            [
+                'nama_obat_vitamin' => 'Zat Besi',
+                'tipe' => 'vitamin',
+                'deskripsi' => 'Suplemen zat besi untuk mencegah dan mengatasi anemia.',
+                'stok' => 90,
+                'tanggal_kadaluarsa' => Carbon::parse('2026-01-01')->format('Y-m-d'),
+            ],
+            [
+                'nama_obat_vitamin' => 'Vitamin D',
+                'tipe' => 'vitamin',
+                'deskripsi' => 'Vitamin D untuk mendukung pertumbuhan tulang dan sistem imun anak.',
+                'stok' => 75,
+                'tanggal_kadaluarsa' => Carbon::parse('2025-09-09')->format('Y-m-d'),
+            ],
+            [
+                'nama_obat_vitamin' => 'ORS (Oralit)',
+                'tipe' => 'obat',
+                'deskripsi' => 'Larutan oralit untuk mengganti cairan tubuh akibat diare.',
+                'stok' => 110,
+                'tanggal_kadaluarsa' => Carbon::parse('2025-07-15')->format('Y-m-d'),
+            ],
+            [
+                'nama_obat_vitamin' => 'Salep Kulit Anak',
+                'tipe' => 'obat',
+                'deskripsi' => 'Salep untuk mengatasi ruam, gatal, dan iritasi ringan pada kulit anak.',
+                'stok' => 30,
+                'tanggal_kadaluarsa' => Carbon::parse('2025-06-30')->format('Y-m-d'),
+            ],
+            [
+                'nama_obat_vitamin' => 'Vitamin C',
+                'tipe' => 'vitamin',
+                'deskripsi' => 'Vitamin C untuk meningkatkan daya tahan tubuh dan membantu penyerapan zat besi.',
+                'stok' => 95,
+                'tanggal_kadaluarsa' => Carbon::parse('2026-03-03')->format('Y-m-d'),
+            ],
+            [
+                'nama_obat_vitamin' => 'Obat Cacing Anak',
+                'tipe' => 'obat',
+                'deskripsi' => 'Obat untuk membasmi cacing dalam saluran pencernaan anak.',
+                'stok' => 85,
+                'tanggal_kadaluarsa' => Carbon::parse('2026-06-01')->format('Y-m-d'),
+            ],
         ]);
     }
 }

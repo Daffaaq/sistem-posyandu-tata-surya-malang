@@ -17,8 +17,8 @@ return new class extends Migration
             $table->foreign('kunjungan_anak_id')->references('id')->on('kunjungan_anaks')->onDelete('cascade');
             $table->unsignedBigInteger('kategori_imunisasi_id');
             $table->foreign('kategori_imunisasi_id')->references('id')->on('kategori_imunasasis')->onDelete('cascade');
-            $table->unsignedBigInteger('kunjungan_id');
-            $table->foreign('kunjungan_id')->references('id')->on('kunjungans')->onDelete('cascade');
+            $table->date('tanggal_imunisasi');
+            $table->date('tanggal_imunisasi_lanjutan')->nullable();
             $table->timestamps();
         });
     }

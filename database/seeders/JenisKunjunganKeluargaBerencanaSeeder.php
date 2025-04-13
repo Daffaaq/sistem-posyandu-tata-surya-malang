@@ -31,12 +31,6 @@ class JenisKunjunganKeluargaBerencanaSeeder extends Seeder
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
-            // [
-            //     'nama_jenis_kunjungan_keluarga_berencana' => 'Kunjungan Pemeliharaan dan Pemantauan',
-            //     'deskripsi' => 'Kunjungan untuk memastikan bahwa metode kontrasepsi yang digunakan tetap efektif dan tidak menimbulkan masalah kesehatan.',
-            //     'created_at' => now(),
-            //     'updated_at' => now(),
-            // ],
         ]);
     }
 }

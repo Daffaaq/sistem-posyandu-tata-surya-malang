@@ -15,13 +15,13 @@ class TypeKunjunganSeeder extends Seeder
     {
         DB::table('type_kunjungans')->insert([
             [
-                'nama_tipe_kunjungan' => 'Kunjungan Rutin Ibu Hamil',
+                'nama_tipe_kunjungan' => 'Posyandu Rutin',
                 'deskripsi' => 'Kunjungan rutin bagi ibu hamil untuk pemeriksaan kesehatan dan pemberian nutrisi.',
             ],
             [
-                'nama_tipe_kunjungan' => 'Kunjungan Imunisasi',
-                'deskripsi' => 'Kunjungan untuk memberikan imunisasi kepada anak-anak sesuai jadwal.',
-            ],
+                'nama_tipe_kunjungan' => 'Posyandu Tidak Rutin',
+                'deskripsi' => 'Kunjungan Posyandu yang dilakukan secara tidak terjadwal, biasanya disesuaikan dengan kebutuhan atau ketersediaan petugas.',
+            ]
         ]);
     }
 }

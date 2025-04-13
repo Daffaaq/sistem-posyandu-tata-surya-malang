@@ -47,7 +47,54 @@ class KategoriImunisasiSeeder extends Seeder
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
-            // Add more entries as needed
+            [
+                'nama_kategori_imunisasi' => 'Imunisasi BCG',
+                'keterangan' => 'Imunisasi untuk mencegah penyakit tuberkulosis (TBC).',
+                'is_active' => true,
+                'slug' => 'imunisasi-bcg',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'nama_kategori_imunisasi' => 'Imunisasi MR (Measles-Rubella)',
+                'keterangan' => 'Imunisasi kombinasi untuk mencegah campak dan rubella.',
+                'is_active' => true,
+                'slug' => 'imunisasi-mr',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'nama_kategori_imunisasi' => 'Imunisasi Hib',
+                'keterangan' => 'Imunisasi untuk mencegah infeksi Haemophilus influenzae tipe b.',
+                'is_active' => true,
+                'slug' => 'imunisasi-hib',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'nama_kategori_imunisasi' => 'Imunisasi IPV',
+                'keterangan' => 'Inactivated Polio Vaccine untuk perlindungan terhadap polio.',
+                'is_active' => true,
+                'slug' => 'imunisasi-ipv',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'nama_kategori_imunisasi' => 'Imunisasi PCV',
+                'keterangan' => 'Imunisasi untuk mencegah infeksi akibat bakteri pneumokokus.',
+                'is_active' => true,
+                'slug' => 'imunisasi-pcv',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'nama_kategori_imunisasi' => 'Imunisasi Rotavirus',
+                'keterangan' => 'Imunisasi untuk mencegah diare berat akibat infeksi rotavirus.',
+                'is_active' => true,
+                'slug' => 'imunisasi-rotavirus',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
         ]);
     }
 }

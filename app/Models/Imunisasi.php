@@ -14,7 +14,8 @@ class Imunisasi extends Model
     protected $fillable = [
         'kunjungan_anak_id',
         'kategori_imunisasi_id',
-        'kunjungan_id',
+        'tanggal_imunisasi',
+        'tanggal_imunisasi_lanjutan',
     ];
 
     public function kunjunganAnak()
@@ -25,10 +26,5 @@ class Imunisasi extends Model
     public function kategoriImunisasi()
     {
         return $this->belongsTo(KategoriImunasasi::class, 'kategori_imunisasi_id');
-    }
-
-    public function kunjungan()
-    {
-        return $this->belongsTo(Kunjungan::class, 'kunjungan_id');
     }
 }

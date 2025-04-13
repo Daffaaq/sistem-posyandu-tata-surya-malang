@@ -129,11 +129,11 @@
                     {{-- Checkbox Pemeriksaan --}}
                     <div class="form-group">
                         <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="periksa_ayah" name="periksa_ayah" checked>
+                            <input class="form-check-input" type="checkbox" id="periksa_ayah" name="periksa_ayah">
                             <label class="form-check-label" for="periksa_ayah">Periksa Ayah</label>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="periksa_ibu" name="periksa_ibu" checked>
+                            <input class="form-check-input" type="checkbox" id="periksa_ibu" name="periksa_ibu">
                             <label class="form-check-label" for="periksa_ibu">Periksa Ibu</label>
                         </div>
                     </div>
@@ -195,8 +195,11 @@
                 </form>
             </div>
         </div>
-
-
+        <div class="mb-3 d-flex justify-content-end">
+            <a href="{{ route('kunjungan.index') }}" class="btn btn-secondary">
+                <i class="fas fa-arrow-left"></i> Kembali
+            </a>
+        </div>
     </div>
 @endsection
 

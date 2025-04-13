@@ -18,8 +18,9 @@ return new class extends Migration
             $table->unsignedBigInteger('kategori_keluarga_berencana_id');
             $table->foreign('kategori_keluarga_berencana_id')->references('id')->on('kategori_keluarga_berencanas')->onDelete('cascade');
             $table->date('tanggal_mulai_keluarga_berencana');
-            $table->date('tanggal_selesai_keluarga_berencana');
+            $table->date('tanggal_selesai_keluarga_berencana')->nullable();
             $table->text('catatan_keluarga_berencana')->nullable();
+            $table->boolean('is_permanent');
             $table->enum('is_active', ['Active', 'Non-Active']);
             $table->timestamps();
         });

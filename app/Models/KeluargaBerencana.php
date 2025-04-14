@@ -30,4 +30,10 @@ class KeluargaBerencana extends Model
     {
         return $this->belongsTo(KategoriKeluargaBerencana::class);
     }
+
+    // KeluargaBerencana.php
+    public function jadwalKunjunganKbs()
+    {
+        return $this->hasMany(JadwalKunjunganKB::class);
+    }
 }

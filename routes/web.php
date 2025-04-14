@@ -121,6 +121,10 @@ Route::group(['middleware' => ['auth', 'checkactive']], function () {
         Route::post('/keluarga-berencana/list', [KeluargaBerencanaController::class, 'list'])->name('keluarga-berencana.list');
         Route::get('/keluarga-berencana/{id}/jadwal-kunjungan', [JadwalKunjunganKBController::class, 'index'])->name('keluarga-berencana.jadwal-kunjungan-kb.index');
         Route::post('/keluarga-berencana/{id}/jadwal-kunjungan/list', [JadwalKunjunganKBController::class, 'list'])->name('keluarga-berencana.jadwal-kunjungan-kb.list');
+        Route::post('/keluarga-berencana/{id}/jadwal-kunjungan/store', [JadwalKunjunganKBController::class, 'store'])->name('keluarga-berencana.jadwal-kunjungan-kb.store');
+        Route::get('/keluarga-berencana/{id}/jadwal-kunjungan-kb/edit', [JadwalKunjunganKBController::class, 'edit'])->name('keluarga-berencana.jadwal-kunjungan-kb.edit');
+        Route::put('/keluarga-berencana/{id}/jadwal-kunjungan-kb/update', [JadwalKunjunganKBController::class, 'update'])->name('keluarga-berencana.jadwal-kunjungan-kb.update');
+        Route::delete('/keluarga-berencana/{id}/jadwal-kunjungan/destroy', [JadwalKunjunganKBController::class, 'destroy'])->name('keluarga-berencana.jadwal-kunjungan-kb.destroy');
     });
 
     Route::prefix('user-management')->group(function () {

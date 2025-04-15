@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\ImunisasiController;
 use App\Http\Controllers\JadwalKunjunganKBController;
 use App\Http\Controllers\JadwalPosyanduController;
 use App\Http\Controllers\JenisKunjunganKeluargaBerencanaController;
@@ -115,6 +116,8 @@ Route::group(['middleware' => ['auth', 'checkactive']], function () {
             ->name('kunjungan.delete-pemeriksaan-ayah');
         Route::delete('/kunjungan/{id}/delete-pemeriksaan-ibu', [PemeriksaanOrangTuaController::class, 'deletePemeriksaanIbu'])
             ->name('kunjungan.delete-pemeriksaan-ibu');
+
+        Route::get('/kunjungan/{id}/imunisasi-anak', [ImunisasiController::class, 'indexImunisasi'])->name('kunjungan.imunisasi-anak');
 
         //keluarga-berencana
         Route::resource('keluarga-berencana', KeluargaBerencanaController::class);

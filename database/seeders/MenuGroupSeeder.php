@@ -30,7 +30,7 @@ class MenuGroupSeeder extends Seeder
                 [
                     // ID 3
                     'name' => 'Posyandu Management', // Posyandu Management (ID 3)
-                    'icon' => 'fas fa-syringe',
+                    'icon' => 'fas fa-notes-medical',
                     'permission_name' => 'posyandu.management',
                 ],
                 [

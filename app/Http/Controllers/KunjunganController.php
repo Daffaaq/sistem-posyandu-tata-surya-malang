@@ -44,6 +44,10 @@ class KunjunganController extends Controller
                     ->where('orang_tuas.user_id', $user->id);
             }
 
+            if ($request->filled('tanggal_kunjungan')) {
+                $query->whereDate('kunjungans.tanggal_kunjungan', $request->tanggal_kunjungan);
+            }
+
             // Menjalankan query dan mengembalikan data dengan DataTables
             $kunjungan = $query;
 

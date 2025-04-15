@@ -70,12 +70,6 @@ class MenuItemSeeder extends Seeder
                     'menu_group_id' => 3, // Posyandu Management
                 ],
                 [
-                    'name' => ' Imunisasi',
-                    'route' => 'posyandu-management/imunisasi',
-                    'permission_name' => 'imunisasi.index',
-                    'menu_group_id' => 3, // Posyandu Management
-                ],
-                [
                     'name' => 'Keluarga Berencana',
                     'route' => 'posyandu-management/keluarga-berencana',
                     'permission_name' => 'keluarga-berencana.index',

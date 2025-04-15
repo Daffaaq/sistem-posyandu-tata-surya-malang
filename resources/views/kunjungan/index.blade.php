@@ -13,7 +13,14 @@
                 </ol>
             </div>
             <div class="card-body">
-                <div class="d-flex justify-content-end mb-3">
+                <div class="d-flex justify-content-between align-items-end mb-3">
+                    <!-- Tanggal di kiri -->
+                    <div style="max-width: 250px;">
+                        <label for="filterTanggal" class="form-label mb-1">Filter Tanggal Kunjungan:</label>
+                        <input type="date" id="filterTanggal" class="form-control">
+                    </div>
+
+                    <!-- Tombol tambah di kanan -->
                     <a href="{{ route('kunjungan.create') }}"
                         class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
                         <i class="fas fa-plus fa-sm text-white-50"></i> Tambah Kunjungan
@@ -83,8 +90,9 @@
                     url: '{{ route('kunjungan.list') }}',
                     type: 'POST',
                     dataType: 'json',
-                    data: {
-                        _token: '{{ csrf_token() }}'
+                    data: function(d) {
+                        d._token = '{{ csrf_token() }}';
+                        d.tanggal_kunjungan = $('#filterTanggal').val(); // ambil nilai filter
                     }
                 },
                 columns: [{
@@ -106,6 +114,7 @@
                         name: 'nama_tipe_kunjungan'
                     },
                     {
+                        width: '15%',
                         data: 'tanggal_kunjungan',
                         name: 'tanggal_kunjungan'
                     },
@@ -119,13 +128,18 @@
                                 `/posyandu-management/kunjungan/${data}/pantauan-tumbuh-kembang-anak`;
                             let plusPantauanOrangTua =
                                 `/posyandu-management/kunjungan/${data}/pantauan-orang-tua`;
+                            let imunisasi =
+                                `/posyandu-management/kunjungan/${data}/imunisasi-anak`;
 
                             return `
-                                <a href="${plusPantauan}" class="btn icon btn-sm btn-success mb-1" title="Pantauan Tumbuh Kembang Anak">
-                                    <i class="bi bi-clipboard-data-fill"></i>
+                                <a href="${plusPantauan}" class="btn icon btn-sm btn-success" title="Pantauan Tumbuh Kembang Anak">
+                                    <i class="bi bi-file-earmark-medical-fill"></i>
                                 </a>
                                 <a href="${plusPantauanOrangTua}" class="btn icon btn-sm btn-primary" title="Pantauan Orang Tua">
-                                    <i class="bi bi-clipboard-data-fill"></i>
+                                    <i class="bi bi-file-medical-fill"></i>
+                                </a>
+                                <a href="${imunisasi}" class="btn icon btn-sm btn-warning" title="Imunisasi">
+                                    <i class="fas fa-syringe"></i>
                                 </a>
                             `;
                         }
@@ -159,11 +173,40 @@
                 }
             });
 
+            $('#filterTanggal').on('change', function() {
+                dataMaster.ajax.reload();
+            });
+
             @if (session('success'))
                 Swal.fire({
                     icon: 'success',
                     title: 'Success',
                     text: '{{ session('success') }}',
+                    toast: true,
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                });
+            @endif
+            @if (session('error'))
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Gagal',
+                    text: '{{ session('error') }}',
+                    toast: true,
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                });
+            @endif
+
+            @if (session('status'))
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Peringatan',
+                    text: '{{ session('status') }}',
                     toast: true,
                     position: 'top-end',
                     showConfirmButton: false,

@@ -126,12 +126,6 @@ class RoleAndPermissionSeeder extends Seeder
         Permission::create(['name' => 'kunjungan.edit']);
         Permission::create(['name' => 'kunjungan.destroy']);
 
-        //imunisasi
-        Permission::create(['name' => 'imunisasi.index']);
-        Permission::create(['name' => 'imunisasi.create']);
-        Permission::create(['name' => 'imunisasi.edit']);
-        Permission::create(['name' => 'imunisasi.destroy']);
-
         //keluarga-berencana
         Permission::create(['name' => 'keluarga-berencana.index']);
         Permission::create(['name' => 'keluarga-berencana.create']);
@@ -169,10 +163,6 @@ class RoleAndPermissionSeeder extends Seeder
             'kunjungan.create',
             'kunjungan.edit',
             'kunjungan.destroy',
-            'imunisasi.index',
-            'imunisasi.create',
-            'imunisasi.edit',
-            'imunisasi.destroy',
             'keluarga-berencana.index',
             'keluarga-berencana.create',
             'keluarga-berencana.edit',
@@ -202,7 +192,6 @@ class RoleAndPermissionSeeder extends Seeder
             'orang-tua.add-children',
             'posyandu.management',
             'kunjungan.index',
-            'imunisasi.index',
             'keluarga-berencana.index',
         ]);
 
@@ -214,10 +203,6 @@ class RoleAndPermissionSeeder extends Seeder
             'kunjungan.create',
             'kunjungan.edit',
             'kunjungan.destroy',
-            'imunisasi.index',
-            'imunisasi.create',
-            'imunisasi.edit',
-            'imunisasi.destroy',
             'keluarga-berencana.index',
             'keluarga-berencana.create',
             'keluarga-berencana.edit',

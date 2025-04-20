@@ -34,6 +34,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::get('/landingPage', function () {
+    return view('landingPage');
+});
 Route::get('/', function () {
     return view('auth.login');
 });

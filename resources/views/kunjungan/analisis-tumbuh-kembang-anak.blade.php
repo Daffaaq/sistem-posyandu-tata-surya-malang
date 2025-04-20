@@ -103,6 +103,7 @@
                 </div>
             </div>
         </div>
+
         <div class="card shadow mb-4 mt-4">
             <div class="card-header py-3 d-flex justify-content-between align-items-center">
                 <h6 class="m-0 font-weight-bold text-primary">Anak</h6>
@@ -197,6 +198,7 @@
 @endsection
 
 @push('styles')
+    <link rel="stylesheet" href="https://cdn.datatables.net/rowgroup/1.3.1/css/rowGroup.dataTables.min.css">
     <style>
         /* Custom Styles */
         .breadcrumb {
@@ -253,6 +255,7 @@
 @endpush
 
 @push('scripts')
+    <script src="https://cdn.datatables.net/rowgroup/1.3.1/js/dataTables.rowGroup.min.js"></script>
     <script>
         $(document).ready(function() {
             var orangTuaId = {{ $orangTua->id }}; // Ambil ID Orang Tua
@@ -395,8 +398,9 @@
                     },
                     {
                         data: 'nama_anak',
-                        name: 'nama_anak'
-                    },
+                        name: 'nama_anak',
+                        visible: false
+                    }, // hidden tapi dipakai buat group
                     {
                         data: 'id',
                         name: 'id',
@@ -404,17 +408,21 @@
                         searchable: false,
                         render: function(data, type, row) {
                             return `
-                                <a href="/posyandu-management/kunjungan/${data}/edit-obat-kunjungan" class="btn icon btn-sm btn-warning" title="Edit">
-                                    <i class="bi bi-pencil"></i>
-                                </a>
-                                <button class="btn icon btn-sm btn-danger" onclick="confirmDeleteObat('${data}')" title="Delete">
-                                    <i class="bi bi-trash"></i>
-                                </button>
-                            `;
+                    <a href="/posyandu-management/kunjungan/${data}/edit-obat-kunjungan" class="btn icon btn-sm btn-warning" title="Edit">
+                        <i class="bi bi-pencil"></i>
+                    </a>
+                    <button class="btn icon btn-sm btn-danger" onclick="confirmDeleteObat('${data}')" title="Delete">
+                        <i class="bi bi-trash"></i>
+                    </button>
+                `;
                         }
                     },
-                ]
+                ],
+                rowGroup: {
+                    dataSrc: 'nama_anak'
+                }
             });
+
 
             // Display success message if available
             @if (session('success'))
@@ -492,6 +500,7 @@
                 }
             });
         }
+
         function confirmDeleteObat(id) {
             Swal.fire({
                 title: 'Apakah Anda yakin?',
@@ -611,19 +620,19 @@
                         <label for="obat_id_${anakId}">Pilih Obat</label>
                         <div id="obat_id_${anakId}" class="checkbox-group">
                             ${obatData.map(item => `
-                                                                                                                        <div class="form-check">
-                                                                                                                            <input class="form-check-input" type="checkbox" value="${item.id}" name="obat_id[${anakId}][]" id="obat_${item.id}">
-                                                                                                                            <label class="form-check-label" for="obat_${item.id}">
-                                                                                                                                ${item.nama_obat_vitamin}
-                                                                                                                            </label>
+                                                                                                                                        <div class="form-check">
+                                                                                                                                            <input class="form-check-input" type="checkbox" value="${item.id}" name="obat_id[${anakId}][]" id="obat_${item.id}">
+                                                                                                                                            <label class="form-check-label" for="obat_${item.id}">
+                                                                                                                                                ${item.nama_obat_vitamin}
+                                                                                                                                            </label>
 
-                                                                                                                            <!-- Input untuk jumlah obat (saat obat dipilih) -->
-                                                                                                                            <div id="jumlah_obat_${anakId}_${item.id}" class="jumlah-obat" style="display:none;">
-                                                                                                                                <label for="jumlah_obat_${anakId}_${item.id}">Jumlah Obat</label>
-                                                                                                                                <input type="number" class="form-control" name="jumlah_obat[${anakId}][${item.id}]" id="jumlah_obat_${anakId}_${item.id}" min="1">
-                                                                                                                            </div>
-                                                                                                                        </div>
-                                                                                                                    `).join('')}
+                                                                                                                                            <!-- Input untuk jumlah obat (saat obat dipilih) -->
+                                                                                                                                            <div id="jumlah_obat_${anakId}_${item.id}" class="jumlah-obat" style="display:none;">
+                                                                                                                                                <label for="jumlah_obat_${anakId}_${item.id}">Jumlah Obat</label>
+                                                                                                                                                <input type="number" class="form-control" name="jumlah_obat[${anakId}][${item.id}]" id="jumlah_obat_${anakId}_${item.id}" min="1">
+                                                                                                                                            </div>
+                                                                                                                                        </div>
+                                                                                                                                    `).join('')}
                         </div>
                     </div>
                 </div>

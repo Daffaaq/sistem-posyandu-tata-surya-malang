@@ -82,8 +82,8 @@ class ObatSeeder extends Seeder
                 'nama_obat_vitamin' => 'Salep Kulit Anak',
                 'tipe' => 'obat',
                 'deskripsi' => 'Salep untuk mengatasi ruam, gatal, dan iritasi ringan pada kulit anak.',
-                'stok' => 30,
-                'tanggal_kadaluarsa' => Carbon::parse('2025-06-30')->format('Y-m-d'),
+                'stok' => 5,
+                'tanggal_kadaluarsa' => Carbon::parse('2025-04-30')->format('Y-m-d'),
             ],
             [
                 'nama_obat_vitamin' => 'Vitamin C',
@@ -98,6 +98,50 @@ class ObatSeeder extends Seeder
                 'deskripsi' => 'Obat untuk membasmi cacing dalam saluran pencernaan anak.',
                 'stok' => 85,
                 'tanggal_kadaluarsa' => Carbon::parse('2026-06-01')->format('Y-m-d'),
+            ],
+
+            //kadaluarsa
+            [
+                'nama_obat_vitamin' => 'Antibiotik',
+                'tipe' => 'obat',
+                'deskripsi' => 'Antibiotik untuk mengobati infeksi bakteri.',
+                'stok' => 30,
+                'tanggal_kadaluarsa' => Carbon::parse('2025-01-15')->format('Y-m-d'),
+            ],
+            [
+                'nama_obat_vitamin' => 'Obat Batuk Dewasa',
+                'tipe' => 'obat',
+                'deskripsi' => 'Obat batuk untuk dewasa, membantu meredakan batuk kering.',
+                'stok' => 10,
+                'tanggal_kadaluarsa' => Carbon::parse('2025-03-05')->format('Y-m-d'),
+            ],
+            [
+                'nama_obat_vitamin' => 'Vitamin E',
+                'tipe' => 'vitamin',
+                'deskripsi' => 'Vitamin E untuk menjaga kesehatan kulit dan sebagai antioksidan.',
+                'stok' => 60,
+                'tanggal_kadaluarsa' => Carbon::parse('2025-02-20')->format('Y-m-d'),
+            ],
+            [
+                'nama_obat_vitamin' => 'Obat Sakit Kepala',
+                'tipe' => 'obat',
+                'deskripsi' => 'Obat untuk meredakan sakit kepala.',
+                'stok' => 20,
+                'tanggal_kadaluarsa' => Carbon::parse('2025-04-10')->format('Y-m-d'),
+            ],
+            [
+                'nama_obat_vitamin' => 'Pill Anti Alergi',
+                'tipe' => 'obat',
+                'deskripsi' => 'Obat untuk mengatasi alergi, gatal-gatal, dan ruam.',
+                'stok' => 15,
+                'tanggal_kadaluarsa' => Carbon::parse('2025-03-25')->format('Y-m-d'),
+            ],
+            [
+                'nama_obat_vitamin' => 'Obat Luka Bakar',
+                'tipe' => 'obat',
+                'deskripsi' => 'Obat untuk mengobati luka bakar ringan.',
+                'stok' => 8,
+                'tanggal_kadaluarsa' => Carbon::parse('2025-04-15')->format('Y-m-d'),
             ],
         ]);
     }

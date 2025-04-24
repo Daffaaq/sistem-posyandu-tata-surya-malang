@@ -97,8 +97,11 @@ class KunjunganController extends Controller
         // Mengambil data anak yang terkait dengan orang tua tersebut
         $anak = $orangTua->anak;
 
-        // mengambil data obat
-        $obat = DB::table('obats')->select('id', 'nama_obat_vitamin')->get();
+        $obat = DB::table('obats')
+            ->select('id', 'nama_obat_vitamin') // hanya ambil kolom ini
+            ->where('tanggal_kadaluarsa', '>', Carbon::today()) // tetap bisa filter walau kolom ini nggak ditampilkan
+            ->get();
+
 
         return view('kunjungan.analisis-tumbuh-kembang-anak', compact('kunjungan', 'anak', 'obat', 'orangTua'));
     }

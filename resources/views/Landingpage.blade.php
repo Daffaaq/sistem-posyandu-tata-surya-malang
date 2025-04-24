@@ -6,7 +6,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Posyandu Digital</title>
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600&display=swap" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+    <script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.24/js/dataTables.bootstrap4.min.js"></script>
+
+    <!-- Include CSRF meta -->
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
+    <!-- Custom Script -->
+    <script src="{{ asset('Landing/js/datatables-obat.js') }}"></script>
+
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         document.addEventListener("DOMContentLoaded", function() {
@@ -48,7 +59,7 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center h-16">
             <!-- Logo -->
             <div class="text-xl font-bold text-green-600">
-                Posyandu<span class="text-gray-800">Digital</span>
+                Posyandu Tata Surya <span class="text-gray-800">Malang</span>
             </div>
 
             <!-- Desktop Menu -->
@@ -85,6 +96,7 @@
 
                 <a href="#" class="nav-link text-gray-700 hover:text-green-600 transition duration-300"
                     data-target="contact">Kontak</a>
+
             </nav>
 
             <!-- Mobile Menu Button -->
@@ -117,19 +129,20 @@
             <!-- Text Content -->
             <div class="w-full lg:w-1/2 text-center lg:text-left space-y-6">
                 <h1 class="text-4xl md:text-5xl font-extrabold text-gray-800 leading-tight">
-                    Solusi Digital <span class="text-green-600">Posyandu Modern</span>
+                    Posyandu Tata Surya <span class="text-green-600">Malang</span>
                 </h1>
                 <p class="text-gray-600 text-lg">
-                    Mudahkan pencatatan data balita, imunisasi, dan stok vitamin hanya dalam satu platform.
+                    Satu platform untuk data balita, imunisasi, dan kesehatan yang lebih terorganisir.
                 </p>
                 <div class="flex justify-center lg:justify-start gap-4">
-                    <a href="#features"
-                        class="px-6 py-3 bg-green-600 text-white rounded-full font-semibold hover:bg-green-700 transition">
+                    <a href="#"
+                        class=" nav-link px-6 py-3 bg-green-600 text-white rounded-full font-semibold hover:bg-green-700 transition"
+                        data-target="features">
                         Lihat Fitur
                     </a>
-                    <a href="#"
+                    <a href="{{ route('login') }}"
                         class="px-6 py-3 bg-white border border-green-600 text-green-600 rounded-full font-semibold hover:bg-green-50 transition">
-                        Coba Demo
+                        Yuk Mulai!
                     </a>
                 </div>
             </div>
@@ -150,43 +163,73 @@
 
             <!-- Blok 1 -->
             <div class="flex flex-col lg:flex-row items-center gap-12">
+                <!-- Gambar -->
                 <div class="w-full lg:w-1/2">
-                    <img src="https://img.freepik.com/free-photo/medical-banner-with-doctor-holding-tablet_23-2149611236.jpg?t=st=1745065396~exp=1745068996~hmac=f57ab67ba3430b4025ce34479ed78ca128f23323d56220e3c2ab391ae3613164&w=1380"
-                        alt="Dashboard Ilustrasi" class="w-full max-w-md mx-auto">
+                    <img src="https://img.freepik.com/free-photo/medical-doctor-holding-tablet_23-2149611236.jpg?t=st=1745065396~exp=1745068996~hmac=f57ab67ba3430b4025ce34479ed78ca128f23323d56220e3c2ab391ae3613164&w=1380"
+                        alt="Ilustrasi Posyandu Tata Surya Malang" class="w-full max-w-lg mx-auto rounded-lg shadow-md">
                 </div>
+
+                <!-- Teks -->
                 <div class="w-full lg:w-1/2">
-                    <h2 class="text-3xl font-bold text-gray-800 mb-4">Apa Itu Sistem Posyandu Digital?</h2>
+                    <h2 class="text-3xl font-bold text-gray-800 mb-4">Apa Itu Sistem Posyandu Tata Surya Malang?</h2>
                     <p class="text-gray-600 text-lg mb-6">
-                        Sistem ini dirancang untuk membantu kader posyandu dalam mencatat data balita, jadwal imunisasi,
-                        dan stok vitamin dengan mudah, cepat, dan akurat.
+                        Sistem ini dirancang untuk memudahkan warga Komplek Perumahan Tata Surya Malang dalam mengelola
+                        kesehatan balita, imunisasi, keluarga berencana, dan jadwal posyandu secara digital dan efisien.
                     </p>
-                    <ul class="space-y-3 text-gray-700">
-                        <li>✔️ Dashboard real-time yang informatif</li>
-                        <li>✔️ Pencatatan kunjungan balita & imunisasi</li>
-                        <li>✔️ Monitoring vitamin & obat yang efisien</li>
+                    <ul class="space-y-4 text-gray-700 list-inside">
+                        <li class="flex items-start gap-2">
+                            <span class="text-green-600">✔️</span>
+                            <span>Dashboard real-time untuk memantau kesehatan balita dan stok secara langsung</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <span class="text-green-600">✔️</span>
+                            <span>Pencatatan kunjungan balita dan imunisasi yang terorganisir dengan baik</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <span class="text-green-600">✔️</span>
+                            <span>Informasi keluarga berencana yang dapat diakses oleh orang tua</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <span class="text-green-600">✔️</span>
+                            <span>Jadwal posyandu yang terintegrasi dan mudah diakses oleh masyarakat</span>
+                        </li>
                     </ul>
                 </div>
             </div>
 
+
             <!-- Blok 2 -->
             <div class="flex flex-col lg:flex-row-reverse items-center gap-12">
+                <!-- Gambar -->
                 <div class="w-full lg:w-1/2">
                     <img src="https://img.freepik.com/free-photo/medical-examination-report-history-history_53876-132763.jpg?t=st=1745065633~exp=1745069233~hmac=150db422dcd88ded5dc83a19065dbe14ab81f22af6485ca9e13078928c87dcb8&w=1480"
-                        alt="Ilustrasi Sistem" class="w-full max-w-md mx-auto">
+                        alt="Ilustrasi Penggunaan Sistem" class="w-full max-w-md mx-auto rounded-lg shadow-md">
                 </div>
+
+                <!-- Teks -->
                 <div class="w-full lg:w-1/2">
                     <h2 class="text-3xl font-bold text-gray-800 mb-4">Kenapa Harus Pakai Sistem Ini?</h2>
                     <p class="text-gray-600 text-lg mb-6">
-                        Dibuat khusus untuk posyandu dengan pendekatan digital yang ramah pengguna. Meningkatkan
-                        efisiensi tanpa perlu pelatihan yang rumit.
+                        Sistem ini dirancang untuk meningkatkan efisiensi posyandu dengan pendekatan digital yang
+                        sederhana dan mudah digunakan oleh semua kalangan.
                     </p>
                     <ul class="space-y-3 text-gray-700">
-                        <li>✔️ Mudah digunakan oleh kader dari berbagai usia</li>
-                        <li>✔️ Akses dari perangkat apa pun (HP / Laptop)</li>
-                        <li>✔️ Siap cetak laporan kapan saja</li>
+                        <li class="flex items-start gap-2">
+                            <span class="text-green-600">✔️</span>
+                            <span>Antarmuka ramah pengguna, mudah dipahami oleh siapa saja</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <span class="text-green-600">✔️</span>
+                            <span>Akses dari perangkat apa saja, baik HP maupun Laptop</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <span class="text-green-600">✔️</span>
+                            <span>Cetak laporan kesehatan kapan saja dengan mudah</span>
+                        </li>
                     </ul>
                 </div>
             </div>
+
 
         </div>
     </section>
@@ -321,6 +364,123 @@
         </div>
     </section>
 
+    <!-- Section Obat / Vitamin -->
+    <section id="obat-vitamin" class="pt-24 bg-white pb-10">
+        <div class="max-w-7xl mx-auto px-6 lg:px-8">
+            <div class="mb-12 text-center">
+                <h2 class="text-3xl font-bold text-gray-800">Obat & Vitamin Posyandu</h2>
+                <p class="text-gray-600 text-lg max-w-2xl mx-auto mt-2">
+                    Data obat dan vitamin yang tersedia di posyandu, termasuk stok dan tanggal kedaluwarsa.
+                </p>
+            </div>
+
+            <!-- Filter -->
+            <div class="mb-4">
+                <label for="tipe_filter" class="block mb-2 text-gray-700 font-semibold">Filter Tipe:</label>
+                <select id="tipe_filter" class="border border-gray-300 rounded px-4 py-2">
+                    <option value="">Semua</option>
+                    <option value="obat">Obat</option>
+                    <option value="vitamin">Vitamin</option>
+                </select>
+            </div>
+
+            <!-- Legend / Keterangan Indikator -->
+            <div class="mb-6 flex flex-wrap items-center gap-6 text-sm text-gray-700">
+                <div class="flex items-center gap-2">
+                    <span class="inline-block w-3 h-3 rounded-full bg-red-500"></span>
+                    <span>Stok sangat rendah dan kadaluarsa dalam 7 hari</span>
+                </div>
+                <div class="flex items-center gap-2">
+                    <span class="inline-block w-3 h-3 rounded-full bg-yellow-400"></span>
+                    <span>Kadaluarsa mendekati (8–14 hari)</span>
+                </div>
+                <div class="flex items-center gap-2">
+                    <span class="inline-block w-3 h-3 rounded-full bg-green-500"></span>
+                    <span>Kadaluarsa masih aman (>14 hari)</span>
+                </div>
+            </div>
+            <!-- Tabel Data Obat -->
+            <div class="overflow-x-auto bg-white p-4 rounded-lg shadow-md">
+                <table id="tableObat" class="min-w-full divide-y divide-gray-200 text-sm text-gray-700">
+                    <thead class="bg-green-100 text-gray-700 uppercase tracking-wider text-xs">
+                        <tr>
+                            <th class="px-4 py-3 text-left">No</th>
+                            <th class="px-4 py-3 text-left">Nama</th>
+                            <th class="px-4 py-3 text-left">Tipe</th>
+                            <th class="px-4 py-3 text-left">Stok</th>
+                            <th class="px-4 py-3 text-left">Kadaluarsa</th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-100">
+                        <!-- DataTables akan isi ini -->
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    </section>
+
+
+    <!-- Section Jadwal Posyandu -->
+    <section id="jadwal-posyandu" class="pt-24 bg-green-50 pb-10">
+        <div class="max-w-7xl mx-auto px-6 lg:px-8">
+            <div class="mb-12 text-center">
+                <h2 class="text-3xl font-bold text-gray-800">Jadwal Posyandu</h2>
+                <p class="text-gray-600 text-lg max-w-2xl mx-auto mt-2">
+                    Informasi jadwal kegiatan posyandu yang akan datang, termasuk waktu dan tempat kegiatan.
+                </p>
+            </div>
+
+            <!-- Timeline Jadwal -->
+            <div class="space-y-12">
+                @foreach ($jadwals as $index => $jadwal)
+                    <div class="flex items-center {{ $index % 2 == 0 ? 'flex-row' : 'flex-row-reverse' }} mb-8">
+                        <div class="w-1/3 flex justify-center">
+                            <!-- Icon Bulat untuk Status Waktu Kegiatan -->
+                            @php
+                                $today = \Carbon\Carbon::now();
+                                $jadwalDate = \Carbon\Carbon::parse($jadwal->tanggal_kegiatan);
+                                $diffInDays = $today->diffInDays($jadwalDate, false);
+                            @endphp
+
+                            <!-- Warna Bulatan Berdasarkan Status Tanggal -->
+                            <div
+                                class="w-10 h-10 rounded-full 
+                        {{ $diffInDays <= 7 ? 'bg-red-600' : ($diffInDays <= 14 ? 'bg-yellow-500' : 'bg-green-600') }} 
+                        text-white flex items-center justify-center shadow-lg transform transition duration-300 hover:scale-110">
+                                <span class="text-xs font-bold">
+                                    @if ($diffInDays <= 7)
+                                        🔴
+                                    @elseif ($diffInDays <= 14)
+                                        🟡
+                                    @else
+                                        🟢
+                                    @endif
+                                </span>
+                            </div>
+                        </div>
+
+                        <div
+                            class="w-2/3 {{ $index % 2 == 0 ? 'pl-8' : 'pr-8' }} p-6 rounded-lg shadow-xl hover:shadow-2xl transition duration-300 ease-in-out transform hover:scale-105
+                        {{ $diffInDays <= 7 ? 'bg-gray-800' : ($diffInDays <= 14 ? 'bg-gray-800' : 'bg-gray-800') }}">
+                            <h3 class="text-xl font-semibold text-white">{{ $jadwal->nama_kegiatan }}</h3>
+                            <p class="text-white mt-2">
+                                <strong>Tanggal:</strong>
+                                {{ \Carbon\Carbon::parse($jadwal->tanggal_kegiatan)->format('d-m-Y') }}
+                            </p>
+                            <p class="text-white">
+                                <strong>Waktu:</strong>
+                                {{ \Carbon\Carbon::parse($jadwal->waktu_kegiatan)->format('H:i') }}
+                            </p>
+                            <p class="text-white">
+                                <strong>Tempat:</strong> {{ $jadwal->tempat_kegiatan }}
+                            </p>
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+        </div>
+    </section>
 
     <!-- Kontak Section -->
     <section id="contact" class="py-24 bg-gradient-to-r from-green-600 to-teal-500 text-white">

@@ -9,6 +9,7 @@ use App\Http\Controllers\KategoriImunasasiController;
 use App\Http\Controllers\KategoriKeluargaBerencanaController;
 use App\Http\Controllers\KeluargaBerencanaController;
 use App\Http\Controllers\KunjunganController;
+use App\Http\Controllers\LandingPageController;
 use App\Http\Controllers\LogoLoginController;
 use App\Http\Controllers\Menu\MenuGroupController;
 use App\Http\Controllers\Menu\MenuItemController;
@@ -34,12 +35,14 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/landingPage', function () {
-    return view('landingPage');
-});
-Route::get('/', function () {
+
+Route::get('/', [LandingPageController::class, 'index'])->name('landing-page');
+Route::post('/landingPage-listObat', [LandingPageController::class, 'dataObat'])->name('list-obat-landingpage');
+
+Route::get('/login', function () {
     return view('auth.login');
-});
+})->name('login');
+
 
 Route::get('/register-success', function () {
     return view('auth.register-success');
@@ -66,6 +69,13 @@ Route::group(['middleware' => ['auth', 'checkactive']], function () {
         //obat
         Route::resource('obat', ObatController::class);
         Route::post('/obat/list', [ObatController::class, 'list'])->name('obat.list');
+        Route::post('/obat/list-kadaluarsa', [ObatController::class, 'list2'])->name('obat.list-kadaluarsa');
+        Route::post('/obat/arsipkan-semua', [ObatController::class, 'arsipkanSemuaObatKadaluarsa'])->name('obat.arsipkan.semua');
+        Route::post('/obat/arsipkan/{id}', [ObatController::class, 'arsipkanSatuObat'])->name('obat.arsipkan.satu');
+        Route::post('/obat/list-arsip', [ObatController::class, 'listArsipObat'])->name('obat.list-arsip');
+        Route::post('/obat/unarchive/{id}', [ObatController::class, 'unarchiveObat'])->name('obat.unarchive');
+
+
 
         //kategori-kb
         Route::resource('kategori-kb', KategoriKeluargaBerencanaController::class);

@@ -52,6 +52,46 @@
             });
         });
     </script>
+    <style>
+        #tipe_filter {
+            width: 150px;
+            /* Ganti 150px dengan ukuran yang sesuai */
+        }
+
+        /* Reset tampilan pagination DataTables */
+        .dataTables_paginate {
+            display: flex !important;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            padding-top: 1rem;
+            gap: 4px;
+            /* Atur jarak antar tombol */
+        }
+
+        .dataTables_paginate .paginate_button {
+            margin: 0 !important;
+            padding: 6px 12px;
+            font-size: 14px;
+            background-color: #fff;
+            border: 1px solid #d1d5db;
+            border-radius: 4px;
+            color: #374151;
+            transition: background-color 0.2s ease;
+        }
+
+        .dataTables_paginate .paginate_button:hover {
+            background-color: #f3f4f6;
+            border-color: #9ca3af;
+        }
+
+        /* Highlight untuk halaman aktif */
+        .dataTables_paginate .paginate_button.current {
+            background-color: #4f46e5;
+            color: white !important;
+            border-color: #4f46e5;
+        }
+    </style>
 </head>
 
 <body>
@@ -379,28 +419,12 @@
 
             <!-- Filter -->
             <div class="mb-4">
-                <label for="tipe_filter" class="block mb-2 text-gray-700 font-semibold">Filter Tipe:</label>
-                <select id="tipe_filter" class="border border-gray-300 rounded px-4 py-2">
+                <label for="tipe_filter" class="block mb-2 text-gray-700">Filter Tipe:</label>
+                <select id="tipe_filter" class="py-2 px-3 border rounded-md focus:ring focus:ring-indigo-300">
                     <option value="">Semua</option>
                     <option value="obat">Obat</option>
                     <option value="vitamin">Vitamin</option>
                 </select>
-            </div>
-
-            <!-- Legend / Keterangan Indikator -->
-            <div class="mb-6 flex flex-wrap items-center gap-6 text-sm text-gray-700">
-                <div class="flex items-center gap-2">
-                    <span class="inline-block w-3 h-3 rounded-full bg-red-500"></span>
-                    <span>Stok sangat rendah dan kadaluarsa dalam 7 hari</span>
-                </div>
-                <div class="flex items-center gap-2">
-                    <span class="inline-block w-3 h-3 rounded-full bg-yellow-400"></span>
-                    <span>Kadaluarsa mendekati (8–14 hari)</span>
-                </div>
-                <div class="flex items-center gap-2">
-                    <span class="inline-block w-3 h-3 rounded-full bg-green-500"></span>
-                    <span>Kadaluarsa masih aman (>14 hari)</span>
-                </div>
             </div>
             <!-- Tabel Data Obat -->
             <div class="overflow-x-auto bg-white p-4 rounded-lg shadow-md">
@@ -420,9 +444,27 @@
                 </table>
             </div>
 
+            <!-- Keterangan Warna -->
+            <div class="mt-8 bg-gray-50 p-4 rounded-md shadow-md">
+                <h3 class="text-lg font-semibold text-gray-800">Keterangan Warna</h3>
+                <ul class="space-y-2 text-sm text-gray-700">
+                    <li class="flex items-center gap-2">
+                        <span class="inline-block w-3 h-3 rounded-full bg-red-500"></span>
+                        <span>Stok sangat rendah dan kadaluarsa dalam 7 hari</span>
+                    </li>
+                    <li class="flex items-center gap-2">
+                        <span class="inline-block w-3 h-3 rounded-full bg-yellow-400"></span>
+                        <span>Kadaluarsa mendekati (8–14 hari)</span>
+                    </li>
+                    <li class="flex items-center gap-2">
+                        <span class="inline-block w-3 h-3 rounded-full bg-green-500"></span>
+                        <span>Kadaluarsa masih aman (&gt;14 hari)</span>
+                    </li>
+                </ul>
+            </div>
+
         </div>
     </section>
-
 
     <!-- Section Jadwal Posyandu -->
     <section id="jadwal-posyandu" class="pt-24 bg-green-50 pb-10">
@@ -685,6 +727,7 @@
             }
         });
     </script>
+
 </body>
 
 

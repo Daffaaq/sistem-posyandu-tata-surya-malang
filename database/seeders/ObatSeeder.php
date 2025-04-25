@@ -143,6 +143,13 @@ class ObatSeeder extends Seeder
                 'stok' => 8,
                 'tanggal_kadaluarsa' => Carbon::parse('2025-04-15')->format('Y-m-d'),
             ],
+            [
+                'nama_obat_vitamin' => 'Obat Sakit Gigi',
+                'tipe' => 'obat',
+                'deskripsi' => 'Obat untuk mengobati Sakit Gigi.',
+                'stok' => 8,
+                'tanggal_kadaluarsa' => Carbon::parse('2025-05-08')->format('Y-m-d'),
+            ],
         ]);
     }
 }

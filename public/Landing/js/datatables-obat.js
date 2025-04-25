@@ -16,10 +16,26 @@ $(document).ready(function () {
             lengthMenu: "Tampilkan _MENU_ data",
             info: "Menampilkan _START_ sampai _END_ dari _TOTAL_ data",
             infoEmpty: "Tidak ada data",
-            paginate: {
-                next: '➡️',
-                previous: '⬅️'
-            }
+            // paginate: {
+            //     next: '➡️',
+            //     previous: '⬅️'
+            // }
+        },
+        lengthMenu: [10, 25, 50, 100], // Tentukan pilihan untuk jumlah data per halaman
+        initComplete: function () {
+            // Styling untuk dropdown lengthMenu
+            $(".dataTables_length select")
+                .addClass("form-select py-2 px-4 border border-gray-300 rounded-md")
+                .css("width", "60px");  // Menambahkan lebar auto
+            // Ganti w-32 dengan ukuran yang lebih tepat sesuai kebutuhan
+
+            // Styling untuk dropdown filter tipe
+            $("#tipe_filter").addClass("form-select py-2 px-4 border border-gray-300 rounded-md text-sm");
+
+            // Styling untuk pagination buttons
+            // Reset style class pagination agar tidak ketiban Tailwind spacing
+            $(".dataTables_paginate").removeClass().addClass("dataTables_paginate");
+
         },
         columns: [
             { data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false },

@@ -22,51 +22,46 @@ class LandingPageController extends Controller
                 ->select('id', 'nama_obat_vitamin', 'tipe', 'stok', 'tanggal_kadaluarsa')
                 ->orderBy('tanggal_kadaluarsa', 'asc');
 
-            // Periksa apakah filter tipe diberikan dan tidak kosong
+            // Filter berdasarkan tipe jika ada
             $query->when($request->filled('tipe_filter'), function ($query) use ($request) {
                 return $query->where('tipe', $request->tipe_filter);
             });
 
-            // Jika tipe filter kosong, tambahkan whereNull untuk tipe
-            $query->when($request->tipe_filter === '', function ($query) {
-                return $query->whereNull('tipe');
-            });
-
             $obat = $query->get();
+
+            // Debugging - Cek hasil query
+            // dd($obat);
 
             return DataTables::of($obat)
                 ->addIndexColumn()
                 ->editColumn('stok', function ($row) {
                     $stokBulatan = '';
-
                     if ($row->stok <= 10) {
-                        $stokBulatan = '<span class="inline-block w-2 h-2 bg-red-500 rounded-full ml-2" title="Stok Hampir Habis"></span>';
+                        $stokBulatan = '<span class="inline-block w-3 h-3 bg-red-500 rounded-full ml-2" title="Stok Hampir Habis"></span>';
                     }
-
                     return $row->stok . $stokBulatan;
                 })
                 ->editColumn('tanggal_kadaluarsa', function ($row) {
                     $today = \Carbon\Carbon::now();
                     $kadaluarsa = \Carbon\Carbon::parse($row->tanggal_kadaluarsa);
                     $diff = $today->diffInDays($kadaluarsa, false);
-
                     $formattedDate = $kadaluarsa->format('d-m-Y');
                     $dot = '';
 
                     if ($diff <= 7) {
-                        $dot = '<span class="inline-block w-2 h-2 bg-red-500 rounded-full ml-2" title="Segera Kadaluarsa"></span>';
+                        $dot = '<span class="inline-block w-3 h-3 bg-red-500 rounded-full ml-2" title="Segera Kadaluarsa"></span>';
                     } elseif ($diff <= 14) {
-                        $dot = '<span class="inline-block w-2 h-2 bg-yellow-400 rounded-full ml-2" title="Mendekati Kadaluarsa"></span>';
+                        $dot = '<span class="inline-block w-3 h-3 bg-yellow-400 rounded-full ml-2" title="Mendekati Kadaluarsa"></span>';
                     } elseif ($diff > 14) {
-                        $dot = '<span class="inline-block w-2 h-2 bg-green-500 rounded-full ml-2" title="Kadaluarsa Masih Lama"></span>';
+                        $dot = '<span class="inline-block w-3 h-3 bg-green-500 rounded-full ml-2" title="Kadaluarsa Masih Lama"></span>';
                     }
 
                     return $formattedDate . $dot;
                 })
-                ->rawColumns(['stok', 'tanggal_kadaluarsa']) // penting untuk render HTML
+                ->rawColumns(['stok', 'tanggal_kadaluarsa'])
                 ->make(true);
         }
-        // jika bukan response ajax maka return 405
+
         return response()->json(['message' => 'Method not allowed'], 405);
     }
 }

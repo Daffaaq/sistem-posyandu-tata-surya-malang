@@ -18,7 +18,7 @@
     <!-- Custom Script -->
     <script src="{{ asset('Landing/js/datatables-obat.js') }}"></script>
 
-    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="{{ asset('css/output.css') }}" rel="stylesheet">
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             const menuToggle = document.getElementById('menu-toggle');
@@ -73,17 +73,17 @@
                 <a href="#" class="nav-link text-gray-700 hover:text-green-600 transition duration-300"
                     data-target="blog">Blog</a>
 
-                <!-- Dropdown -->
-                <div class="relative group">
-                    <button class="text-gray-700 hover:text-green-600 focus:outline-none flex items-center space-x-1">
+                <div class="relative inline-block text-left">
+                    <button id="dropdownButton"
+                        class="flex items-center space-x-1 text-gray-700 hover:text-green-600 focus:outline-none">
                         <span>Menu</span>
-                        <!-- Optional: Small Chevron Icon -->
-                        <svg class="w-4 h-4 transform group-hover:rotate-180 transition-all duration-300"
+                        <svg class="w-4 h-4 transition-transform duration-300" id="chevronIcon"
                             xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
                         </svg>
                     </button>
-                    <div class="absolute left-0 hidden group-hover:block bg-white shadow-lg rounded-lg mt-2 w-40">
+
+                    <div id="dropdownMenu" class="absolute left-0 hidden bg-white shadow-lg rounded-lg mt-2 w-40 z-10">
                         <a href="#"
                             class="block px-4 py-2 text-gray-700 hover:bg-green-50 rounded-t-lg transition duration-300">Jadwal
                             Posyandu</a>
@@ -93,6 +93,9 @@
                             class="block px-4 py-2 text-gray-700 hover:bg-green-50 rounded-b-lg transition duration-300">FAQ</a>
                     </div>
                 </div>
+
+
+
 
                 <a href="#" class="nav-link text-gray-700 hover:text-green-600 transition duration-300"
                     data-target="contact">Kontak</a>
@@ -665,7 +668,23 @@
         </div>
     </footer>
 
+    <script>
+        const dropdownBtn = document.getElementById('dropdownButton');
+        const dropdownMenu = document.getElementById('dropdownMenu');
+        const chevronIcon = document.getElementById('chevronIcon');
 
+        dropdownBtn.addEventListener('click', () => {
+            dropdownMenu.classList.toggle('hidden');
+            chevronIcon.classList.toggle('rotate-180');
+        });
+
+        document.addEventListener('click', (e) => {
+            if (!dropdownBtn.contains(e.target) && !dropdownMenu.contains(e.target)) {
+                dropdownMenu.classList.add('hidden');
+                chevronIcon.classList.remove('rotate-180');
+            }
+        });
+    </script>
 </body>
 
 

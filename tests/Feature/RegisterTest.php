@@ -10,9 +10,9 @@ class RegisterTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_user_can_register_with_orang_tua_data()
+    protected function validRegistrationData(): array
     {
-        $response = $this->post('/register', [
+        return [
             'name' => 'Siti Aminah',
             'email' => 'siti@gmail.com',
             'password' => 'password123',
@@ -33,21 +33,28 @@ class RegisterTest extends TestCase
             'pekerjaan_ibu' => 'Ibu Rumah Tangga',
             'agama_ibu' => 'Islam',
             'alamat_ibu' => 'Jl. Kenanga 12',
-        ]);
+        ];
+    }
+
+    public function test_user_can_register_with_orang_tua_data()
+    {
+        $data = $this->validRegistrationData();
+
+        $response = $this->post('/register', $data);
 
         $response->assertRedirect(route('register.success'));
 
         $this->assertDatabaseHas('users', [
-            'email' => 'siti@gmail.com',
+            'email' => $data['email'],
             'is_active' => 'non-active',
         ]);
 
-        $user = User::where('email', 'siti@gmail.com')->first();
+        $user = User::where('email', $data['email'])->first();
 
         $this->assertDatabaseHas('orang_tuas', [
             'user_id' => $user->id,
-            'nama_ayah' => 'Achmad Mubarok',
-            'nama_ibu' => 'Siti Aminah',
+            'nama_ayah' => $data['nama_ayah'],
+            'nama_ibu' => $data['nama_ibu'],
         ]);
     }
 }

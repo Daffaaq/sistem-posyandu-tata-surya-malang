@@ -14,6 +14,8 @@ class KategoriImunasasiTest extends TestCase
 {
     use RefreshDatabase;
 
+    protected $user;
+
     protected function setUp(): void
     {
         parent::setUp();
@@ -24,19 +26,30 @@ class KategoriImunasasiTest extends TestCase
         ]);
 
         $this->user = User::factory()->create();
-        Permission::create(['name' => 'kategori-imunisasi.create']);
-        Permission::create(['name' => 'kategori-imunisasi.edit']);
-        Permission::create(['name' => 'kategori-imunisasi.destroy']);
-        Permission::create(['name' => 'kategori-imunisasi.index']);
-        Permission::create(['name' => 'kategori-imunisasi.list']);
 
-        $this->user->givePermissionTo([
-            'kategori-imunisasi.index',
+        $permissions = [
             'kategori-imunisasi.create',
             'kategori-imunisasi.edit',
             'kategori-imunisasi.destroy',
+            'kategori-imunisasi.index',
             'kategori-imunisasi.list',
-        ]);
+        ];
+
+        foreach ($permissions as $permission) {
+            Permission::firstOrCreate(['name' => $permission]);
+        }
+
+        $this->user->givePermissionTo($permissions);
+    }
+
+    private function createKategori(array $data = [])
+    {
+        return KategoriImunasasi::create(array_merge([
+            'nama_kategori_imunisasi' => 'Default',
+            'keterangan' => 'Keterangan default',
+            'is_active' => true,
+            'slug' => 'default-slug',
+        ], $data));
     }
 
     public function test_store_kategori_imunisasi()
@@ -49,6 +62,7 @@ class KategoriImunasasiTest extends TestCase
         ]);
 
         $response->assertRedirect(route('kategori-imunisasi.index'));
+
         $this->assertDatabaseHas('kategori_imunasasis', [
             'nama_kategori_imunisasi' => 'Baru',
             'slug' => 'baru',
@@ -57,7 +71,7 @@ class KategoriImunasasiTest extends TestCase
 
     public function test_update_kategori_imunisasi()
     {
-        $kategori = KategoriImunasasi::create([
+        $kategori = $this->createKategori([
             'nama_kategori_imunisasi' => 'Awal',
             'keterangan' => 'Deskripsi awal',
             'is_active' => false,
@@ -72,6 +86,7 @@ class KategoriImunasasiTest extends TestCase
         ]);
 
         $response->assertRedirect(route('kategori-imunisasi.index'));
+
         $this->assertDatabaseHas('kategori_imunasasis', [
             'nama_kategori_imunisasi' => 'Updated',
             'keterangan' => 'Sudah update',
@@ -80,16 +95,16 @@ class KategoriImunasasiTest extends TestCase
 
     public function test_destroy_kategori_imunisasi()
     {
-        $kategori = KategoriImunasasi::create([
+        $kategori = $this->createKategori([
             'nama_kategori_imunisasi' => 'Hapus',
             'keterangan' => 'Akan dihapus',
-            'is_active' => true,
             'slug' => 'hapus'
         ]);
 
         $response = $this->actingAs($this->user)->delete("/master-management/kategori-imunisasi/{$kategori->id}");
 
         $response->assertStatus(200);
+
         $this->assertDatabaseMissing('kategori_imunasasis', [
             'id' => $kategori->id,
         ]);
@@ -99,11 +114,10 @@ class KategoriImunasasiTest extends TestCase
     {
         $this->actingAs($this->user);
 
-        $kategori = KategoriImunasasi::create([
+        $this->createKategori([
             'nama_kategori_imunisasi' => 'Imunisasi Dasar',
             'keterangan' => 'Kategori imunisasi dasar',
-            'is_active' => true,
-            'slug' => 'imunisasi-dasar',
+            'slug' => 'imunisasi-dasar'
         ]);
 
         $request = Request::create(

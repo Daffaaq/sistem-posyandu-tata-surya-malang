@@ -131,6 +131,10 @@ Route::group(['middleware' => ['auth', 'checkactive']], function () {
             ->name('kunjungan.delete-pemeriksaan-ibu');
 
         Route::get('/kunjungan/{id}/imunisasi-anak', [ImunisasiController::class, 'indexImunisasi'])->name('kunjungan.imunisasi-anak');
+        Route::post('/kunjungan/{id}/imunisasi-anak/list', [ImunisasiController::class, 'listImunisasi'])->name('list.imunisasi-anak');
+        Route::post('/kunjungan/{id}/imunisasi-anak/list-obat', [ImunisasiController::class, 'listObatImunisasi'])->name('list.obat-imunisasi-anak');
+        Route::post('/kunjungan/{id}/imunisasi-anak', [ImunisasiController::class, 'storeImunisasi'])->name('imunisasi.store');
+
 
         //keluarga-berencana
         Route::resource('keluarga-berencana', KeluargaBerencanaController::class);

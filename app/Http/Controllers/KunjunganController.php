@@ -198,10 +198,10 @@ class KunjunganController extends Controller
             'perkembangan_motorik.*' => 'string',
             'perkembangan_psikis' => 'required|array',
             'perkembangan_psikis.*' => 'string',
-            'obat_id' => 'required|array',
+            'obat_id' => 'sometimes|array',
             'obat_id.*' => 'array',
             'obat_id.*.*' => 'exists:obats,id',
-            'jumlah_obat' => 'required|array',
+            'jumlah_obat' => 'sometimes|array',
             'jumlah_obat.*' => 'array',
             'jumlah_obat.*.*' => 'numeric',
         ]);
@@ -237,36 +237,39 @@ class KunjunganController extends Controller
             ]);
 
             // Proses obat untuk setiap anak
-            $obatIds = $request->obat_id[$anak_id] ?? []; // Dapatkan daftar obat untuk anak
-            foreach ($obatIds as $obatIndex => $obatId) {
-                // Lock baris obat yang relevan untuk mencegah race condition
-                $obat = DB::table('obats')
-                    ->where('id', $obatId)
-                    ->lockForUpdate() // Menggunakan locking untuk memastikan tidak ada perubahan pada stok
-                    ->first();
+            $obatIds = $request->obat_id[$anak_id] ?? [];
 
-                if (!$obat) {
-                    // Jika obat tidak ditemukan
-                    throw new \Exception("Obat tidak ditemukan.");
-                }
+            if (!empty($obatIds)) {
+                foreach ($obatIds as $obatIndex => $obatId) {
+                    $obat = DB::table('obats')
+                        ->where('id', $obatId)
+                        ->lockForUpdate()
+                        ->first();
 
-                // Jika stok cukup, lanjutkan dengan pengurangan stok
-                if ($obat->stok >= $request->jumlah_obat[$anak_id][$obatId]) {
-                    // Kurangi stok jika cukup
-                    DB::table('obats')->where('id', $obatId)
-                        ->decrement('stok', $request->jumlah_obat[$anak_id][$obatId]);
+                    if (!$obat) {
+                        throw new \Exception("Obat tidak ditemukan.");
+                    }
 
-                    // Create the KunjunganObat entry
-                    KunjunganObat::create([
-                        'kunjungan_id' => $kunjungan->id,
-                        'kunjungan_anak_id' => $kunjunganAnak->id,
-                        'obat_id' => $obatId,
-                        'jumlah_obat' => $request->jumlah_obat[$anak_id][$obatId] // Ambil jumlah obat berdasarkan anak dan obat
-                    ]);
-                } else {
-                    // Jika stok tidak cukup, rollback transaksi
-                    DB::rollBack();
-                    return redirect()->route('kunjungan.index')->with('error', 'Stok obat tidak mencukupi.');
+                    $jumlahObat = $request->jumlah_obat[$anak_id][$obatId] ?? 0;
+
+                    if ($jumlahObat <= 0) {
+                        continue; // Skip jika jumlah tidak valid
+                    }
+
+                    if ($obat->stok >= $jumlahObat) {
+                        DB::table('obats')->where('id', $obatId)
+                            ->decrement('stok', $jumlahObat);
+
+                        KunjunganObat::create([
+                            'kunjungan_id' => $kunjungan->id,
+                            'kunjungan_anak_id' => $kunjunganAnak->id,
+                            'obat_id' => $obatId,
+                            'jumlah_obat' => $jumlahObat
+                        ]);
+                    } else {
+                        DB::rollBack();
+                        return redirect()->route('kunjungan.index')->with('error', 'Stok obat tidak mencukupi.');
+                    }
                 }
             }
         }

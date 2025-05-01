@@ -192,7 +192,11 @@
                 </form>
             </div>
         </div>
-
+        <div class="row mt-3">
+            <div class="col-md-12">
+                <a class="btn btn-secondary" href="{{ route('kunjungan.index') }}">Kembali</a>
+            </div>
+        </div>
 
     </div>
 @endsection
@@ -617,22 +621,22 @@
                     <h5>Obat untuk Anak ${anakName}</h5>
                     
                     <div class="form-group">
-                        <label for="obat_id_${anakId}">Pilih Obat</label>
+                        <label for="obat_id_${anakId}">Pilih Obat  <i class="fas fa-info-circle text-info ml-1" data-toggle="tooltip" title="Obat bersifat opsional. Anda boleh melewati jika tidak ada obat yang diberikan."></i> </label>
                         <div id="obat_id_${anakId}" class="checkbox-group">
                             ${obatData.map(item => `
-                                                                                                                                        <div class="form-check">
-                                                                                                                                            <input class="form-check-input" type="checkbox" value="${item.id}" name="obat_id[${anakId}][]" id="obat_${item.id}">
-                                                                                                                                            <label class="form-check-label" for="obat_${item.id}">
-                                                                                                                                                ${item.nama_obat_vitamin}
-                                                                                                                                            </label>
+                                                                                                                                                    <div class="form-check">
+                                                                                                                                                        <input class="form-check-input" type="checkbox" value="${item.id}" name="obat_id[${anakId}][]" id="obat_${item.id}">
+                                                                                                                                                        <label class="form-check-label" for="obat_${item.id}">
+                                                                                                                                                            ${item.nama_obat_vitamin}
+                                                                                                                                                        </label>
 
-                                                                                                                                            <!-- Input untuk jumlah obat (saat obat dipilih) -->
-                                                                                                                                            <div id="jumlah_obat_${anakId}_${item.id}" class="jumlah-obat" style="display:none;">
-                                                                                                                                                <label for="jumlah_obat_${anakId}_${item.id}">Jumlah Obat</label>
-                                                                                                                                                <input type="number" class="form-control" name="jumlah_obat[${anakId}][${item.id}]" id="jumlah_obat_${anakId}_${item.id}" min="1">
-                                                                                                                                            </div>
-                                                                                                                                        </div>
-                                                                                                                                    `).join('')}
+                                                                                                                                                        <!-- Input untuk jumlah obat (saat obat dipilih) -->
+                                                                                                                                                        <div id="jumlah_obat_${anakId}_${item.id}" class="jumlah-obat" style="display:none;">
+                                                                                                                                                            <label for="jumlah_obat_${anakId}_${item.id}">Jumlah Obat</label>
+                                                                                                                                                            <input type="number" class="form-control" name="jumlah_obat[${anakId}][${item.id}]" id="jumlah_obat_${anakId}_${item.id}" min="1">
+                                                                                                                                                        </div>
+                                                                                                                                                    </div>
+                                                                                                                                                `).join('')}
                         </div>
                     </div>
                 </div>

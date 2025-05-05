@@ -29,37 +29,43 @@ class MenuGroupSeeder extends Seeder
                 ],
                 [
                     // ID 3
-                    'name' => 'Posyandu Management', // Posyandu Management (ID 3)
+                    'name' => 'Layanan Ibu Hamil',
+                    'icon' => 'fas fa-baby',
+                    'permission_name' => 'pregnant.management',
+                ],
+                [
+                    // ID 4
+                    'name' => 'Posyandu Management', // Posyandu Management (ID 4)
                     'icon' => 'fas fa-notes-medical',
                     'permission_name' => 'posyandu.management',
                 ],
                 [
-                    // ID 4
-                    'name' => 'Berita Management', // Berita (ID 4)
+                    // ID 5
+                    'name' => 'Berita Management', // Berita (ID 5)
                     'icon' => 'fas fa-newspaper',
                     'permission_name' => 'berita.management',
                 ],
                 [
-                    // ID 5
+                    // ID 6
                     'name' => 'Users Management',
                     'icon' => 'fas fa-users',
                     'permission_name' => 'user.management',
                 ],
                 [
-                    // ID 6
+                    // ID 7
                     'name' => 'Role Management',
                     'icon' => 'fas fa-user-tag',
                     'permisison_name' => 'role.permission.management',
                 ],
                 [
-                    // ID 7
+                    // ID 8
                     'name' => 'Menu Management',
                     'icon' => 'fas fa-bars',
                     'permisison_name' => 'menu.management',
                 ],
                 [
-                    // ID 8
-                    'name' => 'Log Management', // Log Sistem (ID 5)
+                    // ID 9
+                    'name' => 'Log Management', // Log Sistem (ID 9)
                     'icon' => 'fas fa-file-alt',
                     'permission_name' => 'log.management',
                 ],

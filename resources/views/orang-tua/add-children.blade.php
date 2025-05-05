@@ -30,10 +30,15 @@
                         </tbody>
                     </table>
                 </div>
-
-                {{-- <!-- Form untuk Menambah Anak (di bawah tabel) -->
-                <div class="mt-4">
-                    <h5>Tambah Anak</h5>
+            </div>
+        </div>
+        @if ($orangTua->kehamilans->where('status_kehamilan', 'Hamil')->count() == 0)
+            <div class="card shadow mb-4 mt-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">Tambah Anak</h6>
+                </div>
+                <div class="card-body">
+                    <!-- Form untuk Menambah Anak (di bawah tabel) -->
                     <form action="{{ route('orang-tua.add-children', $orangTua->id) }}" method="POST">
                         @csrf
                         @method('PUT')
@@ -59,56 +64,17 @@
                                 <input type="hidden" name="children[0][orang_tua_id]" value="{{ $orangTua->id }}">
 
                                 <!-- Tombol Hapus -->
-                                <button type="button" class="btn btn-danger btn-sm remove-child-btn">Hapus</button>
+                                {{-- <button type="button" class="btn btn-danger btn-sm remove-child-btn">Hapus</button> --}}
                             </div>
                         </div>
-
-                        <button type="button" id="add-child-btn" class="btn btn-primary mb-3">Tambah Anak</button>
-                        <button type="submit" class="btn btn-success">Simpan Anak</button>
+                        <div class="d-flex justify-content-between">
+                            <button type="button" id="add-child-btn" class="btn btn-primary mb-3">Tambah Anak</button>
+                            <button type="submit" class="btn btn-success mb-3">Simpan Anak</button>
+                        </div>
                     </form>
-                </div> --}}
+                </div>
             </div>
-        </div>
-        <div class="card shadow mb-4 mt-4">
-            <div class="card-header py-3">
-                <h6 class="m-0 font-weight-bold text-primary">Tambah Anak</h6>
-            </div>
-            <div class="card-body">
-                <!-- Form untuk Menambah Anak (di bawah tabel) -->
-                <form action="{{ route('orang-tua.add-children', $orangTua->id) }}" method="POST">
-                    @csrf
-                    @method('PUT')
-                    <div id="children-container">
-                        <!-- Form Anak pertama akan ditampilkan di sini -->
-                        <div class="child-form mb-3">
-                            <div class="form-group">
-                                <label for="nama_anak">Nama Anak</label>
-                                <input type="text" name="children[0][nama_anak]" class="form-control" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="jenis_kelamin_anak">Jenis Kelamin</label>
-                                <select name="children[0][jenis_kelamin_anak]" class="form-control" required>
-                                    <option value="Laki-laki">Laki-laki</option>
-                                    <option value="Perempuan">Perempuan</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label for="tanggal_lahir_anak">Tanggal Lahir</label>
-                                <input type="date" name="children[0][tanggal_lahir_anak]" class="form-control" required>
-                            </div>
-                            <input type="hidden" name="children[0][orang_tua_id]" value="{{ $orangTua->id }}">
-
-                            <!-- Tombol Hapus -->
-                            {{-- <button type="button" class="btn btn-danger btn-sm remove-child-btn">Hapus</button> --}}
-                        </div>
-                    </div>
-                    <div class="d-flex justify-content-between">
-                        <button type="button" id="add-child-btn" class="btn btn-primary mb-3">Tambah Anak</button>
-                        <button type="submit" class="btn btn-success mb-3">Simpan Anak</button>
-                    </div>
-                </form>
-            </div>
-        </div>
+        @endif
     </div>
 @endsection
 

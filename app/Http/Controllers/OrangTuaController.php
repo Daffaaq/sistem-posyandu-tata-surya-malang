@@ -188,6 +188,15 @@ class OrangTuaController extends Controller
         // dd($request->all());
         $orangTua = OrangTua::findOrFail($id);
 
+        // Cek apakah orang tua sedang dalam status kehamilan "Hamil"
+        $sedangHamil = $orangTua->kehamilans()
+            ->where('status_kehamilan', 'Hamil')
+            ->exists();
+
+        if ($sedangHamil) {
+            return redirect()->back()->withErrors(['error' => 'Tidak dapat menambahkan anak karena ibu masih dalam status kehamilan.']);
+        }
+
         Log::info($request->all());
 
         // Loop through each child in the 'children' array from the request

@@ -42,4 +42,9 @@ class OrangTua extends Model
     {
         return $this->hasMany(Anak::class);
     }
+
+    public function kehamilans()
+    {
+        return $this->hasMany(Kehamilan::class);
+    }
 }

@@ -21,6 +21,7 @@ class RoleAndPermissionSeeder extends Seeder
         // create permissions
         Permission::create(['name' => 'dashboard']);
         Permission::create(['name' => 'master.management']);
+        Permission::create(['name' => 'pregnant.management']);
         Permission::create(['name' => 'posyandu.management']);
         Permission::create(['name' => 'berita.management']);
         Permission::create(['name' => 'user.management']);
@@ -120,6 +121,12 @@ class RoleAndPermissionSeeder extends Seeder
         Permission::create(['name' => 'orang-tua.add-children']);
         Permission::create(['name' => 'orang-tua.update-status']);
 
+        //kehamilan
+        Permission::create(['name' => 'kehamilan.index']);
+        Permission::create(['name' => 'kehamilan.create']);
+        Permission::create(['name' => 'kehamilan.edit']);
+        Permission::create(['name' => 'kehamilan.destroy']);
+
         //kunjungan
         Permission::create(['name' => 'kunjungan.index']);
         Permission::create(['name' => 'kunjungan.create']);
@@ -158,6 +165,11 @@ class RoleAndPermissionSeeder extends Seeder
             'user.index',
             'orang-tua.index',
             'orang-tua.update-status',
+            'pregnant.management',
+            'kehamilan.index',
+            'kehamilan.create',
+            'kehamilan.edit',
+            'kehamilan.destroy',
             'posyandu.management',
             'kunjungan.index',
             'kunjungan.create',
@@ -198,6 +210,11 @@ class RoleAndPermissionSeeder extends Seeder
         $petugas = Role::create(['name' => 'petugas']);
         $petugas->givePermissionTo([
             'dashboard',
+            'pregnant.management',
+            'kehamilan.index',
+            'kehamilan.create',
+            'kehamilan.edit',
+            'kehamilan.destroy',
             'posyandu.management',
             'kunjungan.index',
             'kunjungan.create',

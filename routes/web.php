@@ -7,6 +7,7 @@ use App\Http\Controllers\JadwalPosyanduController;
 use App\Http\Controllers\JenisKunjunganKeluargaBerencanaController;
 use App\Http\Controllers\KategoriImunasasiController;
 use App\Http\Controllers\KategoriKeluargaBerencanaController;
+use App\Http\Controllers\KehamilanController;
 use App\Http\Controllers\KeluargaBerencanaController;
 use App\Http\Controllers\KunjunganController;
 use App\Http\Controllers\LandingPageController;
@@ -74,8 +75,6 @@ Route::group(['middleware' => ['auth', 'checkactive']], function () {
         Route::post('/obat/arsipkan/{id}', [ObatController::class, 'arsipkanSatuObat'])->name('obat.arsipkan.satu');
         Route::post('/obat/list-arsip', [ObatController::class, 'listArsipObat'])->name('obat.list-arsip');
         Route::post('/obat/unarchive/{id}', [ObatController::class, 'unarchiveObat'])->name('obat.unarchive');
-
-
 
         //kategori-kb
         Route::resource('kategori-kb', KategoriKeluargaBerencanaController::class);
@@ -147,6 +146,11 @@ Route::group(['middleware' => ['auth', 'checkactive']], function () {
         Route::delete('/keluarga-berencana/{id}/jadwal-kunjungan/destroy', [JadwalKunjunganKBController::class, 'destroy'])->name('keluarga-berencana.jadwal-kunjungan-kb.destroy');
     });
 
+    Route::prefix('pregnant-management')->group(function () {
+        Route::resource('kehamilan', KehamilanController::class);
+        Route::post('/kehamilan/list', [KehamilanController::class, 'list'])->name('kehamilan.list');
+    });
+
     Route::prefix('user-management')->group(function () {
         Route::resource('user', UserController::class);
         Route::post('/user/list', [UserController::class, 'list'])->name('user.list');
@@ -164,6 +168,7 @@ Route::group(['middleware' => ['auth', 'checkactive']], function () {
         Route::delete('/orang-tua/children/delete/{id}', [OrangTuaController::class, 'destroyAnak'])->name('orang-tua.delete-anak');
         Route::post('/orang-tua/update-status/{id}', [OrangTuaController::class, 'updateStatus'])->name('orang-tua.update-status');
     });
+
     Route::prefix('category-management')->group(function () {
         Route::resource('category', CategoryController::class);
     });

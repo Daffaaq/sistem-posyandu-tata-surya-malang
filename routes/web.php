@@ -16,6 +16,7 @@ use App\Http\Controllers\Menu\MenuGroupController;
 use App\Http\Controllers\Menu\MenuItemController;
 use App\Http\Controllers\ObatController;
 use App\Http\Controllers\OrangTuaController;
+use App\Http\Controllers\PemeriksaanController;
 use App\Http\Controllers\PemeriksaanOrangTuaController;
 use App\Http\Controllers\RoleAndPermission\AssignPermissionController;
 use App\Http\Controllers\RoleAndPermission\AssignUserToRoleController;
@@ -149,6 +150,8 @@ Route::group(['middleware' => ['auth', 'checkactive']], function () {
     Route::prefix('pregnant-management')->group(function () {
         Route::resource('kehamilan', KehamilanController::class);
         Route::post('/kehamilan/list', [KehamilanController::class, 'list'])->name('kehamilan.list');
+        Route::post('/kehamilan/pemeriksaan-list/{id}', [PemeriksaanController::class, 'list'])->name('pemeriksaan.kehamilan.list');
+        Route::get('/pemeriksaan/kehamilan/{id}', [PemeriksaanController::class, 'showModal'])->name('pemeriksaan.kehamilan.show');
     });
 
     Route::prefix('user-management')->group(function () {

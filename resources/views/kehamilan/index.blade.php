@@ -30,7 +30,8 @@
                                 <th>Status Kehamilan</th>
                                 <th>Tanggal Mulai</th>
                                 <th>Prediksi Lahir</th>
-                                <th>Action</th>
+                                <th>Action1</th>
+                                <th>Action2</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -115,17 +116,33 @@
                         orderable: false,
                         searchable: false,
                         render: function(data) {
+                            let addPemeriksaan =
+                                `/pregnant-management/kehamilan/${data}/pemeriksaan`;
+
+                            return `
+                                <a href="${addPemeriksaan}" class="btn icon btn-sm btn-primary" data-bs-toggle="tooltip" title="Tambah Data Pemeriksaan">
+                                    <i class="bi bi-plus"></i>
+                                </a>
+                            `;
+                        }
+                    },
+                    {
+                        data: 'id',
+                        name: 'id',
+                        orderable: false,
+                        searchable: false,
+                        render: function(data) {
                             let editUrl = `/pregnant-management/kehamilan/${data}/edit`;
                             let showUrl = `/pregnant-management/kehamilan/${data}`;
 
                             return `
-                                <a href="${showUrl}" class="btn icon btn-sm btn-info">
+                                <a href="${showUrl}" class="btn icon btn-sm btn-info" data-bs-toggle="tooltip" title="Lihat Detail">
                                     <i class="bi bi-eye"></i>
                                 </a>
-                                <a href="${editUrl}" class="btn icon btn-sm btn-warning">
+                                <a href="${editUrl}" class="btn icon btn-sm btn-warning" data-bs-toggle="tooltip" title="Edit Data">
                                     <i class="bi bi-pencil"></i>
                                 </a>
-                                <button class="btn icon btn-sm btn-danger" onclick="confirmDelete('${data}')">
+                                <button class="btn icon btn-sm btn-danger" onclick="confirmDelete('${data}')" data-bs-toggle="tooltip" title="Hapus Data">
                                     <i class="bi bi-trash"></i>
                                 </button>
                             `;

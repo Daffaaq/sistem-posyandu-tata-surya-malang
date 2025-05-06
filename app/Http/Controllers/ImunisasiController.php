@@ -7,6 +7,7 @@ use App\Models\ImunisasiObat;
 use App\Models\KategoriImunasasi;
 use App\Models\Kunjungan;
 use App\Models\KunjunganAnak;
+use Carbon\Carbon;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
@@ -51,6 +52,7 @@ class ImunisasiController extends Controller
             ->join('kategori_imunasasis', 'kategori_imunasasis.id', '=', 'imunisasis.kategori_imunisasi_id')
             ->join('anaks', 'anaks.id', '=', 'kunjungan_anaks.anak_id')
             ->select(
+                'imunisasis.id',
                 'imunisasis.tanggal_imunisasi',
                 'imunisasis.tanggal_imunisasi_lanjutan',
                 'anaks.nama_anak',
@@ -95,110 +97,97 @@ class ImunisasiController extends Controller
             ->make(true);
     }
 
+    public function showObatModal(Request $request)
+    {
+        $id = $request->input('id');
+
+        // Pastikan $id berupa array
+        if (!is_array($id)) {
+            $id = [$id]; // Ubah jadi array jika bukan
+        }
+
+        $obat = ImunisasiObat::with('obat', 'imunisasi')->whereIn('imunisasi_id', $id)->get();
+        // dd($obat);
+
+        if ($obat->count()) {
+            return response()->json([
+                'success' => true,
+                'data' => $obat
+            ]);
+        }
+
+        return response()->json(['success' => false]);
+    }
+
+
 
     public function storeImunisasi(Request $request, $kunjunganId)
     {
-        // Validasi request
         $validated = $request->validate([
             'anak_id' => 'required|array',
             'anak_id.*' => 'exists:anaks,id',
 
             'kategori_imunisasi_id' => 'required|array',
-            'kategori_imunisasi_id.*' => 'array',
-
-            'tanggal_imunisasi_lanjutan' => 'nullable|array',
-            'tanggal_imunisasi_lanjutan.*' => 'nullable|date_format:Y-m-d',
-
-            'obat_id' => 'sometimes|array',
-            'obat_id.*' => 'array',
-
-            'jumlah_obat' => 'sometimes|array',
-            'jumlah_obat.*' => 'array',
+            'kategori_imunisasi_id.*' => 'exists:kategori_imunasasis,id', // tambahkan ini untuk validasi isi
+            'obat_id' => 'nullable|array',
+            'jumlah_obat' => 'nullable|array',
         ]);
 
         try {
             DB::beginTransaction();
 
-            // Ambil data kunjungan berdasarkan ID
             $kunjungan = Kunjungan::findOrFail($kunjunganId);
 
-            // Loop untuk setiap anak ID
             foreach ($request->anak_id as $anakId) {
-                // Ambil kategori imunisasi yang dipilih oleh anak tersebut
-                $kategoriList = $request->kategori_imunisasi_id[$anakId] ?? [];
+                $kunjunganAnak = $kunjungan->kunjungan_anaks()->where('anak_id', $anakId)->first();
 
-                // Loop untuk setiap kategori imunisasi yang dipilih
-                foreach ($kategoriList as $index => $kategoriId) {
+                if (!$kunjunganAnak) {
+                    return redirect()->route('kunjungan.index')->with('error', 'Kunjungan anak tidak ditemukan.');
+                }
 
-                    // Ambil tanggal imunisasi lanjutan untuk kategori ini berdasarkan index
-                    $tanggalLanjutan = isset($tanggalList[$index]) ? $tanggalList[$index] : null;
+                $kategoriId = $request->kategori_imunisasi_id[$anakId] ?? null;
+                if ($kategoriId) {
+                    $tanggalLanjutan = $request->tanggal_imunisasi_lanjutan[$anakId][$kategoriId] ?? null;
 
-                    // Periksa apakah tanggal lanjutan valid, jika tidak maka kosongkan
-                    if ($tanggalLanjutan && strtotime($tanggalLanjutan) === false) {
-                        $tanggalLanjutan = null;
-                    }
+                    $imunisasi = new Imunisasi();
+                    $imunisasi->kunjungan_anak_id = $kunjunganAnak->id;
+                    $imunisasi->kategori_imunisasi_id = $kategoriId;
+                    $imunisasi->tanggal_imunisasi = now();
+                    $imunisasi->tanggal_imunisasi_lanjutan = $tanggalLanjutan;
+                    $imunisasi->save();
 
+                    $obatIds = $request->obat_id[$anakId][$kategoriId] ?? null;
+                    $jumlahObats = $request->jumlah_obat[$anakId][$kategoriId] ?? [];
 
-                    // Cari data kunjungan anak
-                    $kunjunganAnak = KunjunganAnak::where('kunjungan_id', $kunjunganId)
-                        ->where('anak_id', $anakId)
-                        ->first();
+                    if ($obatIds && is_array($obatIds)) {
+                        foreach ($obatIds as $obatId) {
+                            $jumlah = $jumlahObats[$obatId] ?? 1;
 
-                    if (!$kunjunganAnak) {
-                        throw new \Exception("Data kunjungan anak tidak ditemukan untuk anak ID {$anakId}.");
-                    }
+                            $obat = \App\Models\Obat::where('id', $obatId)->lockForUpdate()->first();
 
-                    // Proses untuk menyimpan data imunisasi
-                    $imunisasi = Imunisasi::create([
-                        'kunjungan_anak_id' => $kunjunganAnak->id,
-                        'kategori_imunisasi_id' => $kategoriId,
-                        'tanggal_imunisasi' => now(),  // Gunakan waktu saat ini untuk tanggal imunisasi
-                        'tanggal_imunisasi_lanjutan' => $tanggalLanjutan,  // Gunakan tanggal lanjutan yang sesuai
-                    ]);
+                            if (!$obat) {
+                                throw new \Exception("Obat dengan ID $obatId tidak ditemukan.");
+                            }
 
-                    // Ambil daftar obat untuk kategori imunisasi ini
-                    $obatList = $request->obat_id[$anakId][$index] ?? [];
+                            if ($obat->stok < $jumlah) {
+                                throw new \Exception("Stok obat '{$obat->nama_obat_vitamin}' tidak mencukupi.");
+                            }
 
-                    // Loop untuk setiap obat yang dipilih
-                    foreach ($obatList as $obatId) {
-                        // Ambil jumlah obat yang dibutuhkan
-                        $jumlah = $request->jumlah_obat[$anakId][$index][$obatId] ?? 0;
+                            $obat->stok -= $jumlah;
+                            $obat->save();
 
-                        // Skip jika jumlah obat <= 0
-                        if ($jumlah <= 0) {
-                            continue;
+                            $imunisasiObat = new \App\Models\ImunisasiObat();
+                            $imunisasiObat->imunisasi_id = $imunisasi->id;
+                            $imunisasiObat->obat_id = $obatId;
+                            $imunisasiObat->jumlah_obat = $jumlah;
+                            $imunisasiObat->save();
                         }
-
-                        // Ambil data obat berdasarkan ID dan lock untuk update
-                        $obat = DB::table('obats')->where('id', $obatId)->lockForUpdate()->first();
-
-                        if (!$obat) {
-                            throw new \Exception("Obat dengan ID {$obatId} tidak ditemukan.");
-                        }
-
-                        // Periksa apakah stok cukup
-                        if ($obat->stok < $jumlah) {
-                            throw new \Exception("Stok obat untuk ID {$obatId} tidak mencukupi.");
-                        }
-
-                        // Kurangi stok obat sesuai jumlah yang digunakan
-                        DB::table('obats')->where('id', $obatId)->decrement('stok', $jumlah);
-
-                        // Simpan data obat yang digunakan dalam imunisasi
-                        ImunisasiObat::create([
-                            'imunisasi_id' => $imunisasi->id,
-                            'obat_id' => $obatId,
-                            'jumlah_obat' => $jumlah,
-                        ]);
                     }
                 }
             }
-
-            // Commit transaksi
+            // dd($request->all());
             DB::commit();
-
-            // Redirect dengan pesan sukses
-            return redirect()->route('kunjungan.index')->with('success', 'Data imunisasi berhasil disimpan.');
+            return redirect()->route('kunjungan.imunisasi-anak', ['id' => $kunjungan->id])->with('success', 'Data imunisasi berhasil disimpan.');
         } catch (\Exception $e) {
             DB::rollBack();
             Log::error('Error during imunisasi process:', [

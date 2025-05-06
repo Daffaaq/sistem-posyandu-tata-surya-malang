@@ -134,6 +134,7 @@ Route::group(['middleware' => ['auth', 'checkactive']], function () {
         Route::post('/kunjungan/{id}/imunisasi-anak/list', [ImunisasiController::class, 'listImunisasi'])->name('list.imunisasi-anak');
         Route::post('/kunjungan/{id}/imunisasi-anak/list-obat', [ImunisasiController::class, 'listObatImunisasi'])->name('list.obat-imunisasi-anak');
         Route::post('/kunjungan/{id}/imunisasi-anak', [ImunisasiController::class, 'storeImunisasi'])->name('imunisasi.store');
+        Route::get('/kunjungan/imunisasi/data-obat/{id}', [ImunisasiController::class, 'showObatModal'])->name('imunisasi.obat-modal');
 
 
         //keluarga-berencana

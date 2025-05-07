@@ -18,4 +18,9 @@ class Obat extends Model
         'stok',
         'tanggal_kadaluarsa',
     ];
+
+    public function arsip()
+    {
+        return $this->hasOne(ArsipObat::class); // satu obat, satu arsip
+    }
 }

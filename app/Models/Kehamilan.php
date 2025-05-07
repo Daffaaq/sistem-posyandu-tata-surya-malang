@@ -27,4 +27,14 @@ class Kehamilan extends Model
     {
         return $this->hasMany(PemeriksaanKehamilan::class);
     }
+
+    public function kelahiran()
+    {
+        return $this->hasOne(Kelahiran::class);
+    }
+
+    public function keguguran()
+    {
+        return $this->hasOne(Keguguran::class);
+    }
 }

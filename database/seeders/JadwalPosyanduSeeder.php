@@ -16,14 +16,20 @@ class JadwalPosyanduSeeder extends Seeder
     {
         DB::table('jadwal_posyandus')->insert([
             [
-                'nama_kegiatan' => 'Kunjungan Ibu Hamil',
-                'tanggal_kegiatan' => Carbon::parse('2025-04-20')->format('Y-m-d'),
+                'nama_kegiatan' => 'Posyandu Rutin',
+                'tanggal_kegiatan' => Carbon::now()->subDays(7)->format('Y-m-d'),
                 'waktu_kegiatan' => '09:00:00',
                 'tempat_kegiatan' => 'Lapangan Segitiga Tata Surya',
             ],
             [
-                'nama_kegiatan' => 'Imunisasi Balita',
-                'tanggal_kegiatan' => Carbon::parse('2025-04-22')->format('Y-m-d'),
+                'nama_kegiatan' => 'Posyandu Rutin',
+                'tanggal_kegiatan' => Carbon::now()->addDays(7)->format('Y-m-d'),
+                'waktu_kegiatan' => '09:00:00',
+                'tempat_kegiatan' => 'Lapangan Segitiga Tata Surya',
+            ],
+            [
+                'nama_kegiatan' => 'Posyandu Rutin',
+                'tanggal_kegiatan' => Carbon::now()->addDays(14)->format('Y-m-d'),
                 'waktu_kegiatan' => '09:00:00',
                 'tempat_kegiatan' => 'Lapangan Segitiga Tata Surya',
             ],

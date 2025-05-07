@@ -10,7 +10,10 @@ class LandingPageController extends Controller
 {
     public function index()
     {
-        $jadwals = DB::table('jadwal_posyandus')->select('tanggal_kegiatan', 'waktu_kegiatan', 'nama_kegiatan', 'tempat_kegiatan', 'id')->get();
+        $jadwals = DB::table('jadwal_posyandus')
+            ->whereDate('tanggal_kegiatan', '>=', now())
+            ->orderBy('tanggal_kegiatan', 'asc')
+            ->get();
         return view('landingPage', compact('jadwals'));
     }
 

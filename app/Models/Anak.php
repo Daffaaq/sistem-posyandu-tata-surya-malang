@@ -16,10 +16,16 @@ class Anak extends Model
         'jenis_kelamin_anak',
         'tanggal_lahir_anak',
         'orang_tua_id',
+        'kelahiran_id',
     ];
 
     public function orangTua()
     {
         return $this->belongsTo(OrangTua::class);
+    }
+
+    public function kelahiran()
+    {
+        return $this->belongsTo(Kelahiran::class);
     }
 }

@@ -45,6 +45,11 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
+    public function orangTua()
+    {
+        return $this->hasOne(OrangTua::class);
+    }
+
     // public function isActive()
     // {
     //     return $this->is_active === 'active'; // Mengembalikan true jika aktif

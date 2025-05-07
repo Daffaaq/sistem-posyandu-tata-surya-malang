@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ImunisasiController;
 use App\Http\Controllers\JadwalKunjunganKBController;
 use App\Http\Controllers\JadwalPosyanduController;
@@ -55,9 +56,7 @@ Route::get('/account-inactive', function () {
 
 
 Route::group(['middleware' => ['auth', 'checkactive']], function () {
-    Route::get('/dashboard', function () {
-        return view('home');
-    });
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
     Route::prefix('master-management')->group(function () {
         //tipe kunjungan

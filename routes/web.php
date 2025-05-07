@@ -153,7 +153,10 @@ Route::group(['middleware' => ['auth', 'checkactive']], function () {
         Route::resource('kehamilan', KehamilanController::class);
         Route::post('/kehamilan/list', [KehamilanController::class, 'list'])->name('kehamilan.list');
         Route::post('/kehamilan/pemeriksaan-list/{id}', [PemeriksaanController::class, 'list'])->name('pemeriksaan.kehamilan.list');
+        Route::post('/kehamilan/pemeriksaan-list1/{id}', [PemeriksaanController::class, 'list1'])->name('pemeriksaan.kehamilan.list1');
         Route::get('/pemeriksaan/kehamilan/{id}', [PemeriksaanController::class, 'showModal'])->name('pemeriksaan.kehamilan.show');
+        Route::get('/kehamilan/{id}/pemeriksaan', [PemeriksaanController::class, 'index'])->name('pemeriksaan.kehamilan.index');
+        Route::post('/kehamilan/{id}/pemeriksaan', [PemeriksaanController::class, 'storePemeriksaanKehamilan'])->name('pemeriksaan.kehamilan.store');
     });
 
     Route::prefix('user-management')->group(function () {

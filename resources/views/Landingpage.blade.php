@@ -703,7 +703,8 @@
 
             <div class="border-t border-gray-600 pt-6 mt-12">
                 <p class="text-center text-gray-400 text-sm">
-                    &copy; 2025 Posyandu Sehat. All Rights Reserved.
+                    &copy; 2025 Posyandu System for Tata Surya Housing Malang. Developed by Daffa Aqila. All Rights
+                    Reserved.
                 </p>
             </div>
 

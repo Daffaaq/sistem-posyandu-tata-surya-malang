@@ -1,3 +1,8 @@
+# 🩺 Posyandu System for Tata Surya Housing Malang
+
+![GitHub last commit](https://img.shields.io/github/last-commit/Daffaaq/sistem-posyandu-tata-surya-malang)
+![GitHub repo size](https://img.shields.io/github/repo-size/Daffaaq/sistem-posyandu-tata-surya-malang)
+
 ## About Posyandu System for Tata Surya Housing Malang
 
 The **Posyandu System for Tata Surya Housing Malang** is a web-based application designed to simplify the management and reporting of Posyandu activities in the Tata Surya Housing area, Malang. This system allows health officers and the community to manage health data for pregnant women, children, and other services related to family and community health.

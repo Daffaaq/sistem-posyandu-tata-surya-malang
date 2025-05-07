@@ -1,6 +1,7 @@
 # 🩺 Posyandu System for Tata Surya Housing Malang
 
 ![GitHub last commit](https://img.shields.io/github/last-commit/Daffaaq/sistem-posyandu-tata-surya-malang)
+![GitHub commit activity](https://img.shields.io/github/commit-activity/y/Daffaaq/sistem-posyandu-tata-surya-malang)
 ![GitHub repo size](https://img.shields.io/github/repo-size/Daffaaq/sistem-posyandu-tata-surya-malang)
 
 ## About Posyandu System for Tata Surya Housing Malang

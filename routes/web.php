@@ -39,6 +39,8 @@ use Illuminate\Support\Facades\Route;
 */
 
 
+Route::pattern('id', '[0-9]+');
+
 Route::get('/', [LandingPageController::class, 'index'])->name('landing-page');
 Route::post('/landingPage-listObat', [LandingPageController::class, 'dataObat'])->name('list-obat-landingpage');
 

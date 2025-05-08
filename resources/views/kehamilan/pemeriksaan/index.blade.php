@@ -5,7 +5,7 @@
     <div class="container-fluid">
         <div class="card shadow mb-4">
             <div class="card-header py-3 d-flex justify-content-between align-items-center">
-                <h6 class="m-0 font-weight-bold text-primary">Data Pemeriksaan Kehamilan</h6>
+                <h6 class="m-0 font-weight-bold text-primary">Data Kehamilan</h6>
                 <ol class="breadcrumb mb-0">
                     <li class="breadcrumb-item">
                         <a href="{{ route('pemeriksaan.kehamilan.index', ['id' => $kehamilan->id]) }}"
@@ -145,6 +145,11 @@
             </div>
         </div>
     </div>
+    <div class="container-fluid mb-3">
+        <a href="{{ route('kehamilan.index') }}" class="btn btn-secondary">
+            <i class="bi bi-arrow-left-circle"></i> Kembali ke Data Kehamilan
+        </a>
+    </div>
     <!-- Modal -->
     <div class="modal fade" id="detailModal" tabindex="-1" aria-labelledby="detailModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
@@ -230,7 +235,14 @@
                         data: 'id', // Menambahkan Action Button
                         name: 'id',
                         render: function(data, type, row) {
-                            return `<button class="btn btn-info btn-sm" onclick="openModal(${data})">Lihat</button>`;
+                            let editUrl = `/pregnant-management/kehamilan/${data}/edit`;
+                            return `<a href="${editUrl}" class="btn icon btn-sm btn-warning" data-bs-toggle="tooltip" title="Edit Data">
+                                        <i class="bi bi-pencil"></i>
+                                        </a>
+                                        <button class="btn btn-info btn-sm" onclick="openModal(${data})" data-bs-toggle="tooltip" title="Lihat Data"><i class="bi bi-eye"></i></button>
+                                        <button class="btn icon btn-sm btn-danger" onclick="confirmDelete('${data}')" data-bs-toggle="tooltip" title="Hapus Data">
+                                        <i class="bi bi-trash"></i>
+                                    </button>`;
                         },
                         orderable: false,
                         searchable: false

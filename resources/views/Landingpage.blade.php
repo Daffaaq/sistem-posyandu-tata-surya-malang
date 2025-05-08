@@ -443,7 +443,16 @@
                     </tbody>
                 </table>
             </div>
-
+            <!-- Informasi Arsip -->
+            <div class="mt-6 p-4 bg-yellow-50 border-l-4 border-yellow-400 text-yellow-800 rounded-md">
+                <p class="text-sm text-black">
+                    <strong>Catatan:</strong> Jika Anda menemukan bahwa obat yang sebelumnya tampil kini tidak lagi
+                    muncul dalam daftar, berarti obat tersebut telah
+                    <span class="text-red-600 font-semibold"> dibuang</span>,
+                    dan datanya telah
+                    <span class="text-red-600 font-semibold">diarsipkan untuk keperluan pencatatan</span>.
+                </p>
+            </div>
             <!-- Keterangan Warna -->
             <div class="mt-8 bg-gray-50 p-4 rounded-md shadow-md">
                 <h3 class="text-lg font-semibold text-gray-800">Keterangan Warna</h3>

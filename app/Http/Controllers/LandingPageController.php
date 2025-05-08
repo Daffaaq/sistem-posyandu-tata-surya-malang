@@ -23,6 +23,10 @@ class LandingPageController extends Controller
             // Mulai query untuk mengambil data obat
             $query = DB::table('obats')
                 ->select('id', 'nama_obat_vitamin', 'tipe', 'stok', 'tanggal_kadaluarsa')
+                ->whereNotIn('id', function ($subquery) {
+                    $subquery->select('obat_id')
+                        ->from('arsip_obats');
+                })
                 ->orderBy('tanggal_kadaluarsa', 'asc');
 
             // Filter berdasarkan tipe jika ada

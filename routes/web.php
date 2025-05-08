@@ -157,6 +157,9 @@ Route::group(['middleware' => ['auth', 'checkactive']], function () {
         Route::get('/pemeriksaan/kehamilan/{id}', [PemeriksaanController::class, 'showModal'])->name('pemeriksaan.kehamilan.show');
         Route::get('/kehamilan/{id}/pemeriksaan', [PemeriksaanController::class, 'index'])->name('pemeriksaan.kehamilan.index');
         Route::post('/kehamilan/{id}/pemeriksaan', [PemeriksaanController::class, 'storePemeriksaanKehamilan'])->name('pemeriksaan.kehamilan.store');
+        Route::get('/kehamilan/{id}/pemeriksaan/edit', [PemeriksaanController::class, 'editPemeriksaanKehamilan'])->name('pemeriksaan.kehamilan.edit');
+        Route::put('/kehamilan/{id}/pemeriksaan/update', [PemeriksaanController::class, 'updatePemeriksaanKehamilan'])->name('pemeriksaan.kehamilan.update');
+        Route::delete('/kehamilan/{id}/pemeriksaan/delete', [PemeriksaanController::class, 'destroyPemeriksaanKehamilan'])->name('pemeriksaan.kehamilan.destroy');
     });
 
     Route::prefix('user-management')->group(function () {

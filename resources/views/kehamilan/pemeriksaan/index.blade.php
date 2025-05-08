@@ -235,7 +235,7 @@
                         data: 'id', // Menambahkan Action Button
                         name: 'id',
                         render: function(data, type, row) {
-                            let editUrl = `/pregnant-management/kehamilan/${data}/edit`;
+                            let editUrl = `/pregnant-management/kehamilan/${data}/pemeriksaan/edit`;
                             return `<a href="${editUrl}" class="btn icon btn-sm btn-warning" data-bs-toggle="tooltip" title="Edit Data">
                                         <i class="bi bi-pencil"></i>
                                         </a>
@@ -303,6 +303,68 @@
                 });
             @endif
         });
+
+        function confirmDelete(id) {
+            Swal.fire({
+                title: 'Apakah Anda yakin?',
+                text: "Data ini akan dihapus secara permanen!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Ya, Hapus!',
+                cancelButtonText: 'Batal'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    const url = `/pregnant-management/kehamilan/${id}/pemeriksaan/delete`;
+                    $.ajax({
+                        url: url,
+                        type: 'DELETE',
+                        data: {
+                            _token: '{{ csrf_token() }}'
+                        },
+                        success: function(response) {
+                            if (response.success) {
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Dihapus!',
+                                    text: response.message,
+                                    toast: true,
+                                    position: 'top-end',
+                                    showConfirmButton: false,
+                                    timer: 3000,
+                                    timerProgressBar: true,
+                                });
+                                $('#PemeriksaanTable').DataTable().ajax.reload();
+                            } else {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Gagal!',
+                                    text: response.message || 'Terjadi kesalahan.',
+                                    toast: true,
+                                    position: 'top-end',
+                                    showConfirmButton: false,
+                                    timer: 3000,
+                                    timerProgressBar: true,
+                                });
+                            }
+                        },
+                        error: function() {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Gagal!',
+                                text: 'Tidak dapat menghubungi server.',
+                                toast: true,
+                                position: 'top-end',
+                                showConfirmButton: false,
+                                timer: 3000,
+                                timerProgressBar: true,
+                            });
+                        }
+                    });
+                }
+            });
+        }
 
         function openModal(id) {
             // Ambil data pemeriksaan dengan ID

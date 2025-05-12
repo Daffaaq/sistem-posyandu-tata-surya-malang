@@ -77,6 +77,8 @@ Route::group(['middleware' => ['auth', 'checkactive']], function () {
         Route::post('/obat/arsipkan/{id}', [ObatController::class, 'arsipkanSatuObat'])->name('obat.arsipkan.satu');
         Route::post('/obat/list-arsip', [ObatController::class, 'listArsipObat'])->name('obat.list-arsip');
         Route::post('/obat/unarchive/{id}', [ObatController::class, 'unarchiveObat'])->name('obat.unarchive');
+        Route::get('/obat/import/view', [ObatController::class, 'viewImport'])->name('view.obat.import');
+        Route::post('/obat/import/post', [ObatController::class, 'importObat'])->name('obat.import');
 
         //kategori-kb
         Route::resource('kategori-kb', KategoriKeluargaBerencanaController::class);

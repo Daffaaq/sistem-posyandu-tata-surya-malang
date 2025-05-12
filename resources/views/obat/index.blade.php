@@ -23,11 +23,20 @@
                             <option value="vitamin">Vitamin</option>
                         </select>
                     </div>
-                    <div class="mt-3 mt-sm-0">
-                        <a href="{{ route('obat.create') }}" class="btn btn-primary shadow d-flex align-items-center">
+                    <div class="d-flex flex-column flex-sm-row align-items-start justify-content-start mt-3 mt-sm-0">
+                        <!-- Tombol Import Obat -->
+                        <a href="{{ route('view.obat.import') }}"
+                            class="btn btn-success shadow mb-3 mb-sm-0 me-sm-3 d-flex align-items-center">
+                            <i class="fas fa-import me-2"></i> Import Obat
+                        </a>
+
+                        <!-- Tombol Tambah Obat -->
+                        <a href="{{ route('obat.create') }}"
+                            class="btn btn-primary shadow d-flex align-items-center ms-sm-3 mt-3 mt-sm-0">
                             <i class="fas fa-plus me-2"></i> Tambah Obat
                         </a>
                     </div>
+
                 </div>
 
                 <ul class="nav nav-tabs border-bottom border-primary mb-3" id="kadaluarsaTab" role="tablist">

@@ -22,7 +22,7 @@ class DatabaseSeeder extends Seeder
             TypeKunjunganSeeder::class,
             JadwalPosyanduSeeder::class,
             KategoriImunisasiSeeder::class,
-            ObatSeeder::class,
+            // ObatSeeder::class,
             OrangTuaSeeder::class
         ]);
     }

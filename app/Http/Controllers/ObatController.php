@@ -4,11 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreObatRequest;
 use App\Http\Requests\UpdateObatRequest;
+use App\Imports\ObatImport;
 use App\Models\ArsipObat;
 use App\Models\Obat;
 use Carbon\Carbon;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Facades\DB;
+use Maatwebsite\Excel\Facades\Excel;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 
 class ObatController extends Controller
@@ -323,5 +326,44 @@ class ObatController extends Controller
             DB::rollBack();
             return response()->json(['success' => false, 'message' => 'Data gagal dihapus'], 500);
         }
+    }
+
+    public function viewImport()
+    {
+        return view('obat.import');
+    }
+
+    public function importObat(Request $request)
+    {
+        // Validasi file yang diunggah
+        $request->validate([
+            'file' => 'required|mimes:xlsx,xls,csv',
+        ]);
+
+        // Ambil file yang diunggah
+        $file = $request->file('file');
+
+        // Impor data obat menggunakan ObatImport
+        try {
+            Excel::import(new ObatImport, $file);
+            return redirect()->route('obat.index')->with('success', 'Data obat berhasil diimpor!');
+        } catch (\Exception $e) {
+            // Tangani jika ada kesalahan
+            return redirect()->route('obat.index')->with('error', 'Terjadi kesalahan saat mengimpor data: ' . $e->getMessage());
+        }
+    }
+
+    
+
+    public function generateLaporanPDF()
+    {
+        // Mengambil data obat dari database
+        $obats = Obat::all(); // Ambil semua data obat
+
+        // Membuat view dengan data obat
+        $pdf = Pdf::loadView('laporan.obat', compact('obats'));
+
+        // Menghasilkan PDF dan mengirimkan file untuk di-download
+        return $pdf->download('laporan_obat.pdf');
     }
 }
